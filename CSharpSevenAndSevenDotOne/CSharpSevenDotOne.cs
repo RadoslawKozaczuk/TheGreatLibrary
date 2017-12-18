@@ -19,12 +19,12 @@ namespace CSharpSevenAndSevenDotOne
 			WriteLine(await new HttpClient().GetStringAsync(url));
 		}
 
-		public static void Async_Main() => WriteLine("This example does not provide any output, please check the code.");
+		public static void AsyncMain() => WriteLine("This example does not provide any output, please check the code.");
 
 		static DateTime GetTimestamps(List<int> items = default) => default;
 
 		// Default literal, one of the slightly meaningless features.
-		public static void Default_Expressions()
+		public static void DefaultExpressions()
 		{
 			// Simplify default expression here
 			int a = default;
@@ -59,9 +59,9 @@ namespace CSharpSevenAndSevenDotOne
 		// the new way of compiling assemblies is:
 		// csc Program.cs /refout:MyDll.dll
 		// it produces an empty API to work with
-		public static void Ref_Assemblies() => WriteLine("This example does not provide any output, please check the code.");
+		public static void RefAssemblies() => WriteLine("This example does not provide any output, please check the code.");
 
-		public static void Infer_Tuple_Names()
+		public static void InferTupleNames()
 		{
 			// Tuple projection initializers
 			// reminder: tuples
@@ -113,7 +113,7 @@ namespace CSharpSevenAndSevenDotOne
 			}	
 		}
 
-		static void Pattern_Maching_With_Generics()
+		public static void PatternMachingWithGenerics()
 		{
 			var pig = new Pig();
 			PatternMatchingWithGenerics.Cook(pig);

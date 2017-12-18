@@ -10,7 +10,7 @@ namespace CSharpSevenAndSevenDotOne
 {
 	class CSharpSeven
 	{
-		public static void Out_Variables()
+		public static void OutVariables()
 		{
 			DateTime dt;
 			if (DateTime.TryParse("01/01/2017", out dt))
@@ -46,7 +46,7 @@ namespace CSharpSevenAndSevenDotOne
 			public int Diameter = 0;
 		}
 
-		public static void Pattern_Maching()
+		public static void PatternMaching()
 		{
 			// difference between is and as 
 			// IS - Is Operator is used to Check the Compatibility of an Object with a given Type and it returns the result as a Boolean(True Or False).
@@ -76,7 +76,7 @@ namespace CSharpSevenAndSevenDotOne
 			// new combined operator is with a variable declaration and assignment
 			if (someShape is Rectangle r)
 			{
-				var ImUsingIt = r.Height;
+				var imUsingIt = r.Height;
 			}
 
 			// can also do the inverse
@@ -204,7 +204,7 @@ namespace CSharpSevenAndSevenDotOne
 			  (-b - rootDisc) / (2 * a));
 		}
 
-		public static void Local_Functions()
+		public static void LocalFunctions()
 		{
 			var result = SolveQuadratic(1, 10, 16);
 			WriteLine(result);
@@ -237,7 +237,7 @@ namespace CSharpSevenAndSevenDotOne
 			return ref y;
 		}
 
-		public static void Ref_Returns_And_Locals()
+		public static void RefReturnsAndLocals()
 		{
 			// reference to a local element
 			int[] numbers = { 1, 2, 3 };
@@ -298,25 +298,25 @@ namespace CSharpSevenAndSevenDotOne
 			}
 		}
 
-		public static void Expression_Bodied_Members() => WriteLine("This example does not provide any output, please check the code.");
+		public static void ExpressionBodiedMembers() => WriteLine("This example does not provide any output, please check the code.");
 
-		class ThrowExpressions
+		class ExceptionThrower
 		{
-			public string Name { get; set; }
+			string Name { get; set; }
 
 			// in c#7 we can put throw in a null check expression
-			public ThrowExpressions(string name) => Name = name ?? throw new ArgumentNullException(paramName: nameof(name));
+			public ExceptionThrower(string name) => Name = name ?? throw new ArgumentNullException(nameof(name));
 
 			// in c#7 we can put throw in a ternary operator
 			public int GetValue(int n) => n > 0 ? n + 1 : throw new Exception();
 		}
 
-		public static void Throw_Expressions()
+		public static void ThrowExpressions()
 		{
 			int v = -1;
 			try
 			{
-				var te = new ThrowExpressions("");
+				var te = new ExceptionThrower("");
 				v = te.GetValue(-1); // does not get defaulted!
 			}
 			catch (Exception e)
@@ -357,7 +357,7 @@ namespace CSharpSevenAndSevenDotOne
 			  .Sum(f => new FileInfo(f).Length));
 		}
 
-		public static void Generalized_Async_Return_Types()
+		public static void GeneralizedAsyncReturnTypes()
 		{
 			// async methods used to require void, Task or Task<T>
 
@@ -367,7 +367,7 @@ namespace CSharpSevenAndSevenDotOne
 			WriteLine(NewGetDirSize(@"c:\temp").Result);
 		}
 
-		public static void Literal_Improvments()
+		public static void LiteralImprovments()
 		{
 			int a = 123_321______123;
 			WriteLine(a);
