@@ -21,11 +21,12 @@ namespace DesignPatterns
     {
 	    static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
 			// Creational Design Patterns
-	        Creational.Builder.Demo();
+	        Creational.Builder.BuilderDemo();
+			Creational.Builder.FacadedBuilderDemo();
 
-        }
+	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
+	        Console.ReadKey();
+		}
     }
 }
