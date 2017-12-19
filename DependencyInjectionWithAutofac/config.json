@@ -1,0 +1,45 @@
+﻿// this config is used in the 5_Configuration.ConfigurationWithMsConfig
+{
+  "defaultAssembly": "DependencyInjectionWithAutofac",
+  "mdules": [
+    {
+      "type": "DependencyInjectionWithAutofac.CalculationModule"
+    }
+  ],
+  "components": [
+    {
+      "type": "DependencyInjectionWithAutofac.Addition",
+      "services": [
+        { "type": "DependencyInjectionWithAutofac.IOperation" },
+        { "type": "DependencyInjectionWithAutofac.IOtherOperation" }
+      ],
+      "autoActivate": true, // if true fire IStarted inteface
+      "injectProperties": true,
+      "instanceScope": "per-dependency",
+      "metadata": [
+        {
+          "key": "extraValue",
+          "value": 123,
+          "type": "System.Int32, mscorlib" // type and when it comes from
+        }
+      ],
+      "ownership": "external", // the same like wxternally owned when configurating the container
+      "parameters": {
+        "precision": 5
+      },
+      "properties": {
+        // properties in a form of a dictionary
+        "ValueDictionary": {
+          "One": 1,
+          "Two": 2
+        },
+        // and in a form of a list
+        "SomeList": [ 1, 2, 3, 4 ]
+      }
+    },
+    {
+      "type": "DependencyInjectionWithAutofac.Multiplication",
+      "services": [ { "type": "DependencyInjectionWithAutofac.IOperation" } ]
+    }
+  ]
+}
