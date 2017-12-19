@@ -58,8 +58,8 @@ namespace DesignPatterns.Creational
 
 		internal class HtmlBuilder
 		{
-			private readonly string _rootName;
-			private HtmlElement _root = new HtmlElement();
+			readonly string _rootName;
+			HtmlElement _root = new HtmlElement();
 
 			public HtmlBuilder(string rootName)
 			{
@@ -106,8 +106,8 @@ namespace DesignPatterns.Creational
 
 
 		// we want several builder to take care of the process
-		// facade for address amd facade for employment
-		public class Person
+		// facade for address and facade for employment
+		class Person
 		{
 			public string StreetAddress, Postcode, City;
 			public string CompanyName, Position;
@@ -122,8 +122,8 @@ namespace DesignPatterns.Creational
 				$"{nameof(AnnualIncome)}: {AnnualIncome}";
 		}
 
-		// it doesnt actually build anything by himself but stores a reference
-		public class PersonBuilder // facade (a component that hides functionality behind it)
+		// it doesn't actually build anything by himself but stores a reference
+		class PersonBuilder // facade (a component that hides functionality behind it)
 		{
 			// the object we're going to build
 			protected Person Person = new Person(); // this is a reference! So it won't work with a struct
@@ -135,7 +135,7 @@ namespace DesignPatterns.Creational
 			public static implicit operator Person(PersonBuilder pb) => pb.Person; // this is to allow us to use Person person = new PersonBuilder();
 		}
 
-		public class PersonJobBuilder : PersonBuilder
+		class PersonJobBuilder : PersonBuilder
 		{
 			public PersonJobBuilder(Person person)
 			{
@@ -161,7 +161,7 @@ namespace DesignPatterns.Creational
 			}
 		}
 
-		public class PersonAddressBuilder : PersonBuilder
+		class PersonAddressBuilder : PersonBuilder
 		{
 			// might not work with a value type!
 			public PersonAddressBuilder(Person person)
@@ -201,7 +201,7 @@ namespace DesignPatterns.Creational
 				.AsA("Engineer")
 				.Earning(123000);
 
-			// ofcourse you can do like this but this is just a side effect of making things convinient
+			// of course you can do like this but this is just a side effect of making things convenient
 			pb.Lives.Lives.Lives.At("123 Troll Street");
 
 			WriteLine(person);
