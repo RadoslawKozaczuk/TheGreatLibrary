@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using static System.Console;
 
@@ -19,6 +20,36 @@ namespace DesignPatterns.Creational
 				return (T)copy;
 			}
 		}
+
+		public static object DeepCopyReflection(this object objSource)
+		{
+			// Get the type of source object and create a new instance of that type
+			var sourceType = objSource.GetType();
+			var target = Activator.CreateInstance(sourceType);
+			// Assign all source property to target object's properties
+			foreach (var property in sourceType.GetProperties())
+			{
+				// Check whether property can be written to
+				if (!property.CanWrite) continue;
+
+				// check whether property type is value type, enum or string type
+				if (property.PropertyType.IsValueType || property.PropertyType.IsEnum || property.PropertyType == typeof(string))
+				{
+					property.SetValue(target, property.GetValue(objSource, null), null);
+				}
+				else if(property.PropertyType == typeof(string[]))
+				{
+					property.SetValue(target, ((string[])property.GetValue(objSource, null)).Clone(), null);
+				}
+				else
+				{
+					// property type is object/complex types, so need to recursively call this method until the end of the tree is reached
+					var propertyValue = property.GetValue(objSource, null);
+					property.SetValue(target, propertyValue?.DeepCopyReflection(), null);
+				}
+			}
+			return target;
+		}
 	}
 
 	/*
@@ -29,6 +60,9 @@ namespace DesignPatterns.Creational
 
 		Definition of the Prototype pattern:
 		A partially or fully initialized object that you copy (clone) and make use of it.
+
+		So basically to implement a prototype, partially construct and object and store it somewhere.
+		Then clone the prototype (and the question is how to make a deep copy) and customize the resulting instance.
 	*/
 	class Prototype
     {
@@ -37,12 +71,18 @@ namespace DesignPatterns.Creational
 		    T DeepCopy();
 		}
 
-	    public class Address : ICloneable, IPrototype<Address>
+	    [Serializable] // necessary for binary formatter approach
+		public class Address : ICloneable, IPrototype<Address>
 	    {
-		    public readonly string StreetName;
-		    public int HouseNumber;
+		    public string StreetName { get; set; }
+		    public int HouseNumber { get; set; }
+			
+			// necessary for reflection approach
+		    public Address()
+		    {
+		    }
 
-		    public Address(string streetName, int houseNumber)
+			public Address(string streetName, int houseNumber)
 		    {
 			    StreetName = streetName;
 			    HouseNumber = houseNumber;
@@ -61,12 +101,18 @@ namespace DesignPatterns.Creational
 			public Address DeepCopy() => new Address(StreetName, HouseNumber);
 		}
 
-	    public class Person : ICloneable, IPrototype<Person>
+	    [Serializable] // necessary for binary formatter approach
+		public class Person : ICloneable, IPrototype<Person>
 	    {
-		    public readonly string[] Names;
-		    public readonly Address Address;
+		    public string[] Names { get; set; }
+		    public Address Address { get; set; }
 
-		    public Person(string[] names, Address address)
+			// necessary for reflection approach
+			public Person()
+		    {
+		    }
+
+			public Person(string[] names, Address address)
 		    {
 			    Names = names;
 			    Address = address;
@@ -84,36 +130,6 @@ namespace DesignPatterns.Creational
 
 			public Person DeepCopy() => new Person((string[])Names.Clone(), Address.DeepCopy());
 		}
-
-		[Serializable]
-	    public class SuperAddress
-	    {
-		    public readonly string StreetName;
-		    public int HouseNumber;
-
-			public SuperAddress(string streetName, int houseNumber)
-		    {
-			    StreetName = streetName;
-			    HouseNumber = houseNumber;
-		    }
-
-		    public override string ToString() => $"{StreetName} {HouseNumber}";
-	    }
-
-	    [Serializable]
-		public class SuperPerson
-	    {
-		    public readonly string[] Names;
-		    public readonly SuperAddress Address;
-
-			public SuperPerson(string[] names, SuperAddress address)
-		    {
-			    Names = names;
-			    Address = address;
-		    }
-
-		    public override string ToString() => $"{nameof(Names)}: {string.Join(" ", Names)}, {nameof(Address)}: {Address}";
-	    }
 
 		public static void Demo()
 		{
@@ -157,7 +173,7 @@ namespace DesignPatterns.Creational
 
 
 			// approach number 4 is to have a binary serializer
-			var superJohn = new SuperPerson(new[] { "John", "Smith" }, new SuperAddress("London Road", 123));
+			var superJohn = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
 			var superJane = superJohn.DeepCopy();
 			superJane.Address.HouseNumber = 999;
 			superJane.Names[0] = "Jane";
@@ -165,6 +181,17 @@ namespace DesignPatterns.Creational
 			WriteLine(Environment.NewLine + "=== Binary serializer ===");
 			WriteLine(superJohn);
 			WriteLine(superJane);
+
+
+			// approach number 5 is by using reflection
+			john = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
+			jane = (Person)john.DeepCopyReflection();
+			jane.Address.HouseNumber = 999;
+			jane.Names[0] = "Jane";
+
+			WriteLine(Environment.NewLine + "=== Reflection ===");
+			WriteLine(john);
+			WriteLine(jane);
 		}
 	}
 }
