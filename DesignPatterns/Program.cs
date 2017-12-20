@@ -25,7 +25,8 @@ namespace DesignPatterns
 	        //Creational.Builder.BuilderDemo();
 			//Creational.Builder.FacadedBuilderDemo();
 			//Creational.Factory.FactoryMethodDemo();
-			Creational.AbstractFactory.AbstractFactoryDemo();
+			//Creational.AbstractFactory.AbstractFactoryDemo();
+			Creational.Prototype.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
