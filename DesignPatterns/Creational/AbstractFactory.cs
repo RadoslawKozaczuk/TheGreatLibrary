@@ -118,7 +118,7 @@ namespace DesignPatterns.Creational
 			public IHotDrink MakeDrink(AvailableDrink drink, int amount) => _factories[drink].Prepare(amount);
 		}
 
-		public static void AbstractFactoryDemo()
+		public static void Demo()
 		{
 			var machine = new HotDrinkMachine();
 			//var drink = machine.MakeDrink(HotDrinkMachine.AvailableDrink.Tea, 300);

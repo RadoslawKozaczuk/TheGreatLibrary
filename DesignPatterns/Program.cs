@@ -22,10 +22,10 @@ namespace DesignPatterns
 	    static void Main()
         {
 			// Creational Design Patterns
-	        //Creational.Builder.BuilderDemo();
+			//Creational.Builder.BuilderDemo();
 			//Creational.Builder.FacadedBuilderDemo();
-			//Creational.Factory.FactoryMethodDemo();
-			//Creational.AbstractFactory.AbstractFactoryDemo();
+			//Creational.Factory.Demo();
+			//Creational.AbstractFactory.Demo();
 			Creational.Prototype.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");

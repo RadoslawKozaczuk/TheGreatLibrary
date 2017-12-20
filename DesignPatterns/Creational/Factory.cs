@@ -16,7 +16,6 @@ namespace DesignPatterns.Creational
 		The definition of the Factory:
 		A component responsible solely for the wholesale (not piecewise) creation of objects.
 	*/
-	
 
     class Factory
     {
@@ -77,10 +76,9 @@ namespace DesignPatterns.Creational
 	    {
 		    public static Point NewCartesianPoint(float x, float y) => new Point(x, y); // needs to be public
 		    public static Point NewPolarPoint(double rho, double theta) => new Point(rho * Math.Cos(theta), rho * Math.Sin(theta));
-
 		}
 
-		public static void FactoryMethodDemo()
+		public static void Demo()
 		{
 			// before factory 
 			var p1 = new Point(1, 2, Point.CoordinateSystem.Cartesian);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using static System.Console;
 
@@ -133,65 +132,53 @@ namespace DesignPatterns.Creational
 
 		public static void Demo()
 		{
+			var prototype = new Person(new[] { "human_prototype_name", "Connor" }, new Address("Almond Avenue", 1337));
+			WriteLine("=== The Prototype ===");
+			WriteLine(prototype);
+
 			// First approach is to use ICloneable, but the problem with ICloneable interface is that it does not specify whether its implementation
 			// should return a shallow copy (object is copied but its object members are just references) or a deep copy (everything is copied)
 			// ICloneable interface came out probably before generics so it returns object type which makes its use not very convenient
 			// Additionally, if the Array object clone method (new[] {1, 2}.Clone();) returns shallow copy 
 			// then it kind of suggest to not use ICloneable interface for deep copy
-			var john = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
-			var jane = (Person)john.Clone();
-			jane.Address.HouseNumber = 999;
+			var jane = (Person)prototype.Clone();
+			jane.Address.HouseNumber = 200;
 			jane.Names[0] = "Jane";
-
-			WriteLine("=== ICloneable ===");
-			WriteLine(john);
+			WriteLine(Environment.NewLine + "=== ICloneable ===");
 			WriteLine(jane);
-
-
-			// second approach is to use copy constructors
-			john = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
-			jane = new Person(john);
-			jane.Address.HouseNumber = 999;
-			jane.Names[0] = "Jane";
-
+			
+			// second approach is to use copy constructors which has a small advantage that allows us to use the object initializer syntax
+			var joi = new Person(prototype)
+			{
+				Address = {HouseNumber = 300},
+				Names = {[0] = "Joi"}
+			};
 			WriteLine(Environment.NewLine + "=== Copy constructor ===");
-			WriteLine(john);
-			WriteLine(jane);
-
+			WriteLine(joi);
 
 			// another approach is to use our own interface
 			// better idea than ICloneable because we get rid of casting
 			// but still in case of having 10 different classes involved we have to implement this 10 times
-			john = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
-			jane = john.DeepCopy();
-			jane.Address.HouseNumber = 999;
-			jane.Names[0] = "Jane";
-
+			var janna = prototype.DeepCopy();
+			janna.Address.HouseNumber = 400;
+			janna.Names[0] = "Janna";
 			WriteLine(Environment.NewLine + "=== Dedicated interface ===");
-			WriteLine(john);
-			WriteLine(jane);
-
+			WriteLine(janna);
 
 			// approach number 4 is to have a binary serializer
-			var superJohn = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
-			var superJane = superJohn.DeepCopy();
-			superJane.Address.HouseNumber = 999;
-			superJane.Names[0] = "Jane";
-
+			// which unfortunately requires us to add Serializable attribute to all objects
+			var jade = prototype.DeepCopy();
+			jade.Address.HouseNumber = 404;
+			jade.Names[0] = "Jade";
 			WriteLine(Environment.NewLine + "=== Binary serializer ===");
-			WriteLine(superJohn);
-			WriteLine(superJane);
-
+			WriteLine(jade);
 
 			// approach number 5 is by using reflection
-			john = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
-			jane = (Person)john.DeepCopyReflection();
-			jane.Address.HouseNumber = 999;
-			jane.Names[0] = "Jane";
-
+			var jasmin = (Person)prototype.DeepCopyReflection();
+			jasmin.Address.HouseNumber = 500;
+			jasmin.Names[0] = "Jasmin";
 			WriteLine(Environment.NewLine + "=== Reflection ===");
-			WriteLine(john);
-			WriteLine(jane);
+			WriteLine(jasmin);
 		}
 	}
 }
