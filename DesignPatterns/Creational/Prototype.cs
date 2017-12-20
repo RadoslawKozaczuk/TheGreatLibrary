@@ -16,10 +16,12 @@ namespace DesignPatterns.Creational
 	*/
 	class Prototype
     {
-		// the problem with ICloneable interface is that it does not specify whether its implementation
-		// should be a shallow clone (object is cloned but its object members are copied) or a deep clone (everything is cloned)
-		// disclaimer: copy in case of a reference object means copying the reference only
-	    public class Address : ICloneable
+	    interface IPrototype<T>
+	    {
+		    T DeepCopy();
+		}
+
+	    public class Address : ICloneable, IPrototype<Address>
 	    {
 		    public readonly string StreetName;
 		    public int HouseNumber;
@@ -38,16 +40,12 @@ namespace DesignPatterns.Creational
 
 			public override string ToString() => $"{nameof(StreetName)}: {StreetName}, {nameof(HouseNumber)}: {HouseNumber}";
 
-			// another problem of ICloneable is that it returns an object which is not very convenient
-			// IClonable probably came out before generics
-		    // also (whining about ICloneable part 3) 
-		    // if the Array object clone method returns shallow copy then
-		    // it sort of suggest to not use ICloneable interface for deep copy
-		    // new[] {1, 2}.Clone(); // returns shallow copy
 			public object Clone() => new Address(StreetName, HouseNumber);
-	    }
 
-	    public class Person : ICloneable
+			public Address DeepCopy() => new Address(StreetName, HouseNumber);
+		}
+
+	    public class Person : ICloneable, IPrototype<Person>
 	    {
 		    public readonly string[] Names;
 		    public readonly Address Address;
@@ -67,11 +65,17 @@ namespace DesignPatterns.Creational
 			public override string ToString() => $"{nameof(Names)}: {string.Join(",", Names)}, {nameof(Address)}: {Address}";
 
 		    public object Clone() => new Person(Names, Address);
-	    }
+
+			public Person DeepCopy() => new Person(Names, Address.DeepCopy());
+		}
 		
 		public static void CloningIsBadDemo()
 		{
-			// first approach is to use IClonable
+			// First approach is to use ICloneable, but the problem with ICloneable interface is that it does not specify whether its implementation
+			// should return a shallow copy (object is copied but its object members are just references) or a deep copy (everything is copied)
+			// ICloneable interface came out probably before generics so it returns object type which makes its use not very convenient
+			// Additionally, if the Array object clone method (new[] {1, 2}.Clone();) returns shallow copy 
+			// then it kind of suggest to not use ICloneable interface for deep copy
 			var john = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
 			var jane = (Person)john.Clone();
 			jane.Address.HouseNumber = 999;
@@ -83,8 +87,21 @@ namespace DesignPatterns.Creational
 			// second approach is to use copy constructors
 			john = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
 			jane = new Person(john);
-			jane.Address.HouseNumber = 999; // oops, John is now at 321
+			jane.Address.HouseNumber = 999;
 			jane.Names[0] = "Jane";
+
+			WriteLine(john);
+			WriteLine(jane);
+
+
+			// another approach is to use our own interface
+			// better idea than ICloneable because we get rid of casting
+			// but still in case of having 10 different classes involved we have to implement this 10 times
+			john = new Person(new[] { "John", "Smith" }, new Address("London Road", 123));
+			jane = john.DeepCopy();
+			jane.Address.HouseNumber = 999;
+			jane.Names[0] = "Jane";
+
 
 			WriteLine(john);
 			WriteLine(jane);
