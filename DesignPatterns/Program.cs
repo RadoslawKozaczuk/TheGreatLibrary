@@ -27,7 +27,10 @@ namespace DesignPatterns
 			//Creational.Factory.Demo();
 			//Creational.AbstractFactory.Demo();
 			//Creational.Prototype.Demo();
-			Creational.Singleton.Demo();
+			//Creational.Singleton.Demo();
+
+			// Structural Design Patterns
+
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
