@@ -2,7 +2,7 @@
 
 namespace DesignPatterns.Creational
 {
-	/* Factory and Abstract Factory patterns 
+	/*  Motivation:
 		Object creation logic sometimes becomes too convoluted.
 		Name of constructor has to match class name which sometimes makes them not descriptive.
 			- name mandated by name of containing type
@@ -13,11 +13,11 @@ namespace DesignPatterns.Creational
 			- that may exist in a separate class (Factory)
 			- can create hierarchy of factories with Abstract Factory
 
-		The definition of the Factory:
+		Definition:
 		A component responsible solely for the wholesale (not piecewise) creation of objects.
 	*/
 
-    class Factory
+	class Factory
     {
 	    // one of the reason factories exists because constructors aren't that good 
 		public class Point

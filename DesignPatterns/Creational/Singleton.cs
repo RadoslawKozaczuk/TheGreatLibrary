@@ -6,13 +6,13 @@ using static System.Console;
 namespace DesignPatterns.Creational
 {
 	/*
-		Motivation for using Singleton:
+		Motivation:
 		For some components it only makes sense to have one in the system (e.g. repository, factory).
 		Sometimes the constructor call is expensive.
 		We want to prevent anyone creating additional copies.
 		Need to take care of lazy instantiation and thread safety.
 
-		Definition of Singleton pattern:
+		Definition:
 		A component which is instantiated only once.
 	*/
     class Singleton
@@ -64,7 +64,7 @@ namespace DesignPatterns.Creational
 			    _database = database;
 		    }
 
-		    public int GetTotalPopulation(IEnumerable<string> names) =>  names.Sum(name => _database.GetPopulation(name));
+			public int GetTotalPopulation(IEnumerable<string> names) => names.Sum(name => _database.GetPopulation(name));
 	    }
 
 	    public class DummyDatabase : IDatabase

@@ -52,12 +52,13 @@ namespace DesignPatterns.Creational
 	}
 
 	/*
+		Motivation:
 		In real life complicated objects (like cars) aren't designed from scratch, they are modifications of existing designs.
 		An existing (partially or fully constructed) design is a Prototype.
 		We make a copy (clone) of the prototype and customize it (which requires 'deep copy' support).
 		We make the cloning convenient (e.g. via a Factory).
 
-		Definition of the Prototype pattern:
+		Definition:
 		A partially or fully initialized object that you copy (clone) and make use of it.
 
 		So basically to implement a prototype, partially construct and object and store it somewhere.

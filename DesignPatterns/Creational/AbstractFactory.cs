@@ -1,50 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Console;
 
 namespace DesignPatterns.Creational
 {
-	// AbstractFactory gives away abstract objects in contrary to Factory which gives away concrete objects
-	// it simply returns interfaces or abstract classes
+	/*
+		Motivation:
+		AbstractFactory gives away abstract objects in contrary to Factory which gives away concrete objects
+		it simply returns interfaces or abstract classes.
+	*/
 	class AbstractFactory
 	{
-		internal interface IHotDrink
+		interface IHotDrink
 		{
 			void Consume();
 		}
 
 		// this class is not going to be given away to anyone
-		internal class Tea : IHotDrink
+		class Tea : IHotDrink
 		{
-			public void Consume() => Console.WriteLine("This tea is nice but I'd prefer it with milk.");
+			public void Consume() => WriteLine("This tea is nice but I'd prefer it with milk.");
 		}
 
 		// same as above
-		internal class Coffee : IHotDrink
+		class Coffee : IHotDrink
 		{
-			public void Consume() => Console.WriteLine("This coffee is delicious!");
+			public void Consume() => WriteLine("This coffee is delicious!");
 		}
 
 		// factory has to be able to prepare a drink and return it
-		internal interface IHotDrinkFactory
+		interface IHotDrinkFactory
 		{
 			IHotDrink Prepare(int amount);
 		}
 
 		// factories also will not be given away to anyone
-		internal class TeaFactory : IHotDrinkFactory
+		class TeaFactory : IHotDrinkFactory
 		{
 			public IHotDrink Prepare(int amount)
 			{
-				Console.WriteLine($"Put in tea bag, boil water, pour {amount} ml, add lemon, enjoy!");
+				WriteLine($"Put in tea bag, boil water, pour {amount} ml, add lemon, enjoy!");
 				return new Tea();
 			}
 		}
 
-		internal class CoffeeFactory : IHotDrinkFactory
+		class CoffeeFactory : IHotDrinkFactory
 		{
 			public IHotDrink Prepare(int amount)
 			{
-				Console.WriteLine($"Grind some beans, boil water, pour {amount} ml, add cream and sugar, enjoy!");
+				WriteLine($"Grind some beans, boil water, pour {amount} ml, add cream and sugar, enjoy!");
 				return new Coffee();
 			}
 		}
@@ -87,23 +91,23 @@ namespace DesignPatterns.Creational
 
 			public IHotDrink MakeDrink()
 			{
-				Console.WriteLine("Available drinks");
+				WriteLine("Available drinks");
 				for (var index = 0; index < _namedFactories.Count; index++)
 				{
 					var tuple = _namedFactories[index];
-					Console.WriteLine($"{index}: {tuple.name}");
+					WriteLine($"{index}: {tuple.name}");
 				}
 
 				while (true)
 				{
-					string s;
-					if ((s = Console.ReadLine()) != null
-					    && int.TryParse(s, out var i) // c# 7
+					var s = ReadLine();
+					if (s != null
+					    && int.TryParse(s, out var i)
 					    && i >= 0
 					    && i < _namedFactories.Count)
 					{
-						Console.Write("Specify amount: ");
-						s = Console.ReadLine();
+						Write("Specify amount: ");
+						s = ReadLine();
 						if (s != null
 						    && int.TryParse(s, out var amount)
 						    && amount > 0)
@@ -111,7 +115,7 @@ namespace DesignPatterns.Creational
 							return _namedFactories[i].factory.Prepare(amount);
 						}
 					}
-					Console.WriteLine("Incorrect input, try again.");
+					WriteLine("Incorrect input, try again.");
 				}
 			}
 
@@ -124,7 +128,7 @@ namespace DesignPatterns.Creational
 			//var drink = machine.MakeDrink(HotDrinkMachine.AvailableDrink.Tea, 300);
 			//drink.Consume();
 
-			Console.WriteLine("<You asked for another one.");
+			WriteLine("<You asked for another one.");
 
 			var drink2 = machine.MakeDrink();
 			drink2.Consume();
