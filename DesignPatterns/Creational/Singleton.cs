@@ -80,6 +80,21 @@ namespace DesignPatterns.Creational
 		    }
 	    }
 
+	    // pretty much reverse approach to the same problem
+	    // typically Singleton approach was to prevent people from calling constructors
+	    // this case we are doing the opposite you can call as many constructors as you want
+	    // but whenever you call a property of the object you access the same data
+	    class Monostate
+	    {
+		    static string _name;
+
+		    public string Name
+		    {
+			    get => _name;
+			    set => _name = value;
+		    }
+	    }
+
 		public static void Demo()
 		{
 			var db = SingletonDatabase.StdInstance;
@@ -93,6 +108,18 @@ namespace DesignPatterns.Creational
 			var crf = new ConfigurableRecordFinder(new DummyDatabase());
 			const string paris = "Paris";
 			WriteLine($"{paris} has population {crf.GetTotalPopulation(new List<string> { paris })}");
+
+			// we cannot use Static because static does not have any constructors
+			// there is also a variation of Singleton named Monostate
+			// the idea is to have a static field but expose it as a non-static
+			var mono1 = new Monostate();
+			mono1.Name = "alpha";
+			WriteLine(Environment.NewLine + $"first instance name: {mono1.Name}");
+
+			var mono2 = new Monostate();
+			mono2.Name = "beta";
+			WriteLine($"second instance name: {mono2.Name}");
+			WriteLine($"first instance name: {mono1.Name}");
 		}
 	}
 }
