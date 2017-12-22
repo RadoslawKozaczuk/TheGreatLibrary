@@ -102,18 +102,12 @@ namespace DesignPatterns.Structural
 			Write(".");
 		}
 
-		static void Draw()
+		public static void Demo()
 		{
 			foreach (var vo in _vectorObjects)
 				foreach (var line in vo)
-					foreach (var trol in new LineToPointAdapter(line))
-						DrawPoint(trol);
-		}
-
-		public static void Demo()
-		{
-			Draw();
-			Draw();
+					foreach (var point in new LineToPointAdapter(line))
+						DrawPoint(point);
 		}
 	}
 }
