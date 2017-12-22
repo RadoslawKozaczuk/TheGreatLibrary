@@ -17,12 +17,12 @@ namespace DesignPatterns.Creational
 	*/
     class Singleton
     {
-		public interface IDatabase
+		interface IDatabase
 		{
 			int GetPopulation(string name);
 		}
 
-		public class SingletonDatabase : IDatabase
+		class SingletonDatabase : IDatabase
 		{
 			readonly Dictionary<string, int> _capitals;
 
@@ -49,13 +49,13 @@ namespace DesignPatterns.Creational
 
 		// the problem with approach like this is that when we put Singleton everywhere 
 		// we start to depend on it.
-	    public class SingletonRecordFinder
+	    class SingletonRecordFinder
 	    {
 		    public int GetTotalPopulation(IEnumerable<string> names) => names.Sum(name => SingletonDatabase.StdInstance.GetPopulation(name));
 	    }
 
 		// possible solution to that is for example using an interface and simply injecting a database
-	    public class ConfigurableRecordFinder
+	    class ConfigurableRecordFinder
 	    {
 		    readonly IDatabase _database;
 
