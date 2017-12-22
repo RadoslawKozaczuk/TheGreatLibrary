@@ -30,7 +30,7 @@ namespace DesignPatterns
 			//Creational.Singleton.Demo();
 
 			// Structural Design Patterns
-
+			Structural.Adapter.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
