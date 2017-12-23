@@ -31,7 +31,8 @@ namespace DesignPatterns
 
 			// Structural Design Patterns
 			//Structural.Adapter.Demo();
-			Structural.Bridge.Demo();
+			//Structural.Bridge.Demo();
+			Structural.Composite.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();

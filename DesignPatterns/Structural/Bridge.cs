@@ -6,6 +6,7 @@ namespace DesignPatterns.Structural
 	{
 		void RenderCircle(float radius);
 	}
+
 	/*
 		Motivation:
 		Theoretically speaking if we wanted to create an object hierarchy in which we create a dedicated object 
