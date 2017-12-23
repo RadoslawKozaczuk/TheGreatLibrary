@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using static System.Console;
 
 namespace DesignPatterns.Structural
@@ -32,6 +34,8 @@ namespace DesignPatterns.Structural
 	*/
 	internal class Composite
     {
+		// in order to make one method that handles all operations we need to have something in common
+		// Collection<Neuron> implements IEnumerable so we can use this
 	    public class Neuron : IEnumerable<Neuron>
 	    {
 		    public float Value;
@@ -65,6 +69,56 @@ namespace DesignPatterns.Structural
 			layer1.ConnectTo(layer2);
 
 			WriteLine("This example does not provide any output, please check the code.");
+	    }
+
+		// this object contains a collection of self
+		// collection is type of Lazy to save some operation time
+	    class GraphicObject
+	    {
+		    public virtual string Name { get; set; } = "Group";
+		    public string Color;
+		    public List<GraphicObject> Children => _children.Value;
+		    readonly Lazy<List<GraphicObject>> _children = new Lazy<List<GraphicObject>>();
+			
+		    public override string ToString()
+		    {
+			    var sb = new StringBuilder();
+			    Print(sb, 0);
+			    return sb.ToString();
+		    }
+
+		    void Print(StringBuilder sb, int depth)
+		    {
+			    sb.Append(new string('*', depth))
+				    .Append(string.IsNullOrWhiteSpace(Color) ? string.Empty : $"{Color} ")
+				    .AppendLine($"{Name}");
+			    foreach (var child in Children)
+				    child.Print(sb, depth + 1);
+		    }
 		}
-    }
+
+	    class Circle : GraphicObject
+	    {
+		    public override string Name => "Circle";
+	    }
+
+	    class Square : GraphicObject
+	    {
+		    public override string Name => "Square";
+	    }
+		
+		public static void BeautifulHierarchyDemo()
+		{
+			var drawing = new GraphicObject { Name = "My Drawing" };
+			drawing.Children.Add(new Square { Color = "Red" });
+			drawing.Children.Add(new Circle { Color = "Yellow" });
+
+			var group = new GraphicObject();
+			group.Children.Add(new Circle { Color = "Blue" });
+			group.Children.Add(new Square { Color = "Blue" });
+			drawing.Children.Add(group);
+
+			Write(drawing);
+		}
+	}
 }
