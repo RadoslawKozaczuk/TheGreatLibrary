@@ -38,10 +38,6 @@ namespace DesignPatterns.Structural
 			public static implicit operator CodeBuilder(string s)
 			{
 				var codeBuilder = new CodeBuilder();
-				if (s == "{")
-					codeBuilder._indentation += 2;
-				else if (s == "{")
-					codeBuilder._indentation -= 2;
 				codeBuilder._builder.Append(s);
 				return codeBuilder;
 			}
@@ -51,7 +47,7 @@ namespace DesignPatterns.Structural
 				codeBuilder.Append(s);
 				return codeBuilder;
 			}
-			
+
 			public void GetObjectData(SerializationInfo info, StreamingContext context)
 			{
 				((ISerializable)_builder).GetObjectData(info, context);
@@ -106,7 +102,6 @@ namespace DesignPatterns.Structural
 			public CodeBuilder AppendLine(string value)
 			{
 				_builder.AppendLine(value);
-				IndentationCheck(value);
 				return this;
 			}
 
@@ -368,7 +363,7 @@ namespace DesignPatterns.Structural
 
 			public CodeBuilder Replace(char oldChar, char newChar)
 			{
-				_builder.Replace(oldChar, newChar);				return this;
+				_builder.Replace(oldChar, newChar); return this;
 			}
 
 			public CodeBuilder Replace(char oldChar, char newChar, int startIndex, int count)
@@ -405,9 +400,15 @@ namespace DesignPatterns.Structural
 					_indentation -= 2;
 			}
 		}
-		
+
+		// StringBuilder decorated with additional functionality (indentation - although it doesn't work)
+		// Also adapter pattern used to add additional interface
 		public static void Demo()
 		{
+			CodeBuilder cbbb = "Adapter functionality test, ";
+			cbbb += "so much adapter everywhere";
+			WriteLine(cbbb);
+
 			var cb = new CodeBuilder();
 			cb.AppendLine("class Foo")
 				.AppendLine("{")
@@ -416,9 +417,79 @@ namespace DesignPatterns.Structural
 			WriteLine(cb);
 		}
 
-		public static void MultiInheritanceDemo()
+		#region Multiple Inheritance
+		interface IBird
 		{
+			int Weight { get; set; }
+			void Fly();
+		}
 
+		interface ILizard
+		{
+			int Weight { get; set; }
+			void Crawl();
+		}
+
+		class Bird : IBird
+		{
+			public int Weight { get; set; }
+
+			public void Fly()
+			{
+				WriteLine($"Soaring in the sky with weight {Weight}");
+			}
+		}
+
+		class Lizard : ILizard
+		{
+			public int Weight { get; set; }
+
+			public void Crawl()
+			{
+				WriteLine($"Crawling in the dirt with weight {Weight}");
+			}
+		}
+
+		class Dragon
+		{
+			public int Weight
+			{ 
+				get { return _weight; }
+				set
+				{
+					bird.Weight = value;
+					lizard.Weight = value;
+					_weight = value;
+				}
+			}
+			int _weight;
+
+			Bird bird = new Bird();
+			Lizard lizard = new Lizard();
+
+			public Dragon(int weigth)
+			{
+				Weight = weigth;
+			}
+			
+			public void Crawl()
+			{
+				lizard.Crawl();
+			}
+
+			public void Fly()
+			{
+				bird.Fly();
+			}
+		}
+		#endregion
+
+		// by using Decorator we can somehow walk around multiple inheritance limitation 
+		public static void MultipleInheritanceDemo()
+		{
+			var d = new Dragon(100);
+			d.Fly();
+			d.Crawl();
 		}
 
 		#region Dynamic Decorators
