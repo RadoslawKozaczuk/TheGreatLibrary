@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Text;
 using static System.Console;
 
@@ -21,18 +19,24 @@ namespace DesignPatterns.Structural
 	*/
 	class Decorator
 	{
+		#region StringBuilder decorator (with a bit of Adapter)
 		// return builder.(.+)$
 		// builder.$1\nreturn this;
 		// format document
-		public class CodeBuilder
+		//
+		// A decorator keeps the reference to the decorated object(s)
+		// A decorator may or may not replicate the API of the original object 
+		// you cannot cast the decorated to original object because there is no cast
+		// so we don't need to override all the members
+		//	there is no inheritance
+		// Exists in a static variation
+		//	X<Y<Foo>>
+		class CodeBuilder
 		{
 			readonly StringBuilder _builder = new StringBuilder();
 			int _indentation;
 
-			public override string ToString()
-			{
-				return _builder.ToString();
-			}
+			public override string ToString() => _builder.ToString();
 
 			// these two methods implements Adapter pattern
 			public static implicit operator CodeBuilder(string s)
@@ -47,21 +51,8 @@ namespace DesignPatterns.Structural
 				codeBuilder.Append(s);
 				return codeBuilder;
 			}
-
-			public void GetObjectData(SerializationInfo info, StreamingContext context)
-			{
-				((ISerializable)_builder).GetObjectData(info, context);
-			}
-
-			public int EnsureCapacity(int capacity)
-			{
-				return _builder.EnsureCapacity(capacity);
-			}
-
-			public string ToString(int startIndex, int length)
-			{
-				return _builder.ToString(startIndex, length);
-			}
+			
+			public string ToString(int startIndex, int length) => _builder.ToString(startIndex, length);
 
 			public CodeBuilder Clear()
 			{
@@ -69,17 +60,7 @@ namespace DesignPatterns.Structural
 				return this;
 			}
 
-			public CodeBuilder Append(char value, int repeatCount)
-			{
-				_builder.Append(value, repeatCount);
-				return this;
-			}
-
-			public CodeBuilder Append(char[] value, int startIndex, int charCount)
-			{
-				_builder.Append(value, startIndex, charCount);
-				return this;
-			}
+			// its up to us which methods we are going to implement
 
 			public CodeBuilder Append(string value)
 			{
@@ -104,252 +85,31 @@ namespace DesignPatterns.Structural
 				_builder.AppendLine(value);
 				return this;
 			}
-
-			public void CopyTo(int sourceIndex, char[] destination, int destinationIndex, int count)
-			{
-				_builder.CopyTo(sourceIndex, destination, destinationIndex, count);
-			}
-
+			
 			public CodeBuilder Insert(int index, string value, int count)
 			{
 				_builder.Insert(index, value, count);
 				return this;
 			}
-
-			public CodeBuilder Remove(int startIndex, int length)
-			{
-				_builder.Remove(startIndex, length);
-				return this;
-			}
-
-			public CodeBuilder Append(bool value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(sbyte value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(byte value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(char value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(short value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
+			
 			public CodeBuilder Append(int value)
 			{
 				_builder.Append(value);
 				return this;
 			}
-
-			public CodeBuilder Append(long value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(float value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(double value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(decimal value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(ushort value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(uint value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(ulong value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(object value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
-			public CodeBuilder Append(char[] value)
-			{
-				_builder.Append(value);
-				return this;
-			}
-
+			
 			public CodeBuilder Insert(int index, string value)
 			{
 				_builder.Insert(index, value);
 				return this;
 			}
-
-			public CodeBuilder Insert(int index, bool value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, sbyte value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, byte value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, short value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, char value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, char[] value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, char[] value, int startIndex, int charCount)
-			{
-				_builder.Insert(index, value, startIndex, charCount);
-				return this;
-			}
-
+			
 			public CodeBuilder Insert(int index, int value)
 			{
 				_builder.Insert(index, value);
 				return this;
 			}
-
-			public CodeBuilder Insert(int index, long value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, float value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, double value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, decimal value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, ushort value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, uint value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, ulong value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder Insert(int index, object value)
-			{
-				_builder.Insert(index, value);
-				return this;
-			}
-
-			public CodeBuilder AppendFormat(string format, object arg0)
-			{
-				_builder.AppendFormat(format, arg0);
-				return this;
-			}
-
-			public CodeBuilder AppendFormat(string format, object arg0, object arg1)
-			{
-				_builder.AppendFormat(format, arg0, arg1);
-				return this;
-			}
-
-			public CodeBuilder AppendFormat(string format, object arg0, object arg1, object arg2)
-			{
-				_builder.AppendFormat(format, arg0, arg1, arg2);
-				return this;
-			}
-
-			public CodeBuilder AppendFormat(string format, params object[] args)
-			{
-				_builder.AppendFormat(format, args);
-				return this;
-			}
-
-			public CodeBuilder AppendFormat(IFormatProvider provider, string format, params object[] args)
-			{
-				_builder.AppendFormat(provider, format, args);
-				return this;
-			}
-
-			public CodeBuilder Replace(string oldValue, string newValue)
-			{
-				_builder.Replace(oldValue, newValue);
-				return this;
-			}
-
+			
 			public bool Equals(CodeBuilder sb)
 			{
 				return _builder.Equals(sb);
@@ -400,6 +160,7 @@ namespace DesignPatterns.Structural
 					_indentation -= 2;
 			}
 		}
+		#endregion
 
 		// StringBuilder decorated with additional functionality (indentation - although it doesn't work)
 		// Also adapter pattern used to add additional interface
@@ -434,20 +195,14 @@ namespace DesignPatterns.Structural
 		{
 			public int Weight { get; set; }
 
-			public void Fly()
-			{
-				WriteLine($"Soaring in the sky with weight {Weight}");
-			}
+			public void Fly() => WriteLine($"Soaring in the sky with weight {Weight}");
 		}
 
 		class Lizard : ILizard
 		{
 			public int Weight { get; set; }
 
-			public void Crawl()
-			{
-				WriteLine($"Crawling in the dirt with weight {Weight}");
-			}
+			public void Crawl() => WriteLine($"Crawling in the dirt with weight {Weight}");
 		}
 
 		class Dragon
@@ -472,15 +227,9 @@ namespace DesignPatterns.Structural
 				Weight = weigth;
 			}
 			
-			public void Crawl()
-			{
-				lizard.Crawl();
-			}
+			public void Crawl() => lizard.Crawl();
 
-			public void Fly()
-			{
-				bird.Fly();
-			}
+			public void Fly() => bird.Fly();
 		}
 		#endregion
 
@@ -493,31 +242,27 @@ namespace DesignPatterns.Structural
 		}
 
 		#region Dynamic Decorators
-		public abstract class Shape
+		abstract class Shape
 		{
 			public virtual string AsString() => string.Empty;
 		}
 
-		public class Circle : Shape
+		class Circle : Shape
 		{
 			float radius;
 
 			public Circle() : this(0)
 			{
-
 			}
 
-			public Circle(float radius)
-			{
-				this.radius = radius;
-			}
+			public Circle(float radius) => this.radius = radius;
 
 			public void Resize(float factor) => radius *= factor;	
 
 			public override string AsString() => $"A circle of radius {radius}";
 		}
 
-		public class Square : Shape
+		class Square : Shape
 		{
 			float side;
 
@@ -534,7 +279,7 @@ namespace DesignPatterns.Structural
 		}
 
 		// dynamic
-		public class ColoredShape : Shape
+		class ColoredShape : Shape
 		{
 			Shape shape;
 			string color;
@@ -548,7 +293,7 @@ namespace DesignPatterns.Structural
 			public override string AsString() => $"{shape.AsString()} has the color {color}";
 		}
 
-		public class TransparentShape : Shape
+		class TransparentShape : Shape
 		{
 			Shape shape;
 			float transparency;
@@ -564,9 +309,12 @@ namespace DesignPatterns.Structural
 
 		// CRTP cannot be done
 		//public class ColoredShape2<T> : T where T : Shape { }
-		public class ColoredShape<T> : Shape where T : Shape, new()
+		class ColoredShape<T> : Shape where T : Shape, new()
 		{
+			// we have to use aggregation
 			string color;
+
+			// 
 			T shape = new T();
 
 			public ColoredShape() : this("black")
