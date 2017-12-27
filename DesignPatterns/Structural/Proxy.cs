@@ -14,6 +14,12 @@ namespace DesignPatterns.Structural
 		Definition:
 		A class that functions as an interface to a particular resource. That resource may be remote,
 		expensive to construct, or may require logging or some other added functionality.
+
+		Differences between Proxy and Decorator:
+		Proxy provides an identical interface while decorator provides an enhanced interface.
+		Decorator typically aggregates (or has reference to) what it is decorating while proxy doesn't have to.
+		Proxy might not even be working with a materialized object - for example we could have a proxy that is 
+		providing an interface over an object that has not been constructed and it is defined as an Lazy object.
 	*/
 	class Proxy
     {
