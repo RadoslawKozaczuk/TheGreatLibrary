@@ -330,7 +330,7 @@ namespace DesignPatterns.Structural
 			public override string AsString() => $"{shape.AsString()} has the color {color}";
 		}
 
-		public class TransparentShape<T> : Shape where T : Shape, new()
+		class TransparentShape<T> : Shape where T : Shape, new()
 		{
 			float transparency;
 			T shape = new T();

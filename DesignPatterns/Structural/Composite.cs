@@ -21,6 +21,15 @@ namespace DesignPatterns.Structural
 					to.In.Add(from);
 				}
 		}
+
+		internal static int Sum(this List<Composite.IValueContainer> containers)
+		{
+			int result = 0;
+			foreach (var c in containers)
+				foreach (var i in c)
+					result += i;
+			return result;
+		}
 	}
 
 	/*
@@ -32,16 +41,16 @@ namespace DesignPatterns.Structural
 		Definition:
 		A mechanism for treating individual (scalar) objects and compositions of objects in a uniform manner.
 	*/
-	internal class Composite
+	class Composite
     {
+		#region "Common interface"
 		// in order to make one method that handles all operations we need to have something in common
 		// Collection<Neuron> implements IEnumerable so we can use this
-	    public class Neuron : IEnumerable<Neuron>
+		public class Neuron : IEnumerable<Neuron>
 	    {
-		    public float Value;
 		    public List<Neuron> In = new List<Neuron>(), Out = new List<Neuron>();
 
-		    public IEnumerator<Neuron> GetEnumerator()
+			public IEnumerator<Neuron> GetEnumerator()
 		    {
 			    yield return this;
 		    }
@@ -52,11 +61,11 @@ namespace DesignPatterns.Structural
 		    }
 	    }
 
-	    public class NeuronLayer : Collection<Neuron>
-	    {
-
+	    class NeuronLayer : Collection<Neuron>
+		{
 	    }
-		
+		#endregion
+
 		public static void CommonInterfaceDemo()
 	    {
 		    var neuron1 = new Neuron();
@@ -71,9 +80,10 @@ namespace DesignPatterns.Structural
 			WriteLine("This example does not provide any output, please check the code.");
 	    }
 
+		#region "Object Hierarchy"
 		// this object contains a collection of self
 		// collection is type of Lazy to save some operation time
-	    class GraphicObject
+		class GraphicObject
 	    {
 		    public virtual string Name { get; set; } = "Group";
 		    public string Color;
@@ -106,7 +116,8 @@ namespace DesignPatterns.Structural
 	    {
 		    public override string Name => "Square";
 	    }
-		
+		#endregion
+
 		public static void BeautifulHierarchyDemo()
 		{
 			var drawing = new GraphicObject { Name = "My Drawing" };
@@ -119,6 +130,41 @@ namespace DesignPatterns.Structural
 			drawing.Children.Add(group);
 
 			Write(drawing);
+		}
+
+		#region "The experiment number three"
+
+		public  interface IValueContainer : IEnumerable<int>
+		{
+		}
+
+		class SingleValue : IValueContainer
+		{
+			public int Value;
+			public IEnumerator<int> GetEnumerator()
+			{
+				yield return Value;
+			}
+
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		}
+
+		public class ManyValues : List<int>, IValueContainer
+		{
+
+		}
+		#endregion
+
+		// Objects can use other objects via inheritance/composition
+		// Some composed and singular objects need similar/identical behaviors
+		// Composite design pattern lets us treat both types of objects uniformly
+		// C# has special support for the enumeration concept
+		// A single object can masquerade as a collection with yield return this;
+		public static void DemoNumberThree()
+		{
+			var singleValue = new SingleValue { Value = 11 };
+			var otherValues = new ManyValues { 22, 33 };
+			WriteLine(new List<IValueContainer> { singleValue, otherValues }.Sum() == 66 ? "Yey it works!" : "Error 404");
 		}
 	}
 }

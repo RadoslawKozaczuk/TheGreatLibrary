@@ -34,9 +34,11 @@ namespace DesignPatterns
 			//Structural.Bridge.Demo();
 			//Structural.Composite.CommonInterfaceDemo();
 			//Structural.Composite.BeautifulHierarchyDemo();
+			//Structural.Composite.DemoNumberThree();
 			//Structural.Decorator.Demo();
 			//Structural.Decorator.MultipleInheritanceDemo();
-			Structural.Decorator.DynamicDecoratorsDemo();
+			//Structural.Decorator.DynamicDecoratorsDemo();
+			Structural.Facade.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
