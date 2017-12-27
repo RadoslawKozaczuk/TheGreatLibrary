@@ -9,7 +9,7 @@ namespace DesignPatterns.Structural
 		Avoid redundancy when storing data.
 		Plenty of users with identical first/last names - no sense in storing the same name over and over again.
 		Store a list of names and pointers to them.
-		.NET performs string interning, so an identical string is stored only once
+		.NET performs string interning, so an identical string is stored only once - this is an example of real life Flyweight application.
 		
 		Definition:
 		A space optimization technique that lets us use less memory by storing externally the data 
@@ -79,10 +79,11 @@ namespace DesignPatterns.Structural
 			}
 
 			// this is our Flyweight object
+			// define the idea of 'ranges' on homogeneous collections and store data related to those ranges
 			public class TextRange
 			{
 				public int Start, End;
-				public bool Capitalize, Bold, Italic;
+				public bool Capitalize; // Bold, Italic etc.
 
 				public bool Covers(int position) => position >= Start && position <= End;
 			}

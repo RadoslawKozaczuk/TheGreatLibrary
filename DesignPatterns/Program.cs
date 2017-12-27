@@ -42,9 +42,12 @@ namespace DesignPatterns
 			//Structural.Flyweight.Demo();
 			//Structural.Proxy.ProtectionProxyDemo();
 			//Structural.Proxy.PropertyProxyDemo();
-	        //Structural.ChainOfResponsibility.Demo();
-			//Structural.ChainOfResponsibility.AdvancedDemo();
-			Structural.Command.Demo();
+
+	        // Behavioral Design Patterns
+			//Behavioral.ChainOfResponsibility.Demo();
+			//Behavioral.ChainOfResponsibility.AdvancedDemo();
+			//Behavioral.Command.Demo();
+			Behavioral.Interpreter.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();

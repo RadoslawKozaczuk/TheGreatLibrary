@@ -65,8 +65,9 @@ namespace DesignPatterns.Structural
 	    }
 		#endregion
 
-		// we want to implement functionality that car cannot be driven but too young people
-		// we make a car proxy which has the same interface but performs additional checks
+		// In this case we want to implement functionality that car cannot be driven by too young people
+		// We need to make a car proxy which has the same interface but performs additional checks
+		// In general to create a proxy we have to replicate existing interface of an object and add relevant functionality.
 		public static void ProtectionProxyDemo()
 	    {
 			ICar car = new CarProxy(new Driver(12));

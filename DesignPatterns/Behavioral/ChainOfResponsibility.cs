@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using static System.Console;
 
-namespace DesignPatterns.Structural
+namespace DesignPatterns.Behavioral
 {
 	/*
 		Motivation:
@@ -65,7 +62,7 @@ namespace DesignPatterns.Structural
 			}
 
 			// this will effectively block the chain
-			public override void Handle() => WriteLine("None shall pass!");
+			public override void Handle() => Console.WriteLine("None shall pass!");
 		}
 
 		class DoubleAttackModifier : CreatureModifier
@@ -76,7 +73,7 @@ namespace DesignPatterns.Structural
 
 			public override void Handle()
 			{
-				WriteLine($"Doubling {Creature.Name}'s attack");
+				Console.WriteLine($"Doubling {Creature.Name}'s attack");
 				// This is not the best idea because its permanently modifies the value
 				// in case of removing the modifier we would have to recalculate the goblin
 				Creature.Attack *= 2; 
@@ -92,7 +89,7 @@ namespace DesignPatterns.Structural
 
 			public override void Handle()
 			{
-				WriteLine("Increasing goblin's defense");
+				Console.WriteLine("Increasing goblin's defense");
 				Creature.Defense += 3;
 				base.Handle();
 			}
@@ -103,25 +100,25 @@ namespace DesignPatterns.Structural
 		{
 			// new goblin with att 2 and def 2
 			var goblin = new Creature("Goblin", 2, 2);
-			WriteLine(goblin);
+			Console.WriteLine(goblin);
 
 			var root = new CreatureModifier(goblin);
 			
-			WriteLine("Let's double goblin's attack");
+			Console.WriteLine("Let's double goblin's attack");
 			root.Add(new DoubleAttackModifier(goblin));
 
-			WriteLine("Let's increase goblin's defense");
+			Console.WriteLine("Let's increase goblin's defense");
 			root.Add(new IncreaseDefenseModifier(goblin));
 
-			WriteLine("Let's throw a blocking spell on goblin");
+			Console.WriteLine("Let's throw a blocking spell on goblin");
 			root.Add(new SpellBlockModifier(goblin));
 
-			WriteLine("Let's increase goblin's defense again - this spell should not make any effect");
+			Console.WriteLine("Let's increase goblin's defense again - this spell should not make any effect");
 			root.Add(new IncreaseDefenseModifier(goblin));
 
-			WriteLine(Environment.NewLine + "Execution spell chain");
+			Console.WriteLine(Environment.NewLine + "Execution spell chain");
 			root.Handle();
-			WriteLine(goblin);
+			Console.WriteLine(goblin);
 		}
 
 		#region "Chain of Responsibility with a Mediator"
@@ -249,18 +246,18 @@ namespace DesignPatterns.Structural
 		{
 			var game = new Game();
 			var goblin = new CreatureV2(game, "Strong Goblin", 3, 3);
-			WriteLine(goblin);
+			Console.WriteLine(goblin);
 
 			using (new DoubleAttackModifierV2(game, goblin))
 			{
-				WriteLine(goblin);
+				Console.WriteLine(goblin);
 				using (new IncreaseDefenseModifierV2(game, goblin))
 				{
-					WriteLine(goblin);
+					Console.WriteLine(goblin);
 				}
 			}
 
-			WriteLine(goblin);
+			Console.WriteLine(goblin);
 		}
 	}
 }
