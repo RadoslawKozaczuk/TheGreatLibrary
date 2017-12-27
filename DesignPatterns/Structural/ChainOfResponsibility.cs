@@ -21,9 +21,10 @@ namespace DesignPatterns.Structural
 	*/
 	class ChainOfResponsibility
     {
+		#region "Chain of Responsibility"
 		class Creature
 		{
-			public string Name;
+			public readonly string Name;
 			public int Attack, Defense;
 
 			public Creature(string name, int attack, int defense)
@@ -41,7 +42,7 @@ namespace DesignPatterns.Structural
 		{
 			// this need to be protected because we intend in to inherit
 			protected readonly Creature Creature;
-			protected CreatureModifier Next; // this is our chain
+			CreatureModifier _next; // this is our chain
 
 			public CreatureModifier(Creature creature)
 			{
@@ -50,11 +51,11 @@ namespace DesignPatterns.Structural
 			
 			public void Add(CreatureModifier cm)
 			{
-				if (Next != null) Next.Add(cm);
-				else Next = cm;
+				if (_next != null) _next.Add(cm);
+				else _next = cm;
 			}
 
-			public virtual void Handle() => Next?.Handle();
+			public virtual void Handle() => _next?.Handle();
 		}
 
 		class SpellBlockModifier : CreatureModifier
@@ -76,7 +77,9 @@ namespace DesignPatterns.Structural
 			public override void Handle()
 			{
 				WriteLine($"Doubling {Creature.Name}'s attack");
-				Creature.Attack *= 2;
+				// This is not the best idea because its permanently modifies the value
+				// in case of removing the modifier we would have to recalculate the goblin
+				Creature.Attack *= 2; 
 				base.Handle();
 			}
 		}
@@ -94,6 +97,7 @@ namespace DesignPatterns.Structural
 				base.Handle();
 			}
 		}
+		#endregion
 
 		public static void Demo()
 		{
@@ -117,6 +121,145 @@ namespace DesignPatterns.Structural
 
 			WriteLine(Environment.NewLine + "Execution spell chain");
 			root.Handle();
+			WriteLine(goblin);
+		}
+
+		#region "Chain of Responsibility with a Mediator"
+		public class Query
+		{
+			public string CreatureName;
+
+			public enum Argument
+			{
+				Attack, Defense
+			}
+
+			public Argument WhatToQuery;
+
+			public int Value; // bidirectional
+
+			public Query(string creatureName, Argument whatToQuery, int value)
+			{
+				CreatureName = creatureName ?? throw new ArgumentNullException(nameof(creatureName));
+				WhatToQuery = whatToQuery;
+				Value = value;
+			}
+		}
+
+		public class Game // mediator pattern
+		{
+			public event EventHandler<Query> Queries; // effectively a chain
+
+			public void PerformQuery(object sender, Query q)
+			{
+				Queries?.Invoke(sender, q);
+			}
+		}
+
+		public class CreatureV2
+		{
+			public string Name;
+			readonly Game _game;
+			readonly int _attack, _defense;
+
+			public CreatureV2(Game game, string name, int attack, int defense)
+			{
+				_game = game ?? throw new ArgumentNullException(nameof(game));
+				Name = name ?? throw new ArgumentNullException(nameof(name));
+				_attack = attack;
+				_defense = defense;
+			}
+
+			public int Attack
+			{
+				// getter needs to collect all bonuses - we use Mediator pattern to do that
+				get
+				{
+					var q = new Query(Name, Query.Argument.Attack, _attack);
+					_game.PerformQuery(this, q);
+					return q.Value;
+				}
+			}
+
+			// same with defense
+			public int Defense
+			{
+				get
+				{
+					var q = new Query(Name, Query.Argument.Defense, _defense);
+					_game.PerformQuery(this, q);
+					return q.Value;
+				}
+			}
+
+			public override string ToString() => $"{nameof(Name)}: {Name}, {nameof(_attack)}: {Attack}, {nameof(_defense)}: {Defense}";
+		}
+
+		// this time we need to have an abstract class because we don't have a linked list anymore
+		// IDisposable is implemented to illustrate that we can remove the modifier
+		abstract class CreatureModifierV2 : IDisposable
+		{
+			readonly Game _game;
+			protected readonly CreatureV2 Creature;
+
+			protected CreatureModifierV2(Game game, CreatureV2 creature)
+			{
+				_game = game;
+				Creature = creature;
+				game.Queries += Handle; // here we subscribe
+			}
+
+			// handle does not affect the creature
+			// this is abstract so derived classes are expected missing functionality
+			protected abstract void Handle(object sender, Query q);
+
+			public void Dispose() => _game.Queries -= Handle;
+		}
+
+		class DoubleAttackModifierV2 : CreatureModifierV2
+		{
+			public DoubleAttackModifierV2(Game game, CreatureV2 creature) : base(game, creature)
+			{
+			}
+
+			// here we don't change the creature itself
+			protected override void Handle(object sender, Query q)
+			{
+				// we check if the name matches and if the argument is right
+				if (q.CreatureName == Creature.Name && q.WhatToQuery == Query.Argument.Attack)
+					q.Value *= 2; // here we modify
+			}
+		}
+
+		class IncreaseDefenseModifierV2 : CreatureModifierV2
+		{
+			public IncreaseDefenseModifierV2(Game game, CreatureV2 creature) : base(game, creature)
+			{
+			}
+
+			protected override void Handle(object sender, Query q)
+			{
+				if (q.CreatureName == Creature.Name && q.WhatToQuery == Query.Argument.Defense)
+					q.Value += 2;
+			}
+		}
+		#endregion
+
+		public static void AdvancedDemo()
+		{
+			var game = new Game();
+			var goblin = new CreatureV2(game, "Strong Goblin", 3, 3);
+			WriteLine(goblin);
+
+			using (new DoubleAttackModifierV2(game, goblin))
+			{
+				WriteLine(goblin);
+				using (new IncreaseDefenseModifierV2(game, goblin))
+				{
+					WriteLine(goblin);
+				}
+			}
+
 			WriteLine(goblin);
 		}
 	}

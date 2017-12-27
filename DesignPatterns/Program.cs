@@ -43,6 +43,7 @@ namespace DesignPatterns
 			//Structural.Proxy.ProtectionProxyDemo();
 			//Structural.Proxy.PropertyProxyDemo();
 	        Structural.ChainOfResponsibility.Demo();
+			Structural.ChainOfResponsibility.AdvancedDemo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
