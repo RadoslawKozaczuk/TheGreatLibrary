@@ -40,7 +40,8 @@ namespace DesignPatterns
 			//Structural.Decorator.DynamicDecoratorsDemo();
 			//Structural.Facade.Demo();
 			//Structural.Flyweight.Demo();
-			Structural.Proxy.ProtectionProxyDemo();
+			//Structural.Proxy.ProtectionProxyDemo();
+			Structural.Proxy.PropertyProxyDemo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
