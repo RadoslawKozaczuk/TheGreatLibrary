@@ -42,8 +42,9 @@ namespace DesignPatterns
 			//Structural.Flyweight.Demo();
 			//Structural.Proxy.ProtectionProxyDemo();
 			//Structural.Proxy.PropertyProxyDemo();
-	        Structural.ChainOfResponsibility.Demo();
-			Structural.ChainOfResponsibility.AdvancedDemo();
+	        //Structural.ChainOfResponsibility.Demo();
+			//Structural.ChainOfResponsibility.AdvancedDemo();
+			Structural.Command.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
