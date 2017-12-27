@@ -38,7 +38,8 @@ namespace DesignPatterns
 			//Structural.Decorator.Demo();
 			//Structural.Decorator.MultipleInheritanceDemo();
 			//Structural.Decorator.DynamicDecoratorsDemo();
-			Structural.Facade.Demo();
+			//Structural.Facade.Demo();
+			Structural.Flyweight.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
