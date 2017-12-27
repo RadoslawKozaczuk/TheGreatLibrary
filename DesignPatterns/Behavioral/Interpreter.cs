@@ -22,12 +22,12 @@ namespace DesignPatterns.Behavioral
 	*/
 	class Interpreter
     {
-		public interface IElement
+		interface IElement
 		{
 			int Value { get; }
 		}
 
-		public class Integer : IElement
+		class Integer : IElement
 		{
 			public Integer(int value)
 			{
@@ -37,7 +37,7 @@ namespace DesignPatterns.Behavioral
 			public int Value { get; }
 		}
 
-		public class BinaryOperation : IElement
+		class BinaryOperation : IElement
 		{
 			public enum Type
 			{
@@ -65,20 +65,20 @@ namespace DesignPatterns.Behavioral
 			}
 		}
 
-		// mainly a enumeration of kind of tokens we have
-		public class Token
+		// mainly an enumeration of kind of tokens we have
+		class Token
 		{
 			public enum Type
 			{
 				Integer, Plus, Minus, Lparen, Rparen
 			}
 
-			public Type MyType;
-			public string Text;
+			public readonly Type TokenType;
+			public readonly string Text;
 
 			public Token(Type type, string text)
 			{
-				MyType = type;
+				TokenType = type;
 				Text = text ?? throw new ArgumentNullException(nameof(text));
 			}
 
@@ -110,6 +110,7 @@ namespace DesignPatterns.Behavioral
 						var sb = new StringBuilder(input[i].ToString());
 						for (int j = i + 1; j < input.Length; ++j)
 						{
+							// is the next one a digit
 							if (char.IsDigit(input[j]))
 							{
 								sb.Append(input[j]);
@@ -137,7 +138,7 @@ namespace DesignPatterns.Behavioral
 				var token = tokens[i];
 
 				// look at the type of token
-				switch (token.MyType)
+				switch (token.TokenType)
 				{
 					case Token.Type.Integer:
 						var integer = new Integer(int.Parse(token.Text));
@@ -160,7 +161,7 @@ namespace DesignPatterns.Behavioral
 					case Token.Type.Lparen:
 						int j = i;
 						for (; j < tokens.Count; ++j)
-							if (tokens[j].MyType == Token.Type.Rparen)
+							if (tokens[j].TokenType == Token.Type.Rparen)
 								break; // process subexpression w/o opening (
 						var subexpression = tokens.Skip(i + 1).Take(j - i - 1).ToList();
 						var element = Parse(subexpression);
@@ -180,6 +181,10 @@ namespace DesignPatterns.Behavioral
 			return result;
 		}
 
+		// Barring simple cases, an interpreter acts in two stages
+		// Lexing turns text into a set of tokens
+		// Parsing tokens into meaningful constructs
+		// Parsed data can then be traversed
 		public static void Demo()
 		{
 			var input = "(13+4)-(12+1)";
