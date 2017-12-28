@@ -54,7 +54,9 @@ namespace DesignPatterns
 			//Behavioral.Mediator.Demo();
 			//Behavioral.Memento.Demo();
 			//Behavioral.Memento.AdvancedDemo();
-			Behavioral.NullObject.Demo();
+			//Behavioral.NullObject.Demo();
+			//Behavioral.Observer.Demo();
+			Behavioral.Observer.MemoryLeakDemo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
