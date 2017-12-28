@@ -46,8 +46,9 @@ namespace DesignPatterns
 	        // Behavioral Design Patterns
 			//Behavioral.ChainOfResponsibility.Demo();
 			//Behavioral.ChainOfResponsibility.AdvancedDemo();
+			Behavioral.ChainOfResponsibility.DemoNumberThree();
 			//Behavioral.Command.Demo();
-			Behavioral.Interpreter.Demo();
+			//Behavioral.Interpreter.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();

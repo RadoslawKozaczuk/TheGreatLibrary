@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using static System.Console;
 
 namespace DesignPatterns.Behavioral
 {
@@ -62,7 +64,7 @@ namespace DesignPatterns.Behavioral
 			}
 
 			// this will effectively block the chain
-			public override void Handle() => Console.WriteLine("None shall pass!");
+			public override void Handle() => WriteLine("None shall pass!");
 		}
 
 		class DoubleAttackModifier : CreatureModifier
@@ -73,7 +75,7 @@ namespace DesignPatterns.Behavioral
 
 			public override void Handle()
 			{
-				Console.WriteLine($"Doubling {Creature.Name}'s attack");
+				WriteLine($"Doubling {Creature.Name}'s attack");
 				// This is not the best idea because its permanently modifies the value
 				// in case of removing the modifier we would have to recalculate the goblin
 				Creature.Attack *= 2; 
@@ -89,7 +91,7 @@ namespace DesignPatterns.Behavioral
 
 			public override void Handle()
 			{
-				Console.WriteLine("Increasing goblin's defense");
+				WriteLine("Increasing goblin's defense");
 				Creature.Defense += 3;
 				base.Handle();
 			}
@@ -100,25 +102,25 @@ namespace DesignPatterns.Behavioral
 		{
 			// new goblin with att 2 and def 2
 			var goblin = new Creature("Goblin", 2, 2);
-			Console.WriteLine(goblin);
+			WriteLine(goblin);
 
 			var root = new CreatureModifier(goblin);
 			
-			Console.WriteLine("Let's double goblin's attack");
+			WriteLine("Let's double goblin's attack");
 			root.Add(new DoubleAttackModifier(goblin));
 
-			Console.WriteLine("Let's increase goblin's defense");
+			WriteLine("Let's increase goblin's defense");
 			root.Add(new IncreaseDefenseModifier(goblin));
 
-			Console.WriteLine("Let's throw a blocking spell on goblin");
+			WriteLine("Let's throw a blocking spell on goblin");
 			root.Add(new SpellBlockModifier(goblin));
 
-			Console.WriteLine("Let's increase goblin's defense again - this spell should not make any effect");
+			WriteLine("Let's increase goblin's defense again - this spell should not make any effect");
 			root.Add(new IncreaseDefenseModifier(goblin));
 
-			Console.WriteLine(Environment.NewLine + "Execution spell chain");
+			WriteLine(Environment.NewLine + "Execution spell chain");
 			root.Handle();
-			Console.WriteLine(goblin);
+			WriteLine(goblin);
 		}
 
 		#region "Chain of Responsibility with a Mediator"
@@ -246,18 +248,154 @@ namespace DesignPatterns.Behavioral
 		{
 			var game = new Game();
 			var goblin = new CreatureV2(game, "Strong Goblin", 3, 3);
-			Console.WriteLine(goblin);
+			WriteLine(goblin);
 
 			using (new DoubleAttackModifierV2(game, goblin))
 			{
-				Console.WriteLine(goblin);
+				WriteLine(goblin);
 				using (new IncreaseDefenseModifierV2(game, goblin))
 				{
-					Console.WriteLine(goblin);
+					WriteLine(goblin);
 				}
 			}
 
-			Console.WriteLine(goblin);
+			WriteLine(goblin);
+		}
+
+		#region "Demo Number Three"
+		public abstract class CreatureV3
+		{
+			protected GameV3 Game;
+			protected readonly int BaseAttack;
+			protected readonly int BaseDefense;
+
+			protected CreatureV3(GameV3 game, int baseAttack, int baseDefense)
+			{
+				Game = game;
+				BaseAttack = baseAttack;
+				BaseDefense = baseDefense;
+			}
+
+			public virtual int Attack { get; set; }
+			public virtual int Defense { get; set; }
+			public abstract void Query(object source, StatQuery sq);
+			public override string ToString() => $"{GetType()} {nameof(Attack)}: {Attack}, {nameof(Defense)}: {Defense}";
+		}
+
+		public class GoblinV3 : CreatureV3
+		{
+			public override void Query(object source, StatQuery sq)
+			{
+				if (ReferenceEquals(source, this))
+				{
+					switch (sq.Statistic)
+					{
+						case Statistic.Attack:
+							sq.Result += BaseAttack;
+							break;
+						case Statistic.Defense:
+							sq.Result += BaseDefense;
+							break;
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
+				}
+				else
+				{
+					if (sq.Statistic == Statistic.Defense)
+					{
+						sq.Result++;
+					}
+				}
+			}
+
+			public override int Defense
+			{
+				get
+				{
+					var q = new StatQuery { Statistic = Statistic.Defense };
+					foreach (var c in Game.Creatures)
+						c.Query(this, q);
+					return q.Result;
+				}
+			}
+
+			public override int Attack
+			{
+				get
+				{
+					var q = new StatQuery { Statistic = Statistic.Attack };
+					foreach (var c in Game.Creatures)
+						c.Query(this, q);
+					return q.Result;
+				}
+			}
+
+			public GoblinV3(GameV3 game) : base(game, 1, 1)
+			{
+			}
+
+			protected GoblinV3(GameV3 game, int baseAttack, int baseDefense) : base(game, baseAttack, baseDefense)
+			{
+			}
+
+			//public override string ToString() => $"{GetType()} {nameof(Attack)}: {Attack}, {nameof(Defense)}: {Defense}";
+		}
+
+		public class GoblinKingV3 : GoblinV3
+		{
+			public GoblinKingV3(GameV3 game) : base(game, 3, 3)
+			{
+			}
+
+			public override void Query(object source, StatQuery sq)
+			{
+				if (!ReferenceEquals(source, this) && sq.Statistic == Statistic.Attack)
+				{
+					sq.Result++; // every goblin gets +1 attack
+				}
+				else base.Query(source, sq);
+			}
+		}
+
+		public enum Statistic
+		{
+			Attack,
+			Defense
+		}
+
+		public class StatQuery
+		{
+			public Statistic Statistic;
+			public int Result;
+		}
+
+		public class GameV3
+		{
+			public IList<CreatureV3> Creatures = new List<CreatureV3>();
+		}
+		#endregion
+
+		// Chain of Responsibility can be implemented as a chain of references or a centralized construct.
+		// Enlist objects in the chain, possibly controlling their order.
+		// Object removal from chain (e.g., in Dispose()).
+		public static void DemoNumberThree()
+		{
+			var game = new GameV3();
+			var goblin = new GoblinV3(game);
+			game.Creatures.Add(goblin);
+
+			WriteLine(goblin.ToString());
+
+			var goblin2 = new GoblinV3(game);
+			game.Creatures.Add(goblin2);
+
+			WriteLine(goblin2.ToString());
+
+			var goblin3 = new GoblinKingV3(game);
+			game.Creatures.Add(goblin3);
+
+			WriteLine(goblin3.ToString());
 		}
 	}
 }
