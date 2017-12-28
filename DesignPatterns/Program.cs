@@ -57,7 +57,8 @@ namespace DesignPatterns
 			//Behavioral.NullObject.Demo();
 			//Behavioral.Observer.EventDemo();
 			//Behavioral.Observer.MemoryLeakDemo();
-			Behavioral.Observer.BindingListDemo();
+			//Behavioral.Observer.BindingListDemo();
+			Behavioral.State.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
