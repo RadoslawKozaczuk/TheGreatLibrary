@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using static System.Console;
 
 namespace DesignPatterns.Behavioral
@@ -15,7 +16,8 @@ namespace DesignPatterns.Behavioral
 	*/
 	class Observer
     {
-	    class FallsIllEventArgs
+		#region "Observer"
+		class FallsIllEventArgs
 	    {
 		    public string Address;
 	    }
@@ -36,9 +38,10 @@ namespace DesignPatterns.Behavioral
 		// whenever person gets ill we call a doctor
 		// sender is who exactly generated the event
 	    static void CallDoctor(object sender, FallsIllEventArgs eventArgs) => WriteLine($"A doctor has been called to {eventArgs.Address}");
+		#endregion
 
 		// .Net introduces events which is an implementation of Observer
-		static void Demo()
+		public static void EventDemo()
 		{
 			var person = new Person();
 			person.FallsIll += CallDoctor;
@@ -48,8 +51,9 @@ namespace DesignPatterns.Behavioral
 			person.FallsIll -= CallDoctor;
 			person.CatchACold();
 		}
-		
-	    class Button
+
+		#region Memory Leak Demo
+		class Button
 	    {
 		    public event EventHandler Clicked;
 
@@ -87,9 +91,10 @@ namespace DesignPatterns.Behavioral
 			GC.Collect();
 			WriteLine("GC is done!");
 		}
+		#endregion
 
-	    // an event subscription can lead to a memory
-	    // leak if you hold on to it past the object's lifetime
+		// an event subscription can lead to a memory
+		// leak if you hold on to it past the object's lifetime
 		public static void MemoryLeakDemo()
 		{
 			var btn = new Button();
@@ -114,6 +119,39 @@ namespace DesignPatterns.Behavioral
 			btn = null;
 
 			FireGarbageCollection();
+		}
+
+		#region "Binding List Demo"
+		public class Market
+	    {
+			public BindingList<float> Prices = new BindingList<float>();
+
+		    public void AddPrice(float price)
+		    {
+				if(Prices.AllowNew)
+					Prices.Add(price);
+		    }
+	    }
+
+	    public class PriceAddedEventArgs
+	    {
+		    public float Price;
+	    }
+	    #endregion
+		
+		public static void BindingListDemo()
+		{
+			var market = new Market();
+			market.Prices.ListChanged += (sender, eventArgs) => // Subscribe
+			{
+				if (eventArgs.ListChangedType == ListChangedType.ItemAdded)
+					WriteLine($"Added price {((BindingList<float>)sender)[eventArgs.NewIndex]}");
+			};
+			market.AddPrice(123);
+
+			// the BindingList has some additional flags that allows extra customization to some degree
+			market.Prices.AllowNew = false;
+			market.AddPrice(222);
 		}
 	}
 }
