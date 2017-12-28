@@ -76,9 +76,10 @@ namespace DesignPatterns.Behavioral
 		    }
 	    }
 
-		// a classic example of Mediator is chat room
-		// people don't need to have references one to another
-	    public static void Demo()
+		// Mediator engages in bidirectional communication with its connected components and each object in the system refer to it.
+		// Usually Mediator is also a Singleton as well.
+	    // A classic example of Mediator is chat room - people don't need to have references one to another they communicate through the Mediator
+		public static void Demo()
 	    {
 			var room = new ChatRoom();
 

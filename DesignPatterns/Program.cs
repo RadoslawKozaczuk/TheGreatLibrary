@@ -51,7 +51,9 @@ namespace DesignPatterns
 			//Behavioral.Interpreter.Demo();
 			//Behavioral.Iterator.IteratorDemo();
 			//Behavioral.Iterator.ArrayBackedPropertiesDemo();
-			Behavioral.Mediator.Demo();
+			//Behavioral.Mediator.Demo();
+			//Behavioral.Memento.Demo();
+			Behavioral.Memento.AdvancedDemo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();

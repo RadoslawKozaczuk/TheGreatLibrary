@@ -14,7 +14,6 @@ namespace DesignPatterns.Behavioral
 		Iterator is an implicit construct
 			.NET builds a state machine around your yield return statements
 		
-
 		Definition:
 		An object (or, in .NET, a method) that facilitates the traversal of a data structure.
 	*/
@@ -209,6 +208,10 @@ namespace DesignPatterns.Behavioral
 	    }
 	    #endregion
 
+		// An iterator is basically an object that specify how you can traverse an object
+		// An iterator object, unlike a method, cannot be recursive
+		// Generally, an IEnumerable<T>-returning method is enough
+		// Iterator works through duck typing - you need a GetEnumeraor that yields a type that has Current and MoveNext()
 		public static void ArrayBackedPropertiesDemo() => WriteLine("This example does not provide any output, please check the code.");
 	}
 }

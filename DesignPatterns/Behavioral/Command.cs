@@ -101,6 +101,10 @@ namespace DesignPatterns.Behavioral
 			}
 		}
 
+		// Command encapsulates all details of an operation in a separate object.
+		// Defines instruction for applying the command (either in the command itself, or elsewhere).
+		// Optionally defines instructions for undoing the command.
+		// Can create composite commands (a.k.a. macros).
 		public static void Demo()
 		{
 			var ba = new BankAccount();
