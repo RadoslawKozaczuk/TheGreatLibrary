@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using static System.Console;
 
@@ -19,6 +20,7 @@ namespace DesignPatterns.Behavioral
 	*/
 	class Iterator
     {
+		#region "Iterator"
 		public class Node<T>
 		{
 			public T Value;
@@ -134,9 +136,9 @@ namespace DesignPatterns.Behavioral
 				}
 			}
 		}
-
+		#endregion
 		// an iterator that is a separate object
-		public static void Demo()
+		public static void IteratorDemo()
 	    {
 			//   1
 		    //  / \
@@ -167,5 +169,46 @@ namespace DesignPatterns.Behavioral
 		    foreach (var node in tree)
 			    WriteLine(node.Value);
 	    }
-    }
+
+	    #region "Array-Backed Properties"
+		// each creature has statistics
+		public class Creature : IEnumerable<int>
+	    {
+			// lets imagine we want to iterate trough class' properties
+			//public double AverageStat => (Strength + Agility + Intelligence) / 3.0; 
+			// but this only works if we have a single getter and we do not plan to add new stats later on
+
+			// instead we can use array as our backing field for properties of the same type
+			readonly int[] _stats = new int[3];
+
+			// const to avoid using magic numbers
+		    const int StrengthIndex = 0;
+
+			// not only we don't have to rewrite this prop but also we benefit from having LINQ
+		    public double AverageStat => _stats.Average();
+
+			public int Strength
+		    {
+			    get => _stats[StrengthIndex];
+			    set => _stats[StrengthIndex] = value;
+		    }
+
+		    public int Agility { get; set; }
+		    public int Intelligence { get; set; }
+			
+		    public IEnumerator<int> GetEnumerator() => _stats.AsEnumerable().GetEnumerator();
+
+		    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+			// our indexer
+			public int this[int index]
+		    {
+			    get => _stats[index];
+			    set => _stats[index] = value;
+		    }
+	    }
+	    #endregion
+
+		public static void ArrayBackedPropertiesDemo() => WriteLine("This example does not provide any output, please check the code.");
+	}
 }

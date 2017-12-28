@@ -49,7 +49,8 @@ namespace DesignPatterns
 			//Behavioral.ChainOfResponsibility.DemoNumberThree();
 			//Behavioral.Command.Demo();
 			//Behavioral.Interpreter.Demo();
-			Behavioral.Iterator.Demo();
+			//Behavioral.Iterator.IteratorDemo();
+			Behavioral.Iterator.ArrayBackedPropertiesDemo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
