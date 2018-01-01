@@ -60,7 +60,7 @@ namespace DesignPatterns
 			//Behavioral.Observer.BindingListDemo();
 			//Behavioral.State.Demo();
 			//Behavioral.Strategy.DynamicStrategyDemo();
-			Behavioral.Strategy.StaticStrategyDemo();
+			Behavioral.TemplateMethod.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
