@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using static System.Console;
 
@@ -23,7 +24,8 @@ namespace DesignPatterns.Behavioral
 
 	*/
 	class Visitor
-    {
+	{
+		#region "Intrusive Visitor"
 		abstract class Expression
 		{
 			// visitor is when we have to add a new operation when the hierarchy is already set and you cannot modify members
@@ -58,8 +60,9 @@ namespace DesignPatterns.Behavioral
 				sb.Append(value: ")");
 			}
 		}
+		#endregion
 
-		public static void Demo()
+		public static void IntrusiveVisitorDemo()
 		{
 			var e = new AdditionExpression(
 				left: new DoubleExpression(1),
@@ -68,6 +71,93 @@ namespace DesignPatterns.Behavioral
 				right: new DoubleExpression(3)));
 			var sb = new StringBuilder();
 			e.Print(sb);
+			WriteLine(sb);
+		}
+
+		#region "Reflective Visitor"
+		// in this case lets assume Expression DoubleExpression and AdditionExpression does not have Print method
+		// and we have to add it
+		abstract class ExpressionV2
+		{
+		}
+
+		class DoubleExpressionV2 : ExpressionV2
+		{
+			public readonly double Value;
+
+			public DoubleExpressionV2(double value) => Value = value;
+		}
+
+		class AdditionExpressionV2 : ExpressionV2
+		{
+			public readonly ExpressionV2 Left;
+			public readonly ExpressionV2 Right;
+
+			public AdditionExpressionV2(ExpressionV2 left, ExpressionV2 right)
+			{
+				Left = left ?? throw new ArgumentNullException(nameof(left));
+				Right = right ?? throw new ArgumentNullException(nameof(right));
+			}
+		}
+		
+		static class ExpressionPrinter
+		{
+			// we map every single type to lambda that does everything we want to do
+			static readonly Dictionary<Type, Action<ExpressionV2, StringBuilder>> _actions 
+				= new Dictionary<Type, Action<ExpressionV2, StringBuilder>>
+			{
+				[typeof(DoubleExpressionV2)] = (e, sb) =>
+				{
+					var de = (DoubleExpressionV2)e;
+					sb.Append(de.Value);
+				},
+				[typeof(AdditionExpressionV2)] = (e, sb) =>
+				{
+					var ae = (AdditionExpressionV2)e;
+					sb.Append("(");
+					Print(ae.Left, sb);
+					sb.Append("+");
+					Print(ae.Right, sb);
+					sb.Append(")");
+				}
+			};
+			
+			// one of the idea is to make a separate component that use the reflection 
+			// to figure out how the particular object should be printed
+			public static void Print(ExpressionV2 e, StringBuilder sb)
+			{
+				// but the problem is that it break open-close principle
+				// each time we add new object we have to edit this method
+				// additionally it will work incorrectly on missing types
+				if (e is DoubleExpressionV2 de)
+				{
+					sb.Append(de.Value);
+				}
+				else if (e is AdditionExpressionV2 ae)
+				{
+					sb.Append("(");
+					Print(ae.Left, sb);
+					sb.Append("+");
+					Print(ae.Right, sb);
+					sb.Append(")");
+				}
+			}
+
+			// another idea is to make a table we still use reflection tho
+			// in case of type that is missing we will get an exception
+			public static void Print2(ExpressionV2 e, StringBuilder sb) => _actions[e.GetType()](e, sb);
+		}
+		#endregion
+
+		public static void ReflectiveVisitorDemo()
+		{
+			var e = new AdditionExpressionV2(
+			  left: new DoubleExpressionV2(1),
+			  right: new AdditionExpressionV2(
+				left: new DoubleExpressionV2(2),
+				right: new DoubleExpressionV2(3)));
+			var sb = new StringBuilder();
+			ExpressionPrinter.Print2(e, sb);
 			WriteLine(sb);
 		}
 	}

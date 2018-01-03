@@ -61,7 +61,8 @@ namespace DesignPatterns
 			//Behavioral.State.Demo();
 			//Behavioral.Strategy.DynamicStrategyDemo();
 			//Behavioral.TemplateMethod.Demo();
-			Behavioral.Visitor.Demo();
+			//Behavioral.Visitor.IntrusiveVisitorDemo();
+			Behavioral.Visitor.ReflectiveVisitorDemo();
 
 			// Dimitri's Tips & Tricks
 			//LocalInversionOfControl.Demo();
