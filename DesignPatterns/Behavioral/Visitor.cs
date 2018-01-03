@@ -67,8 +67,8 @@ namespace DesignPatterns.Behavioral
 			var e = new AdditionExpression(
 				left: new DoubleExpression(1),
 				right: new AdditionExpression(
-				left: new DoubleExpression(2),
-				right: new DoubleExpression(3)));
+					left: new DoubleExpression(2),
+					right: new DoubleExpression(3)));
 			var sb = new StringBuilder();
 			e.Print(sb);
 			WriteLine(sb);
@@ -152,10 +152,10 @@ namespace DesignPatterns.Behavioral
 		public static void ReflectiveVisitorDemo()
 		{
 			var e = new AdditionExpressionV2(
-			  left: new DoubleExpressionV2(1),
-			  right: new AdditionExpressionV2(
-				left: new DoubleExpressionV2(2),
-				right: new DoubleExpressionV2(3)));
+				left: new DoubleExpressionV2(1),
+				right: new AdditionExpressionV2(
+					left: new DoubleExpressionV2(2),
+					right: new DoubleExpressionV2(3)));
 			var sb = new StringBuilder();
 			ExpressionPrinter.Print2(e, sb);
 			WriteLine(sb);
@@ -236,6 +236,7 @@ namespace DesignPatterns.Behavioral
 				Result = a + b;
 			}
 		}
+		#endregion
 
 		// this is the first real Visitor
 		// previous approaches worked but were not real Visitor patterns
@@ -245,8 +246,8 @@ namespace DesignPatterns.Behavioral
 			var e = new AdditionExpressionV3(
 				left: new DoubleExpressionV3(1),
 				right: new AdditionExpressionV3(
-				left: new DoubleExpressionV3(2),
-				right: new DoubleExpressionV3(3)));
+					left: new DoubleExpressionV3(2),
+					right: new DoubleExpressionV3(3)));
 			var ep = new ExpressionPrinterV3();
 			ep.Visit(e);
 			WriteLine(ep.ToString());
@@ -255,6 +256,64 @@ namespace DesignPatterns.Behavioral
 			calc.Visit(e);
 			WriteLine($"{ep} = {calc.Result}");
 		}
+		
+		#region "Dynamic Visitor"
+		public abstract class ExpressionV4
+		{
+		}
+
+		public class DoubleExpressionV4 : ExpressionV4
+		{
+			public double Value;
+
+			public DoubleExpressionV4(double value) => Value = value;
+		}
+
+		public class AdditionExpressionV4 : ExpressionV4
+		{
+			public ExpressionV4 Left;
+			public ExpressionV4 Right;
+
+			public AdditionExpressionV4(ExpressionV4 left, ExpressionV4 right)
+			{
+				Left = left ?? throw new ArgumentNullException(nameof(left));
+				Right = right ?? throw new ArgumentNullException(nameof(right));
+			}
+		}
+
+		public class ExpressionPrinterV4
+		{
+			public void Print(AdditionExpressionV4 ae, StringBuilder sb)
+			{
+				// this doesn't work because ae.Left is of type Expression and we don't have any overload with type of Expression
+				//Print(ae.Left, sb); 
+
+				sb.Append("(");
+				Print((dynamic)ae.Left, sb); // this will call the print method that matches the variable type at runtime
+				sb.Append("+");
+				Print((dynamic)ae.Right, sb);
+				sb.Append(")");
+			}
+
+			public void Print(DoubleExpressionV4 de, StringBuilder sb) => sb.Append(de.Value);
+		}
 		#endregion
+		
+		public static void DynamicDemo()
+		{
+			var e = new AdditionExpressionV4(
+				left: new DoubleExpressionV4(1),
+				right: new AdditionExpressionV4(
+					left: new DoubleExpressionV4(2),
+					right: new DoubleExpressionV4(3)));
+			var ep = new ExpressionPrinterV4();
+			var sb = new StringBuilder();
+			ep.Print((dynamic)e, sb); // make sure we are calling the right method here
+			WriteLine(sb);
+
+			// disadvantages:
+			// 1) Massive performance penalty
+			// 2) Runtime error on missing visitor - dynamic casting disables type checking
+		}
 	}
 }
