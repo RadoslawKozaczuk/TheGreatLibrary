@@ -160,5 +160,101 @@ namespace DesignPatterns.Behavioral
 			ExpressionPrinter.Print2(e, sb);
 			WriteLine(sb);
 		}
+
+		#region "Classic Visitor"
+		abstract class ExpressionV3
+		{
+			// here we define a method that accepts a visitor
+			public abstract void Accept(IExpressionVisitor visitor);
+		}
+
+		class DoubleExpressionV3 : ExpressionV3
+		{
+			public readonly double Value;
+
+			public DoubleExpressionV3(double value) => Value = value;
+
+			public override void Accept(IExpressionVisitor visitor) => visitor.Visit(this);
+		}
+
+		class AdditionExpressionV3 : ExpressionV3
+		{
+			public readonly ExpressionV3 Left;
+			public readonly ExpressionV3 Right;
+
+			public AdditionExpressionV3(ExpressionV3 left, ExpressionV3 right)
+			{
+				Left = left ?? throw new ArgumentNullException(nameof(left));
+				Right = right ?? throw new ArgumentNullException(nameof(right));
+			}
+
+			// this is double dispatch trick - visitor gets the information of the type
+			public override void Accept(IExpressionVisitor visitor) => visitor.Visit(this);
+		}
+
+		// this interface need to implemented by all visitors that are going to visit expressions
+		interface IExpressionVisitor
+		{
+			void Visit(DoubleExpressionV3 de);
+			void Visit(AdditionExpressionV3 ae);
+		}
+
+		class ExpressionPrinterV3 : IExpressionVisitor
+		{
+			readonly StringBuilder _sb = new StringBuilder();
+
+			public void Visit(DoubleExpressionV3 de) => _sb.Append(de.Value);
+
+			public void Visit(AdditionExpressionV3 ae)
+			{
+				_sb.Append("(");
+				ae.Left.Accept(this);
+				_sb.Append("+");
+				ae.Right.Accept(this);
+				_sb.Append(")");
+			}
+
+			public override string ToString() => _sb.ToString();
+		}
+
+		// there are some limitation of this approach
+		class ExpressionCalculator : IExpressionVisitor
+		{
+			public double Result;
+
+			// we would like to have int result but we can't
+			// therefore we have to use additional field
+			public void Visit(DoubleExpressionV3 de) => Result = de.Value;
+
+			// things gets even nastier in case of calculation left and right expression
+			public void Visit(AdditionExpressionV3 ae)
+			{
+				ae.Left.Accept(this);
+				var a = Result;
+				ae.Right.Accept(this);
+				var b = Result;
+				Result = a + b;
+			}
+		}
+
+		// this is the first real Visitor
+		// previous approaches worked but were not real Visitor patterns
+		// Double Dispatch approach
+		public static void ClassicVisitorDemo()
+		{
+			var e = new AdditionExpressionV3(
+				left: new DoubleExpressionV3(1),
+				right: new AdditionExpressionV3(
+				left: new DoubleExpressionV3(2),
+				right: new DoubleExpressionV3(3)));
+			var ep = new ExpressionPrinterV3();
+			ep.Visit(e);
+			WriteLine(ep.ToString());
+
+			var calc = new ExpressionCalculator();
+			calc.Visit(e);
+			WriteLine($"{ep} = {calc.Result}");
+		}
+		#endregion
 	}
 }
