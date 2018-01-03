@@ -43,7 +43,7 @@ namespace DesignPatterns
 			//Structural.Proxy.ProtectionProxyDemo();
 			//Structural.Proxy.PropertyProxyDemo();
 
-	        // Behavioral Design Patterns
+			// Behavioral Design Patterns
 			//Behavioral.ChainOfResponsibility.Demo();
 			//Behavioral.ChainOfResponsibility.AdvancedDemo();
 			//Behavioral.ChainOfResponsibility.DemoNumberThree();
@@ -61,9 +61,10 @@ namespace DesignPatterns
 			//Behavioral.State.Demo();
 			//Behavioral.Strategy.DynamicStrategyDemo();
 			//Behavioral.TemplateMethod.Demo();
+			Behavioral.Visitor.Demo();
 
 			// Dimitri's Tips & Tricks
-			LocalInversionOfControl.Demo();
+			//LocalInversionOfControl.Demo();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
