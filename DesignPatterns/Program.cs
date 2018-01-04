@@ -64,10 +64,11 @@ namespace DesignPatterns
 			//Behavioral.Visitor.IntrusiveVisitorDemo();
 			//Behavioral.Visitor.ReflectiveVisitorDemo();
 			//Behavioral.Visitor.ClassicVisitorDemo();
-			Behavioral.Visitor.DynamicDemo();
+			//Behavioral.Visitor.DynamicDemo();
 
 			// Dimitri's Tips & Tricks
 			//LocalInversionOfControl.Demo();
+			MaybeMonadDemo.Demo(new Person());
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
