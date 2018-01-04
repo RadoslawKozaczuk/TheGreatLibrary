@@ -299,6 +299,9 @@ namespace DesignPatterns.Behavioral
 		}
 		#endregion
 		
+		// Propagate an accept method throughout the entire hierarchy
+		// Create a visitor with Visit(Foo), Visit(Bar) and so on for each element in hierarchy
+		// Each accept() simply calls visitor.Visit(this)
 		public static void DynamicDemo()
 		{
 			var e = new AdditionExpressionV4(
