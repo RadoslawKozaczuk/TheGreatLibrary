@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpSeven", "CSharpSevenAndSevenDotOne\CSharpSeven.csproj", "{0001A955-C257-44C2-B669-6CDC518BDC3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpSeven", "CSharpSeven\CSharpSeven.csproj", "{0001A955-C257-44C2-B669-6CDC518BDC3F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjectionWithAutofac", "DependencyInjectionWithAutofac\DependencyInjectionWithAutofac.csproj", "{6147F033-70E8-4802-AC65-C90BD60519A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesignPatterns", "DesignPatterns\DesignPatterns.csproj", "{570DBF9C-8DB5-469C-AAD5-184B82283E7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParallelProgramming", "ParallelProgramming\ParallelProgramming.csproj", "{FB69CC6B-ACB3-442B-A8C1-D9D26B9B2A42}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveExtensions", "ReactiveExtensions\ReactiveExtensions.csproj", "{3CAA2499-16E1-461F-99A7-F14C7557415A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{570DBF9C-8DB5-469C-AAD5-184B82283E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{570DBF9C-8DB5-469C-AAD5-184B82283E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{570DBF9C-8DB5-469C-AAD5-184B82283E7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB69CC6B-ACB3-442B-A8C1-D9D26B9B2A42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB69CC6B-ACB3-442B-A8C1-D9D26B9B2A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB69CC6B-ACB3-442B-A8C1-D9D26B9B2A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB69CC6B-ACB3-442B-A8C1-D9D26B9B2A42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CAA2499-16E1-461F-99A7-F14C7557415A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CAA2499-16E1-461F-99A7-F14C7557415A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CAA2499-16E1-461F-99A7-F14C7557415A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CAA2499-16E1-461F-99A7-F14C7557415A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
