@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpSevenAndSevenDotOne", "CSharpSevenAndSevenDotOne\CSharpSevenAndSevenDotOne.csproj", "{0001A955-C257-44C2-B669-6CDC518BDC3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpSeven", "CSharpSevenAndSevenDotOne\CSharpSeven.csproj", "{0001A955-C257-44C2-B669-6CDC518BDC3F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjectionWithAutofac", "DependencyInjectionWithAutofac\DependencyInjectionWithAutofac.csproj", "{6147F033-70E8-4802-AC65-C90BD60519A1}"
 EndProject
