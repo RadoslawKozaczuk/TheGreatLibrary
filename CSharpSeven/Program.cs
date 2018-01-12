@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CSharpSevenAndSevenDotOne
+namespace CSharpSeven
 {
     class Program
     {
@@ -22,7 +22,10 @@ namespace CSharpSevenAndSevenDotOne
 			//CSharpSevenDotOne.DefaultExpressions();
 			//CSharpSevenDotOne.RefAssemblies();
 			//CSharpSevenDotOne.InferTupleNames();
-	        CSharpSevenDotOne.PatternMachingWithGenerics();
+	        //CSharpSevenDotOne.PatternMachingWithGenerics();
+
+			// Chapter 3 - C# 7.2
+			CSharpSevenDotTwo.LeadingDigitSeparators();
 
 			Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 			Console.ReadKey();
