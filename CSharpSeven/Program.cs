@@ -4,7 +4,7 @@ namespace CSharpSeven
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
 			//Chapter 1 - C# 7
 			//CSharpSeven.OutVariables();
@@ -27,7 +27,8 @@ namespace CSharpSeven
 			// Chapter 3 - C# 7.2
 			//CSharpSevenDotTwo.LeadingDigitSeparators();
 			//CSharpSevenDotTwo.PrivateProtected();
-			CSharpSevenDotTwo.NonTrailingNamedArguments();
+			//CSharpSevenDotTwo.NonTrailingNamedArguments();
+			CSharpSevenDotTwo.InParametersAndRefReadonly();
 
 			Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 			Console.ReadKey();
