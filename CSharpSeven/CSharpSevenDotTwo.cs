@@ -47,5 +47,25 @@ namespace CSharpSeven
 			//d.c = 5; // no-go
 			WriteLine("This example does not provide any output, please check the code.");
 		}
+
+		static void DoSomething(int foo, int bar) { }
+
+		public static void NonTrailingNamedArguments()
+		{
+			// previously we could do something 
+			// there was restricted that named parameters has to be after positional ones
+			DoSomething(foo: 33, bar: 44);
+
+			// now this restriction is gone
+			DoSomething(foo: 33, 44);
+
+			// still illegal - arguments have to be in order
+			//doSomething(33, foo:44)
+
+			// the only way to break the order is to name every parameter
+			DoSomething(bar: 33, foo: 44);
+
+			WriteLine("This example does not provide any output, please check the code.");
+		}
 	}
 }

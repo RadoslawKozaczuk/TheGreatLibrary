@@ -26,7 +26,8 @@ namespace CSharpSeven
 
 			// Chapter 3 - C# 7.2
 			//CSharpSevenDotTwo.LeadingDigitSeparators();
-			CSharpSevenDotTwo.PrivateProtected();
+			//CSharpSevenDotTwo.PrivateProtected();
+			CSharpSevenDotTwo.NonTrailingNamedArguments();
 
 			Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 			Console.ReadKey();
