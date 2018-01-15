@@ -25,7 +25,8 @@ namespace CSharpSeven
 	        //CSharpSevenDotOne.PatternMachingWithGenerics();
 
 			// Chapter 3 - C# 7.2
-			CSharpSevenDotTwo.LeadingDigitSeparators();
+			//CSharpSevenDotTwo.LeadingDigitSeparators();
+			CSharpSevenDotTwo.PrivateProtected();
 
 			Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 			Console.ReadKey();
