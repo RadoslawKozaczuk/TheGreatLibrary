@@ -3,6 +3,7 @@
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
+    <!-- Tables, columns pretty much everything about our schema -->
     <edmx:StorageModels>
       <Schema Namespace="PlutoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Authors">
@@ -148,6 +149,7 @@
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
+    <!-- Conceptual model in this case is very similar to the storage model but it does not has to be -->
     <edmx:ConceptualModels>
       <Schema Namespace="PlutoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Author">
@@ -262,6 +264,9 @@
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
+    <!-- Mapping between the two above 
+         sometimes we don't want to map every thing. For example we have a calculated field that is only needed during the process,
+         such field is present in the conceptual model but is not in the storage model -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PlutoModelStoreContainer" CdmEntityContainer="PlutoDbContext">
