@@ -22,7 +22,7 @@
           <Property Name="Title" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="8000" Nullable="false" />
           <Property Name="FullPrice" Type="smallint" Nullable="false" />
-          <Property Name="Level" Type="smallint" Nullable="false" />
+          <Property Name="Level" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="CourseSections">
           <Key>
@@ -232,7 +232,7 @@
           <Property Name="AuthorID" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Level" Type="Byte" Nullable="false" />
+          <Property Name="Level" Type="PlutoModel.CourseLevel" Nullable="false" />
           <NavigationProperty Name="Author" Relationship="Self.FK_Courses_Authors" FromRole="Courses" ToRole="Authors" />
           <NavigationProperty Name="CourseSections" Relationship="Self.FK_CourseSections_Courses" FromRole="Courses" ToRole="CourseSections" />
           <NavigationProperty Name="Tags" Relationship="Self.CourseTags" FromRole="Courses" ToRole="Tags" />
@@ -324,10 +324,10 @@
             <End Role="Tags" EntitySet="Tags" />
           </AssociationSet>
           <FunctionImport Name="DeleteCourse">
-            <Parameter Name="CourseID" Mode="In" Type="Int32" />
+          <Parameter Name="CourseID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetAuthorCourses" IsComposable="true" ReturnType="Collection(PlutoModel.funcGetAuthorCourses_Result)">
-            <Parameter Name="AuthorID" Mode="In" Type="Int32" />
+          <Parameter Name="AuthorID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetCourses" EntitySet="Courses" ReturnType="Collection(PlutoModel.Course)" />
           <FunctionImport Name="InsertCourse">
@@ -396,6 +396,12 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EnumType Name="CourseLevel" UnderlyingType="Byte">
+          <Member Name="Beginner" Value="1" />
+          <Member Name="Intermediate" Value="2" />
+          <Member Name="Advanced" Value="3" />
+        </EnumType>
+        <EnumType Name="Level" UnderlyingType="Byte" a:ExternalTypeName="EntityFramework.Level" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

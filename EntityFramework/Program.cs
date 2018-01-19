@@ -16,10 +16,23 @@
 	We use it for example when an SP is returning a result of joining two tables
 	We can easily create our own ComplexTypes 
 */
+
 namespace EntityFramework
 {
 	class Program
 	{
+		/*  === Enums ==
+			Enums can be add in two ways.
+			First is to add enum value in the Entity Model Browser and then simply chose it as a field value type.
+			Another way is to use enum from the Code like the one below and then add it to the Enums in the Model Browser.
+		*/
+		public enum Level : byte
+		{
+			Beginner = 1,
+			Intermediate = 2,
+			Advanced
+		}
+
 		static void Main()
 		{
 			var dbContext = new PlutoDbContext();
