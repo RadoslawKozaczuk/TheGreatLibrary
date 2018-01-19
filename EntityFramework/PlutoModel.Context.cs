@@ -43,19 +43,24 @@ namespace EntityFramework
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteCourse", courseIDParameter);
         }
     
-        [DbFunction("PlutoDbContext", "funcGetAuthorCourses")]
-        public virtual IQueryable<funcGetAuthorCourses_Result> funcGetAuthorCourses(Nullable<int> authorID)
+        [DbFunction("PlutoDbContext", "GetAuthorCourses")]
+        public virtual IQueryable<funcGetAuthorCourses_Result> GetAuthorCourses(Nullable<int> authorID)
         {
             var authorIDParameter = authorID.HasValue ?
                 new ObjectParameter("AuthorID", authorID) :
                 new ObjectParameter("AuthorID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<funcGetAuthorCourses_Result>("[PlutoDbContext].[funcGetAuthorCourses](@AuthorID)", authorIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<funcGetAuthorCourses_Result>("[PlutoDbContext].[GetAuthorCourses](@AuthorID)", authorIDParameter);
         }
     
-        public virtual ObjectResult<GetCourses_Result> GetCourses()
+        public virtual ObjectResult<Course> GetCourses()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCourses_Result>("GetCourses");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Course>("GetCourses");
+        }
+    
+        public virtual ObjectResult<Course> GetCourses(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Course>("GetCourses", mergeOption);
         }
     
         public virtual int InsertCourse(Nullable<int> authorID, string title, string description, Nullable<short> price, string levelString, Nullable<byte> level)

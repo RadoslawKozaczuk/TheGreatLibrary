@@ -9,6 +9,13 @@
 // also it sometimes not change the data type especially if the new type will always compile due to save conversion
 // f.e. we had a tinyInt (byte) and we changed to smallInt (Int16)
 // same if we delete a table from a database we may need to manually delete it from the conceptual model
+
+/* === Complex Types and Entities
+	Stored Procedures may return None, Scalar, Complex type or an Entity
+	Complex type is just a class that is not present in the model
+	We use it for example when an SP is returning a result of joining two tables
+	We can easily create our own ComplexTypes 
+*/
 namespace EntityFramework
 {
 	class Program
