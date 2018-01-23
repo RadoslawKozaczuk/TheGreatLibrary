@@ -8,7 +8,6 @@ namespace EntityFrameworkCore.DbContext
 		public PlutoContext(DbContextOptions<PlutoContext> options)
 			: base(options)
 		{
-
 		}
 
 		public DbSet<Course> Courses { get; set; }
@@ -17,7 +16,11 @@ namespace EntityFrameworkCore.DbContext
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseInMemoryDatabase("PlutoDb");
+			// in case db does not exist run "Update-Database" command in the Package Manager Console
+			optionsBuilder.UseSqlServer(@"Server=localhost;Database=PlutoCodeFirst;Trusted_Connection=True");
+			
+			// in memory database
+			//optionsBuilder.UseInMemoryDatabase("PlutoInMemoryDb");
 		}
 	}
 }

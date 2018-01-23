@@ -13,7 +13,6 @@ namespace EntityFrameworkCore
 			context.Courses.Add(new Course("Math", "Basic Math", CourseLevel.Beginner, 150, new Author()));
 
 			context.SaveChanges();
-
             Console.WriteLine("Hello World!");
 
 			var course = context.Courses.Find(1);

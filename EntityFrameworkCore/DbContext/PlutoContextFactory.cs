@@ -7,10 +7,8 @@ namespace EntityFrameworkCore.DbContext
 	{
 		PlutoContext IDesignTimeDbContextFactory<PlutoContext>.CreateDbContext(string[] args)
 		{
-			var optionsBuilder = new DbContextOptionsBuilder<PlutoContext>();
-			optionsBuilder.UseInMemoryDatabase("PlutoDb");
-
-			return new PlutoContext(optionsBuilder.Options);
+			var builder = new DbContextOptionsBuilder<PlutoContext>();
+			return new PlutoContext(builder.Options);
 		}
 	}
 }

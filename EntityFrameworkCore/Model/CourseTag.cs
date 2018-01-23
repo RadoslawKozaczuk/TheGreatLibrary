@@ -2,6 +2,7 @@
 
 namespace EntityFrameworkCore.Model
 {
+	// EF Core 2.0 does not allow many to many relations as yet
 	class CourseTag
     {
 	    [Key]
