@@ -16,6 +16,7 @@ namespace EntityFrameworkCore.Model
 		public int Id { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
+		public Category Category { get; set; }
 		public CourseLevel Level { get; set; }
 		public float FullPrice { get; set; }
 		public Author Author { get; set; }
@@ -25,10 +26,11 @@ namespace EntityFrameworkCore.Model
 			
 		}
 
-		public Course(string title, string description, CourseLevel level, float fullPrice, Author author)
+		public Course(string title, string description, Category category, CourseLevel level, float fullPrice, Author author)
 		{
 			Title = title;
 			Description = description;
+			Category = category;
 			Level = level;
 			FullPrice = fullPrice;
 			Author = author;

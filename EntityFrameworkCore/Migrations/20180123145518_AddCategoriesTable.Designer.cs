@@ -12,9 +12,10 @@ using System;
 namespace EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(PlutoContext))]
-    partial class PlutoContextModelSnapshot : ModelSnapshot
+    [Migration("20180123145518_AddCategoriesTable")]
+    partial class AddCategoriesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,8 +53,6 @@ namespace EntityFrameworkCore.Migrations
 
                     b.Property<int?>("AuthorId");
 
-                    b.Property<int?>("CategoryId");
-
                     b.Property<string>("Description");
 
                     b.Property<float>("FullPrice");
@@ -65,8 +64,6 @@ namespace EntityFrameworkCore.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Courses");
                 });
@@ -106,10 +103,6 @@ namespace EntityFrameworkCore.Migrations
                     b.HasOne("EntityFrameworkCore.Model.Author", "Author")
                         .WithMany("Courses")
                         .HasForeignKey("AuthorId");
-
-                    b.HasOne("EntityFrameworkCore.Model.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("EntityFrameworkCore.Model.CourseTag", b =>
