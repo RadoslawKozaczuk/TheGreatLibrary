@@ -10,7 +10,7 @@ namespace EntityFrameworkCore
 		static void Main()
 		{
 			PlutoContext context = new PlutoContext(new DbContextOptions<PlutoContext>());
-			context.Courses.Add(new Course("Math", "Basic Math", new Category(),  CourseLevel.Beginner, 150, new Author()));
+			context.Courses.Add(new Course("Math", "Basic Math", CourseLevel.Beginner, 150, new Author()));
 
 			context.SaveChanges();
             Console.WriteLine("Hello World!");

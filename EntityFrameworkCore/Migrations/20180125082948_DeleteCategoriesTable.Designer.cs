@@ -12,9 +12,10 @@ using System;
 namespace EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(PlutoContext))]
-    partial class PlutoContextModelSnapshot : ModelSnapshot
+    [Migration("20180125082948_DeleteCategoriesTable")]
+    partial class DeleteCategoriesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

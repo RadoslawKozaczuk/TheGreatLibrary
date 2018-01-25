@@ -12,9 +12,10 @@ using System;
 namespace EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(PlutoContext))]
-    partial class PlutoContextModelSnapshot : ModelSnapshot
+    [Migration("20180125073909_AddPublishedDateAndRenameTitleInCoursesTable")]
+    partial class AddPublishedDateAndRenameTitleInCoursesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,12 +34,26 @@ namespace EntityFrameworkCore.Migrations
                     b.ToTable("Authors");
                 });
 
+            modelBuilder.Entity("EntityFrameworkCore.Model.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("EntityFrameworkCore.Model.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("AuthorId");
+
+                    b.Property<int?>("CategoryId");
 
                     b.Property<DateTime?>("DatePublished");
 
@@ -53,6 +68,8 @@ namespace EntityFrameworkCore.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Courses");
                 });
@@ -92,6 +109,10 @@ namespace EntityFrameworkCore.Migrations
                     b.HasOne("EntityFrameworkCore.Model.Author", "Author")
                         .WithMany("Courses")
                         .HasForeignKey("AuthorId");
+
+                    b.HasOne("EntityFrameworkCore.Model.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("EntityFrameworkCore.Model.CourseTag", b =>
