@@ -51,8 +51,7 @@ namespace PerformanceOptimization
 	    {
 		    string a = "abc";
 		    string b = a; // at the moment both references point at the same value
-		    b += "d"; // at this moment a secondary string is crated which is a copy of a
-				// then the copy is concatenated with "d" string the result is then referenced by the b variable
+		    b += "d"; // modifying a string results in the creation of a new string, leaving the original string unchanged
 
 		    /*
 				So string are reference types but when modified they are copied
