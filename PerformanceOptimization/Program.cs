@@ -29,15 +29,49 @@
 	- Reference types can exist on the stack and the heap
 	- Reference types are assigned by reference
 	- Reference types are compared by reference
- */
+
+	Boxing and unboxing:
+	- Boxing takes a value type on the stack and stores it as an object on the heap
+	- Boxing happens when you assign a value type to a variable, parameter, field or property of type object
+	- Unboxing unpacks a boxed object on the heap, and copies the value type inside back to the stack
+	- Unboxing happens when you cast an object value a value type
+	- Boxing and unboxing negatively affect performance
+
+	Immutable string
+	- Strings is a reference types, and immutable
+	- Strings behave as if they are value types. They are assigned and compared by value
+	- Strings are thread-safe
+*/
 
 namespace PerformanceOptimization
 {
     class Program
     {
+	    public static void ImmutableStringExample()
+	    {
+		    string a = "abc";
+		    string b = a; // at the moment both references point at the same value
+		    b += "d"; // at this moment a secondary string is crated which is a copy of a
+				// then the copy is concatenated with "d" string the result is then referenced by the b variable
+
+		    /*
+				So string are reference types but when modified they are copied
+				Thats why they are called immutable strings
+				Benefits of such solution:
+				- Immutable string are thread-safe
+				- Identical strings can be merged (memory saving)
+				- copy a string by copying the reference (fast assignment)
+				- compare two strings by comparing the reference
+	        */
+
+			Console.WriteLine("b = " + b);
+	    }
+
         static void Main()
         {
-            Console.WriteLine("Hello World!");
+	        ImmutableStringExample();
+			
+			Console.WriteLine("Hello World!");
         }
     }
 }
