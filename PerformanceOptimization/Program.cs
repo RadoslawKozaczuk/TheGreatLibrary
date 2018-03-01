@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 
 /*
 	Stack:
@@ -125,9 +126,9 @@ namespace PerformanceOptimization
 		    */
 		}
 
-	    private const int ArraySize = 1000000;
+	    const int ArraySize = 1000000;
 
-	    public static long MeasureA()
+	    static long BoxMeasureA()
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
@@ -146,7 +147,7 @@ namespace PerformanceOptimization
 		    return stopwatch.ElapsedMilliseconds;
 	    }
 
-	    public static long MeasureB()
+	    static long BoxMeasureB()
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
@@ -169,12 +170,12 @@ namespace PerformanceOptimization
 		public static void AvoidingBoxing()
 	    {
 		    // 1st run to eliminate any startup overhead
-		    MeasureA();
-		    MeasureB();
+		    BoxMeasureA();
+		    BoxMeasureB();
 
 		    // measurement run
-		    long intDuration = MeasureA();
-		    long objDuration = MeasureB();
+		    long intDuration = BoxMeasureA();
+		    long objDuration = BoxMeasureB();
 
 		    // display results
 		    Console.WriteLine("Integer performance: {0} milliseconds", intDuration);
@@ -194,11 +195,59 @@ namespace PerformanceOptimization
 			*/
 		}
 
+	    const int NumRepetitions = 10000;
+
+		public static long StringConcatMeasureA()
+	    {
+		    var s = string.Empty;
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < NumRepetitions; i++)
+		    {
+			    s = s + "a";
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    public static long StringConcatMeasureB()
+	    {
+		    var sb = new StringBuilder();
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < NumRepetitions; i++)
+		    {
+			    sb.Append("a");
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    public static void UsingStringBuilder()
+	    {
+			// 1st run to eliminate any startup overhead
+		    StringConcatMeasureA();
+			StringConcatMeasureB();
+
+		    // measurement run
+		    long duration1 = StringConcatMeasureA();
+			long duration2 = StringConcatMeasureB();
+
+			// display results
+			Console.WriteLine("String performance: {0} milliseconds", duration1);
+		    Console.WriteLine("StringBuilder performance: {0} milliseconds", duration2);
+
+			// regular string concatenation is more efficient up to 4 additions,
+			// after this point we should avoid using "+" operator and start using the StringBuilder
+			// in huge numbers the StringBuilder is massively faster
+		}
+
 		static void Main()
         {
 			//Console.WriteLine("i = " + BasicCilCode());
 
-	        AvoidingBoxing();
+	        //AvoidingBoxing();
+	        UsingStringBuilder();
 			Console.ReadLine();
         }
     }
