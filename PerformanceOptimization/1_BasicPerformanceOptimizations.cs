@@ -173,29 +173,25 @@ namespace PerformanceOptimization
 
 		public static void AvoidingBoxing()
 		{
-			// 1st run to eliminate any startup overhead
-			BoxMeasureA();
-			BoxMeasureB();
-
 			// measurement run
 			long intDuration = BoxMeasureA();
 			long objDuration = BoxMeasureB();
 
 			// display results
-			Console.WriteLine("Integer performance: {0} milliseconds", intDuration);
-			Console.WriteLine("Object performance: {0} milliseconds", objDuration);
+			Console.WriteLine($"Integer performance: {intDuration} milliseconds");
+			Console.WriteLine($"Object performance: {objDuration} milliseconds");
 			Console.WriteLine();
 			Console.WriteLine("Method B is {0} times slower", 1.0 * objDuration / intDuration);
 
 			/* Summary 
-			- Casting object variables to value types introduces an UNBOX instruction in intermediate code
-			- Storing value types in object variables introduces a BOX instruction in intermediate code
-			- We should avoid casting to and from objects in critical-performance code.
-			- Additionally System.Collections and System.Collections.Specialized should also be avoided 
-				because internally they use object arrays and therefore force boxing-unboxing operations.
-			- Same goes to System.Data classes - DataRow uses object arrays internally for storing data
-			- Even typed data sets are not ok because what they do internally is object casting
-			- But, on the other hand System.Collections.Generic of type T are ok
+				- Casting object variables to value types introduces an UNBOX instruction in intermediate code
+				- Storing value types in object variables introduces a BOX instruction in intermediate code
+				- We should avoid casting to and from objects in critical-performance code.
+				- Additionally System.Collections and System.Collections.Specialized should also be avoided 
+					because internally they use object arrays and therefore force boxing-unboxing operations.
+				- Same goes to System.Data classes - DataRow uses object arrays internally for storing data
+				- Even typed data sets are not ok because what they do internally is object casting
+				- But, on the other hand System.Collections.Generic of type T are ok
 			*/
 		}
 		
@@ -209,7 +205,7 @@ namespace PerformanceOptimization
 				s = s + "a";
 			}
 			stopwatch.Stop();
-			return stopwatch.ElapsedMilliseconds;
+			return stopwatch.ElapsedTicks;
 		}
 
 		static long StringConcatMeasureB()
@@ -222,28 +218,65 @@ namespace PerformanceOptimization
 				sb.Append("a");
 			}
 			stopwatch.Stop();
-			return stopwatch.ElapsedMilliseconds;
+			return stopwatch.ElapsedTicks;
 		}
+
+	    static long NormalStringConcat(int additions)
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < OneMillion; i++)
+		    {
+			    var s = string.Empty;
+			    for (int j = 0; j < additions; j++)
+			    {
+				    s = s + "a";
+			    }
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    static long StringBuilderStringConcat(int additions)
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < OneMillion; i++)
+		    {
+			    var sb = new StringBuilder();
+			    for (int j = 0; j < additions; j++)
+			    {
+				    sb.Append("a");
+			    }
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
 
 		public static void UsingStringBuilder()
 		{
-			// 1st run to eliminate any startup overhead
-			StringConcatMeasureA();
-			StringConcatMeasureB();
-
 			// measurement run
 			long duration1 = StringConcatMeasureA();
 			long duration2 = StringConcatMeasureB();
 
 			// display results
-			Console.WriteLine("String performance: {0} milliseconds", duration1);
-			Console.WriteLine("StringBuilder performance: {0} milliseconds", duration2);
+			Console.WriteLine($"Number of concatenations: {TenThousand}");
+			Console.WriteLine($"String performance: {duration1} ticks");
+			Console.WriteLine($"StringBuilder performance: {duration2} ticks");
 
+			Console.WriteLine();
+			Console.WriteLine("Overall performance per number of concatenations:");
+			for (int reps = 0; reps < 10; reps++)
+			{
+				long duration3 = NormalStringConcat(reps);
+				long duration4 = StringBuilderStringConcat(reps);
+				Console.WriteLine($"Reps: {reps + 1}, String: {duration3}, StringBuilder: {duration4}");
+			}
 			// regular string concatenation is more efficient up to 4 additions,
 			// after this point we should avoid using "+" operator and start using the StringBuilder
 			// in huge numbers the StringBuilder is massively faster
 		}
-		
+
 		static long ArrayListPerformanceDynamic()
 		{
 			var list = new ArrayList();
@@ -311,9 +344,6 @@ namespace PerformanceOptimization
 
 		public static void CollectionPerformanceExample()
 		{
-			// 1st run to eliminate any startup overhead
-			ArrayPerformance();
-
 			// measurement run
 			long duration1 = ArrayListPerformanceDynamic();
 			long duration2 = ArrayListPerformancePresized();
@@ -321,11 +351,11 @@ namespace PerformanceOptimization
 			long duration4 = GenericListPerformancePresized();
 			long duration5 = ArrayPerformance();
 
-			Console.WriteLine("ArrayList with overflow: {0} milliseconds", duration1);
-			Console.WriteLine("ArrayList presized: {0} milliseconds", duration2);
-			Console.WriteLine("List<int> with overflow: {0} milliseconds", duration3);
-			Console.WriteLine("List<int> presized: {0} milliseconds", duration4);
-			Console.WriteLine("int[]: {0} milliseconds", duration5);
+			Console.WriteLine($"ArrayList with overflow: {duration1} milliseconds");
+			Console.WriteLine($"ArrayList presized: {duration2} milliseconds");
+			Console.WriteLine($"List<int> with overflow: {duration3} milliseconds");
+			Console.WriteLine($"List<int> presized: {duration4} milliseconds");
+			Console.WriteLine($"int[]: {duration5} milliseconds");
 
 			/*
 				- Always use the generic collection classes from the System.Collection.Generic namespace in performance critical code
@@ -356,7 +386,6 @@ namespace PerformanceOptimization
 
 	    static long TwoDimArray()
 	    {
-			
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
 		    int[,] list = new int[TenThousand, TenThousand];
@@ -427,19 +456,16 @@ namespace PerformanceOptimization
 
 		public static void ArraysExample()
 	    {
-		    // 1st run to eliminate any startup overhead
-		    ArrayPerformance();
-
 			// measurement run
 			long duration1 = OneDimArray();
 		    long duration2 = JaggedArray();
 		    long duration3 = TwoDimArray();
 		    long duration4 = FlattenedTwoDimArray();
 
-		    Console.WriteLine("int[] (one-dim): {0} milliseconds", duration1);
-		    Console.WriteLine("int[,] (two-dim): {0} milliseconds", duration2);
-		    Console.WriteLine("int[][] (jagged): {0} milliseconds", duration3);
-		    Console.WriteLine("flattened two-dim: {0} milliseconds", duration4);
+		    Console.WriteLine($"int[] (one-dim): {duration1} milliseconds");
+		    Console.WriteLine($"int[,] (two-dim): {duration2} milliseconds");
+		    Console.WriteLine($"int[][] (jagged): {duration3} milliseconds");
+		    Console.WriteLine($"flattened two-dim: {duration4} milliseconds");
 
 			// one dimension array is the fastest
 			// Intermediate Language has native support for one dimensional array
@@ -449,7 +475,7 @@ namespace PerformanceOptimization
 			// their internal code also similar
 
 			/* Summary
-				- if you only have 1 dimension of data, use 1-dimensional arrays for the best performance
+				- If you only have 1 dimension of data, use 1-dimensional arrays for the best performance
 				- If you have 2 dimensions of data, flatten the array
 				- If this is not possible, consider using a jagged array
 				- If there is no other option, use a 2-dimensional array
