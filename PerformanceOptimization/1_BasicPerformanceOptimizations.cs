@@ -47,8 +47,10 @@ namespace PerformanceOptimization
     public static class BasicPerformanceOptimizations
     {
 	    const int TenMillion = 10_000_000;
-		const int OneMillion = 1_000_000;
+		const int Million = 1_000_000;
 	    const int TenThousand = 10_000;
+	    const int Thousand = 1_000;
+	    const int Hundert = 100;
 
 		/* Immutable string
 			- Strings is a reference types, and immutable
@@ -136,7 +138,7 @@ namespace PerformanceOptimization
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 			int a = 1;
-			for (int i = 0; i < OneMillion; i++)
+			for (int i = 0; i < Million; i++)
 			{
 				a = a + 1;
 				/* this line compiles to:
@@ -155,7 +157,7 @@ namespace PerformanceOptimization
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 			object a = 1;
-			for (int i = 0; i < OneMillion; i++)
+			for (int i = 0; i < Million; i++)
 			{
 				a = (int)a + 1;
 				/* this line compiles to:
@@ -225,7 +227,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
-		    for (int i = 0; i < OneMillion; i++)
+		    for (int i = 0; i < Million; i++)
 		    {
 			    var s = string.Empty;
 			    for (int j = 0; j < additions; j++)
@@ -241,7 +243,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
-		    for (int i = 0; i < OneMillion; i++)
+		    for (int i = 0; i < Million; i++)
 		    {
 			    var sb = new StringBuilder();
 			    for (int j = 0; j < additions; j++)
@@ -481,5 +483,201 @@ namespace PerformanceOptimization
 				- If there is no other option, use a 2-dimensional array
 			*/
 		}
+
+	    static long IncrementInteger()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    int count = 0;
+		    for (int i = 0; i < Hundert; i++)
+		    {
+			    count = count + 1;
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedTicks;
+	    }
+
+	    static long IncrementIntegerWithThrow()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    int count = 0;
+		    for (int i = 0; i < Hundert; i++)
+		    {
+			    try
+			    {
+				    count = count + 1;
+				    throw new InvalidOperationException();
+			    }
+			    catch (InvalidOperationException)
+			    {
+				    // there is no need to unwind the stack because the catch block is in the same place
+					// there is no additional overhead of handling the exception
+					// so this code will measure only the throwing overhead
+				}
+			}
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedTicks;
+	    }
+
+	    public static void ExceptionsExample()
+	    {
+		    // measurement run
+		    long duration1 = IncrementInteger();
+		    long duration2 = IncrementIntegerWithThrow();
+
+		    Console.WriteLine($"Normal: {duration1} ticks");
+		    Console.WriteLine($"With exceptions: {duration2} ticks");
+
+			// Exceptions adds massive overhead
+			// in general we should never use exceptions in mission-critical code
+	    }
+
+	    // constants
+	    private const int Digits = 5;
+
+	    // fields
+	    private static readonly char[] _digitArray = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'X' };
+	    private static readonly List<string> _numbers = new List<string>();
+
+	    static void PrepareList()
+	    {
+		    // this method prepares million element long list of random signs taken from the _digitArray
+		    var random = new Random();
+		    for (int i = 0; i < Hundert; i++)
+		    {
+			    var sb = new StringBuilder();
+			    for (int d = 0; d < Digits; d++)
+			    {
+				    int index = random.Next(_digitArray.Length);
+				    sb.Append(_digitArray[index]);
+			    }
+			    _numbers.Add(sb.ToString());
+		    }
+	    }
+
+		static long ParsingWithException()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < Hundert; i++)
+		    {
+			    try
+			    {
+				    int.Parse(_numbers[i]);
+			    }
+			    catch (FormatException)
+			    {
+					// error is suppressed
+			    }
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedTicks;
+	    }
+
+	    static long ParsingWithoutException()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < Hundert; i++)
+		    {
+				// try parse attempts to parse the number and simply do nothing if the parsing was unsuccessful - no exception thrown
+				int.TryParse(_numbers[i], out int _); // name "_" is used to hide the unused variable as much as possible - it will not be usable
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedTicks;
+	    }
+		
+	    public static void ParseVsTryParse()
+	    {
+		    // initialization
+		    PrepareList();
+
+		    // measurement run
+		    long duration1 = ParsingWithException();
+		    long duration2 = ParsingWithoutException();
+
+		    Console.WriteLine($"int.Parse: {duration1} ticks");
+		    Console.WriteLine($"int.TryParse: {duration2} ticks");
+
+			// the difference is massive - order of magnitude is 5
+		}
+		
+	    // fields
+	    private static readonly List<int> _numbersV2 = new List<int>();
+	    private static readonly Dictionary<int, string> _lookup = new Dictionary<int, string> {
+		    { 0, "zero" },
+		    { 1, "one" },
+		    { 2, "two" },
+		    { 3, "three" },
+		    { 4, "four" },
+		    { 5, "five" },
+		    { 6, "six" },
+		    { 7, "seven" },
+		    { 8, "eight" },
+		    { 9, "nine" }
+	    };
+
+	    static void PrepareListV2()
+	    {
+		    var random = new Random();
+		    for (int i = 0; i < Hundert; i++)
+			    _numbersV2.Add(random.Next(_lookup.Count + 1)); // 1 per 11 will be invalid
+	    }
+
+	    static long KeyNotFound()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < Hundert; i++)
+		    {
+			    string s = null;
+			    try
+			    {
+				    s = _lookup[_numbersV2[i]];
+			    }
+			    catch (KeyNotFoundException) { }
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedTicks;
+	    }
+
+	    static long ContainsKey()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < Hundert; i++)
+		    {
+			    string s = null;
+			    int key = _numbersV2[i];
+			    if (_lookup.ContainsKey(key)) // this extra check avoids the exception
+				    s = _lookup[key];
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedTicks;
+	    }
+
+	    public static void ContainsKeyVsKeyNotFoundException()
+	    {
+		    // initialization
+		    PrepareListV2();
+
+		    // measurement run
+		    long duration1 = ContainsKey();
+		    long duration2 = KeyNotFound();
+
+		    Console.WriteLine($"Lookup with ContainsKey: {duration1} ticks");
+		    Console.WriteLine($"Lookup with KeyNotFoundException: {duration2} ticks");
+
+			// like with the previous example additional computing overhead is MASSIVE!
+
+			/* Summary:
+				- Use exceptions for fatal conditions that require an abort
+				- Do not put try-catch blocks in deeply nested code
+				- Never use catch(Exception) to catch all exception because it will catch non fatal exceptions as well
+				- Do not use exceptions for not-critical conditions
+				- Never use exceptions to control the flow of your program
+			 */
+	    }
 	}
 }

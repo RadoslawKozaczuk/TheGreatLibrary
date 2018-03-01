@@ -15,6 +15,9 @@ namespace PerformanceOptimization
 			//BasicPerformanceOptimizations.UsingStringBuilder();
 			//BasicPerformanceOptimizations.CollectionPerformanceExample();
 			//BasicPerformanceOptimizations.ArraysExample();
+			//BasicPerformanceOptimizations.ExceptionsExample();
+			//BasicPerformanceOptimizations.ParseVsTryParse();
+	        BasicPerformanceOptimizations.ContainsKeyVsKeyNotFoundException();
 
 			Console.ReadLine();
         }
