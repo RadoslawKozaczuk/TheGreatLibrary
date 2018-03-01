@@ -354,10 +354,9 @@ namespace PerformanceOptimization
 		    return stopwatch.ElapsedMilliseconds;
 	    }
 
-	    static long JaggedArray()
+	    static long TwoDimArray()
 	    {
-			// it is array of arrays
-			// each sub array can have a different size hence the name - jagged array
+			
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
 		    int[,] list = new int[TenThousand, TenThousand];
@@ -379,9 +378,11 @@ namespace PerformanceOptimization
 		    return stopwatch.ElapsedMilliseconds;
 	    }
 
-	    static long TwoDimArray()
+	    static long JaggedArray()
 	    {
-		    var stopwatch = new Stopwatch();
+		    // it is array of arrays
+		    // each sub array can have a different size hence the name - jagged array
+			var stopwatch = new Stopwatch();
 		    stopwatch.Start();
 		    int[][] list = new int[TenThousand][];
 		    for (int i = 0; i < TenThousand; i++)
@@ -407,7 +408,24 @@ namespace PerformanceOptimization
 		    return stopwatch.ElapsedMilliseconds;
 	    }
 
-	    public static void ArraysExample()
+	    static long FlattenedTwoDimArray()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    int[] list = new int[TenThousand * TenThousand];
+		    for (int i = 0; i < TenThousand; i++)
+		    {
+			    for (int j = 0; j < TenThousand; j++)
+			    {
+				    int index = TenThousand * i + j;
+				    list[index] = 1;
+			    }
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+		public static void ArraysExample()
 	    {
 		    // 1st run to eliminate any startup overhead
 		    ArrayPerformance();
@@ -416,10 +434,12 @@ namespace PerformanceOptimization
 			long duration1 = OneDimArray();
 		    long duration2 = JaggedArray();
 		    long duration3 = TwoDimArray();
+		    long duration4 = FlattenedTwoDimArray();
 
-		    Console.WriteLine("int[]: {0} milliseconds", duration1);
-		    Console.WriteLine("int[,]: {0} milliseconds", duration2);
-		    Console.WriteLine("int[][]: {0} milliseconds", duration3);
+		    Console.WriteLine("int[] (one-dim): {0} milliseconds", duration1);
+		    Console.WriteLine("int[,] (two-dim): {0} milliseconds", duration2);
+		    Console.WriteLine("int[][] (jagged): {0} milliseconds", duration3);
+		    Console.WriteLine("flattened two-dim: {0} milliseconds", duration4);
 
 			// one dimension array is the fastest
 			// Intermediate Language has native support for one dimensional array
@@ -427,6 +447,13 @@ namespace PerformanceOptimization
 			// 2-dim array is just a class
 			// although on my computer difference between the last two is marginal
 			// their internal code also similar
+
+			/* Summary
+				- if you only have 1 dimension of data, use 1-dimensional arrays for the best performance
+				- If you have 2 dimensions of data, flatten the array
+				- If this is not possible, consider using a jagged array
+				- If there is no other option, use a 2-dimensional array
+			*/
 		}
 	}
 }
