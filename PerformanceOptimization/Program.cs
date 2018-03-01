@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 /*
 	Stack:
@@ -36,8 +37,6 @@
 	- Unboxing unpacks a boxed object on the heap, and copies the value type inside back to the stack
 	- Unboxing happens when you cast an object value a value type
 	- Boxing and unboxing negatively affect performance
-
-	
 */
 
 namespace PerformanceOptimization
@@ -126,10 +125,81 @@ namespace PerformanceOptimization
 		    */
 		}
 
+	    private const int ArraySize = 1000000;
+
+	    public static long MeasureA()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    int a = 1;
+		    for (int i = 0; i < ArraySize; i++)
+		    {
+			    a = a + 1;
+			    // this line compiles to:
+				//ldloc.1      // a
+				//ldc.i4.1	 // constant 1
+				//add
+				//stloc.1      // a
+
+			}
+			stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    public static long MeasureB()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    object a = 1;
+		    for (int i = 0; i < ArraySize; i++)
+		    {
+			    a = (int)a + 1;
+				// this line compiles to:
+			    //ldloc.1      // a
+			    //unbox.any		[System.Runtime]System.Int32
+			    //ldc.i4.1
+			    //add
+			    //box	[System.Runtime]System.Int32
+			    //stloc.1      // a
+			}
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+		public static void AvoidingBoxing()
+	    {
+		    // 1st run to eliminate any startup overhead
+		    MeasureA();
+		    MeasureB();
+
+		    // measurement run
+		    long intDuration = MeasureA();
+		    long objDuration = MeasureB();
+
+		    // display results
+		    Console.WriteLine("Integer performance: {0} milliseconds", intDuration);
+		    Console.WriteLine("Object performance: {0} milliseconds", objDuration);
+		    Console.WriteLine();
+		    Console.WriteLine("Method B is {0} times slower", 1.0 * objDuration / intDuration);
+			
+			/* Summary 
+			- Casting object variables to value types introduces an UNBOX instruction in intermediate code
+			- Storing value types in object variables introduces a BOX instruction in intermediate code
+			- We should avoid casting to and from objects in critical-performance code.
+			- Additionally System.Collections and System.Collections.Specialized should also be avoided 
+				because internally they use object arrays and therefore force boxing-unboxing operations.
+			- Same goes to System.Data classes - DataRow uses object arrays internally for storing data
+			- Even typed data sets are not ok because what they do internally is object casting
+			- But, on the other hand System.Collections.Generic of type T are ok
+			*/
+		}
+
 		static void Main()
         {
-			Console.WriteLine("i = " + BasicCilCode());
-			Console.WriteLine("Hello World!");
+			//Console.WriteLine("i = " + BasicCilCode());
+
+	        AvoidingBoxing();
+			Console.ReadLine();
         }
     }
 }
