@@ -37,16 +37,19 @@
 	- Unboxing happens when you cast an object value a value type
 	- Boxing and unboxing negatively affect performance
 
-	Immutable string
-	- Strings is a reference types, and immutable
-	- Strings behave as if they are value types. They are assigned and compared by value
-	- Strings are thread-safe
+	
 */
 
 namespace PerformanceOptimization
 {
     class Program
     {
+		/*
+			Immutable string
+			- Strings is a reference types, and immutable
+			- Strings behave as if they are value types. They are assigned and compared by value
+			- Strings are thread-safe
+		*/
 	    public static void ImmutableStringExample()
 	    {
 		    string a = "abc";
@@ -66,10 +69,66 @@ namespace PerformanceOptimization
 			Console.WriteLine("b = " + b);
 	    }
 
-        static void Main()
+	    /*
+			2-step compilation - .Net Framework first compiles to CIL language and this is what is stored in .dll and .exe files.
+			When we run the .exe file Just-In-Time (JIT) compiler kicks in and compile our code to machine language.
+
+			Advantages:
+			- JIT compiler can optimize for specific CPU
+			- Creates portable code that runs on any platform
+			- Code can be verified before running
+			- Code can be annotated with attributes
+
+			Disadvantages:
+			- Slightly slower code - at this moment compilators are so advanced 
+				that it is almost impossible to hand made better code than what compilers produces
+
+			Intermediate Language concepts:
+			1) IL instructions - sequence of instructions, executed one by one.
+			2) Local variable locations - slots for variables
+			3) Evaluation stack - have only two operations push and pop which add or removes the 
+
+			We have only 3 types of instructions - pushing on the stack, removing from the stack, and modifying value on the stack.
+
+			Example:
+			int i = 456;
+			i = i + 1;
+
+			CIL:
+			ldc.i4.1 - Loads the 4-byte signed integer constant 1 on the evaluation stack
+			ldloc.0 - Load the variable in location 0 on the evaluation stack. The other value on the stack is pushed down
+			add - Add the top two numbers on the evaluation stack together, and replace them with the result
+			stloc.0 - Remove the value at the top of the evaluation stack, and store it in location 0
+		*/
+		public static int BasicCilCode()
+	    {
+		    int i = 456;
+			i = i + 1;
+		    return i;
+
+			/* translated
+	        IL_0000: nop // Do nothing (No operation); I have no idea what it is for...
+		    
+	        IL_0001: ldc.i4       456	
+	        IL_0006: stloc.0      // i
+		    
+	        IL_0007: ldloc.0      // i
+	        IL_0008: ldc.i4.1
+	        IL_0009: add
+	        IL_000a: stloc.0      // i
+		    
+			IL_000b: ldloc.0      // i
+			IL_000c: stloc.1      // V_1
+			IL_000d: br.s         IL_000f	// Branch to target, short form.
+
+	        IL_000f: ldloc.1      // V_1
+			IL_0010: ret   
+		    */
+		}
+
+		static void Main()
         {
-	        ImmutableStringExample();
-			
+			Console.WriteLine("i = " + BasicCilCode());
 			Console.WriteLine("Hello World!");
         }
     }
