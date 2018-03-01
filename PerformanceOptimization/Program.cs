@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
@@ -242,12 +244,107 @@ namespace PerformanceOptimization
 			// in huge numbers the StringBuilder is massively faster
 		}
 
+	    const int NumElements = 10_000_000;
+
+	    static long ArrayListPerformanceDynamic()
+	    {
+		    var list = new ArrayList();
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < NumElements; i++)
+		    {
+			    list.Add(i);
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    static long ArrayListPerformancePresized()
+	    {
+		    var list = new ArrayList(NumElements);
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < NumElements; i++)
+		    {
+			    list.Add(i);
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+		static long GenericListPerformanceDynamic()
+	    {
+		    var list = new List<int>();
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < NumElements; i++)
+		    {
+			    list.Add(i);
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    static long GenericListPerformancePresized()
+	    {
+		    var list = new List<int>(NumElements);
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < NumElements; i++)
+		    {
+			    list.Add(i);
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+		static long ArrayPerformance()
+	    {
+		    var list = new int[NumElements];
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    for (int i = 0; i < NumElements; i++)
+		    {
+			    list[i] = i;
+		    }
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+		public static void CollectionPerformanceExample()
+	    {
+			// 1st run to eliminate any startup overhead
+		    ArrayPerformance();
+
+			// measurement run
+			long duration1 = ArrayListPerformanceDynamic();
+		    long duration2 = ArrayListPerformancePresized();
+		    long duration3 = GenericListPerformanceDynamic();
+		    long duration4 = GenericListPerformancePresized();
+		    long duration5 = ArrayPerformance();
+
+		    Console.WriteLine("ArrayList with overflow: {0} milliseconds", duration1);
+		    Console.WriteLine("ArrayList presized: {0} milliseconds", duration2);
+		    Console.WriteLine("List<int> with overflow: {0} milliseconds", duration3);
+		    Console.WriteLine("List<int> presized: {0} milliseconds", duration4);
+		    Console.WriteLine("int[]: {0} milliseconds", duration5);
+
+			/*
+				- Always use the generic collection classes from the System.Collection.Generic namespace in performance critical code
+				- Avoid the classes in the System.Collection namespace in performance critical code
+				- presizing the list boost the performance
+				- there is not much difference between List<int> and int[] but all in all int[] is faster
+			*/
+		}
+
 		static void Main()
         {
 			//Console.WriteLine("i = " + BasicCilCode());
 
 	        //AvoidingBoxing();
-	        UsingStringBuilder();
+	        //UsingStringBuilder();
+
+	        CollecionMas();
 			Console.ReadLine();
         }
     }
