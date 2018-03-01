@@ -46,8 +46,11 @@ namespace PerformanceOptimization
 {
     public static class BasicPerformanceOptimizations
     {
-		/*
-			Immutable string
+	    const int TenMillion = 10_000_000;
+		const int OneMillion = 1_000_000;
+	    const int TenThousand = 10_000;
+
+		/* Immutable string
 			- Strings is a reference types, and immutable
 			- Strings behave as if they are value types. They are assigned and compared by value
 			- Strings are thread-safe
@@ -71,7 +74,7 @@ namespace PerformanceOptimization
 			Console.WriteLine("b = " + b);
 		}
 
-		/*
+		/* Common Intermediate Language
 			2-step compilation - .Net Framework first compiles to CIL language and this is what is stored in .dll and .exe files.
 			When we run the .exe file Just-In-Time (JIT) compiler kicks in and compile our code to machine language.
 
@@ -109,41 +112,39 @@ namespace PerformanceOptimization
 			return i;
 
 			/* translated
-	        IL_0000: nop // Do nothing (No operation); I have no idea what it is for...
+				IL_0000: nop // Do nothing (No operation); I have no idea what it is for...
 		    
-	        IL_0001: ldc.i4       456	
-	        IL_0006: stloc.0      // i
+				IL_0001: ldc.i4       456	
+				IL_0006: stloc.0      // i
 		    
-	        IL_0007: ldloc.0      // i
-	        IL_0008: ldc.i4.1
-	        IL_0009: add
-	        IL_000a: stloc.0      // i
+				IL_0007: ldloc.0      // i
+				IL_0008: ldc.i4.1
+				IL_0009: add
+				IL_000a: stloc.0      // i
 		    
-			IL_000b: ldloc.0      // i
-			IL_000c: stloc.1      // V_1
-			IL_000d: br.s         IL_000f	// Branch to target, short form.
+				IL_000b: ldloc.0      // i
+				IL_000c: stloc.1      // V_1
+				IL_000d: br.s         IL_000f	// Branch to target, short form.
 
-	        IL_000f: ldloc.1      // V_1
-			IL_0010: ret   
+				IL_000f: ldloc.1      // V_1
+				IL_0010: ret   
 		    */
 		}
-
-		const int ArraySize = 1_000_000;
-
+		
 		static long BoxMeasureA()
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 			int a = 1;
-			for (int i = 0; i < ArraySize; i++)
+			for (int i = 0; i < OneMillion; i++)
 			{
 				a = a + 1;
-				// this line compiles to:
-				//ldloc.1      // a
-				//ldc.i4.1	 // constant 1
-				//add
-				//stloc.1      // a
-
+				/* this line compiles to:
+					ldloc.1      // a
+					ldc.i4.1	 // constant 1
+					add
+					stloc.1      // a
+				*/
 			}
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
@@ -154,16 +155,17 @@ namespace PerformanceOptimization
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 			object a = 1;
-			for (int i = 0; i < ArraySize; i++)
+			for (int i = 0; i < OneMillion; i++)
 			{
 				a = (int)a + 1;
-				// this line compiles to:
-				//ldloc.1      // a
-				//unbox.any		[System.Runtime]System.Int32
-				//ldc.i4.1
-				//add
-				//box	[System.Runtime]System.Int32
-				//stloc.1      // a
+				/* this line compiles to:
+					ldloc.1      // a
+					unbox.any		[System.Runtime]System.Int32
+					ldc.i4.1
+					add
+					box	[System.Runtime]System.Int32
+					stloc.1      // a
+				*/
 			}
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
@@ -196,15 +198,13 @@ namespace PerformanceOptimization
 			- But, on the other hand System.Collections.Generic of type T are ok
 			*/
 		}
-
-		const int NumRepetitions = 10_000;
-
+		
 		static long StringConcatMeasureA()
 		{
 			var s = string.Empty;
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-			for (int i = 0; i < NumRepetitions; i++)
+			for (int i = 0; i < TenThousand; i++)
 			{
 				s = s + "a";
 			}
@@ -217,7 +217,7 @@ namespace PerformanceOptimization
 			var sb = new StringBuilder();
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-			for (int i = 0; i < NumRepetitions; i++)
+			for (int i = 0; i < TenThousand; i++)
 			{
 				sb.Append("a");
 			}
@@ -243,15 +243,13 @@ namespace PerformanceOptimization
 			// after this point we should avoid using "+" operator and start using the StringBuilder
 			// in huge numbers the StringBuilder is massively faster
 		}
-
-		const int NumElements = 10_000_000;
-
+		
 		static long ArrayListPerformanceDynamic()
 		{
 			var list = new ArrayList();
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-			for (int i = 0; i < NumElements; i++)
+			for (int i = 0; i < TenMillion; i++)
 			{
 				list.Add(i);
 			}
@@ -261,10 +259,10 @@ namespace PerformanceOptimization
 
 		static long ArrayListPerformancePresized()
 		{
-			var list = new ArrayList(NumElements);
+			var list = new ArrayList(TenMillion);
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-			for (int i = 0; i < NumElements; i++)
+			for (int i = 0; i < TenMillion; i++)
 			{
 				list.Add(i);
 			}
@@ -277,7 +275,7 @@ namespace PerformanceOptimization
 			var list = new List<int>();
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-			for (int i = 0; i < NumElements; i++)
+			for (int i = 0; i < TenMillion; i++)
 			{
 				list.Add(i);
 			}
@@ -287,10 +285,10 @@ namespace PerformanceOptimization
 
 		static long GenericListPerformancePresized()
 		{
-			var list = new List<int>(NumElements);
+			var list = new List<int>(TenMillion);
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-			for (int i = 0; i < NumElements; i++)
+			for (int i = 0; i < TenMillion; i++)
 			{
 				list.Add(i);
 			}
@@ -300,10 +298,10 @@ namespace PerformanceOptimization
 
 		static long ArrayPerformance()
 		{
-			var list = new int[NumElements];
+			var list = new int[TenMillion];
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
-			for (int i = 0; i < NumElements; i++)
+			for (int i = 0; i < TenMillion; i++)
 			{
 				list[i] = i;
 			}
@@ -335,6 +333,100 @@ namespace PerformanceOptimization
 				- presizing the list boost the performance
 				- there is not much difference between List<int> and int[] but all in all int[] is faster
 			*/
+		}
+		
+	    static long OneDimArray()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    int[] list = new int[TenThousand * TenThousand];
+		    for (int i = 0; i < TenThousand * TenThousand; i++)
+		    {
+			    list[i] = i;
+				/* compiles to
+					ldloc.1      // list
+					ldloc.2      // i
+					ldloc.2      // i
+					stelem.i4 
+				 */
+			}
+			stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    static long JaggedArray()
+	    {
+			// it is array of arrays
+			// each sub array can have a different size hence the name - jagged array
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    int[,] list = new int[TenThousand, TenThousand];
+		    for (int i = 0; i < TenThousand; i++)
+		    {
+			    for (int j = 0; j < TenThousand; j++)
+			    {
+				    list[i, j] = 1;
+					/* compiles to
+						ldloc.1      // list
+						ldloc.2      // i
+						ldloc.3      // j
+						ldc.i4.1     
+						call         instance void int32[0...,0...]::Set(int32, int32, int32)
+					*/
+				}
+			}
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    static long TwoDimArray()
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
+		    int[][] list = new int[TenThousand][];
+		    for (int i = 0; i < TenThousand; i++)
+		    {
+			    list[i] = new int[TenThousand];
+		    }
+		    for (int i = 0; i < TenThousand; i++)
+		    {
+			    for (int j = 0; j < TenThousand; j++)
+			    {
+				    list[i][j] = 1;
+					/* compiles to
+						ldloc.1      // list
+						ldloc.s      i_V_4
+						ldelem.ref   
+						ldloc.s      j
+						ldc.i4.1     
+						stelem.i4  
+					*/
+				}
+			}
+		    stopwatch.Stop();
+		    return stopwatch.ElapsedMilliseconds;
+	    }
+
+	    public static void ArraysExample()
+	    {
+		    // 1st run to eliminate any startup overhead
+		    ArrayPerformance();
+
+			// measurement run
+			long duration1 = OneDimArray();
+		    long duration2 = JaggedArray();
+		    long duration3 = TwoDimArray();
+
+		    Console.WriteLine("int[]: {0} milliseconds", duration1);
+		    Console.WriteLine("int[,]: {0} milliseconds", duration2);
+		    Console.WriteLine("int[][]: {0} milliseconds", duration3);
+
+			// one dimension array is the fastest
+			// Intermediate Language has native support for one dimensional array
+			// that's why 1-dim comes first and jagged second
+			// 2-dim array is just a class
+			// although on my computer difference between the last two is marginal
+			// their internal code also similar
 		}
 	}
 }

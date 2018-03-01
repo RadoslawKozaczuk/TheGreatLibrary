@@ -10,7 +10,8 @@ namespace PerformanceOptimization
 	        //BasicPerformanceOptimizations.BasicCilCode();
 			//BasicPerformanceOptimizations.AvoidingBoxing();
 			//BasicPerformanceOptimizations.UsingStringBuilder();
-			BasicPerformanceOptimizations.CollectionPerformanceExample();
+			//BasicPerformanceOptimizations.CollectionPerformanceExample();
+	        BasicPerformanceOptimizations.ArraysExample();
 
 			Console.ReadLine();
         }
