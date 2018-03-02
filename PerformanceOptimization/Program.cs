@@ -20,6 +20,8 @@ namespace PerformanceOptimization
 	        //BasicPerformanceOptimizations.ContainsKeyVsKeyNotFoundException();
 	        BasicPerformanceOptimizations.ForVersusForeach();
 
+	        //Exercises.RunExercises();
+
 			Console.ReadLine();
         }
     }
