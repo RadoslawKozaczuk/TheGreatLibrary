@@ -679,5 +679,191 @@ namespace PerformanceOptimization
 				- Never use exceptions to control the flow of your program
 			 */
 	    }
-	}
+		
+		// fields
+		private static readonly ArrayList _arrayList = new ArrayList(TenMillion);
+		private static readonly List<int> _genericList = new List<int>(TenMillion);
+		private static readonly int[] _array = new int[TenMillion];
+		
+		static void PrepareListV3()
+		{
+			var random = new Random();
+			for (int i = 0; i < TenMillion; i++)
+			{
+				int number = random.Next(256);
+				_arrayList.Add(number);
+				_genericList.Add(number);
+				_array[i] = number;
+			}
+		}
+
+		static long ArrayListForMeasure()
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			for (int i = 0; i < TenMillion; i++)
+			{
+				int result = (int)_arrayList[i];
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		static long ArrayListForeachMeasure()
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			foreach (int i in _arrayList)
+			{
+				int result = i;
+				// there is a lot of unboxing involved which additionally slows down the loop
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		static long GenericListForMeasure()
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			for (int i = 0; i < TenMillion; i++)
+			{
+				int result = _genericList[i];
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		static long GenericListForeachMeasure()
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			foreach (int i in _genericList)
+			{
+				int result = i;
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		static long ArrayForMeasure()
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			for (int i = 0; i < TenMillion; i++)
+			{
+				int result = _array[i];
+			}
+			/* the loop compiles to:
+				IL_0012: nop
+				
+				IL_0013: ldsfld int32[] PerformanceOptimization.BasicPerformanceOptimizations::_array
+				IL_0018: ldloc.1      // i
+				IL_0019: ldelem.i4
+				IL_001a: stloc.2      // result
+				
+				IL_001b: nop
+				
+				IL_001c: ldloc.1      // i
+				IL_001d: ldc.i4.1
+				IL_001e: add
+				IL_001f: stloc.1      // i
+				
+				IL_0020: ldloc.1      // i
+				IL_0021: ldc.i4       10000000 // 0x00989680
+				IL_0026: clt
+				IL_0028: stloc.3      // V_3
+
+				IL_0029: ldloc.3      // V_3
+				IL_002a: brtrue.s IL_0012
+			*/
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		static long ArrayForeachMeasure()
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			foreach (int i in _array)
+			{
+				int result = i;
+			}
+			/* the loop compiles to:
+				IL_0019: ldloc.1      // V_1
+				IL_001a: ldloc.2      // V_2
+				IL_001b: ldelem.i4
+				IL_001c: stloc.3      // i
+				
+				IL_001d: nop
+				
+				IL_001e: ldloc.3      // i
+				IL_001f: stloc.s result
+				
+				IL_0021: nop
+
+				IL_0022: ldloc.2      // V_2
+				IL_0023: ldc.i4.1
+				IL_0024: add
+				IL_0025: stloc.2      // V_2
+				
+				IL_0026: ldloc.2      // V_2
+				IL_0027: ldloc.1      // V_1
+				IL_0028: ldlen
+				IL_0029: conv.i4
+				IL_002a: blt.s IL_0019
+			*/
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+	    public static void ForVersusForeach()
+	    {
+			/* For vs Foreach
+				For
+				- Pro: fastest but requires an indexer
+				- Con: indexer needs all values loaded in memory
+
+				Foreach
+				- Pro: works on any collection
+				- Pro: loads values on demand (the entire collection does not need to be in the memory)
+				- Con: slower because it requires an enumerator (more complex approach)
+			*/
+
+		    // prepare lists
+		    PrepareListV3();
+
+		    // measurement run
+		    long durationA1 = ArrayListForMeasure();
+		    long durationA2 = ArrayListForeachMeasure();
+		    long durationB1 = GenericListForMeasure();
+		    long durationB2 = GenericListForeachMeasure();
+		    long durationC1 = ArrayForMeasure();
+		    long durationC2 = ArrayForeachMeasure();
+
+		    Console.WriteLine($"ArrayList for: {durationA1}");
+		    Console.WriteLine($"ArrayList foreach: {durationA2}");
+		    Console.WriteLine($"List<int> for: {durationB1}");
+		    Console.WriteLine($"List<int> foreach: {durationB2}");
+		    Console.WriteLine($"int[] for: {durationC1}");
+		    Console.WriteLine($"int[] foreach: {durationC2}");
+
+			// for native arrays gain is barely visible
+			// for others the for loop is up to two times faster
+
+			// the reason is that foreach for arrays compiles to something very similar to for
+			// so the compilers avoid all the enumeration's burden
+			
+			// Non-generic enumerators return the current value as an object. Do not use them for value types to avoid boxing and unboxing
+			// Always use generic enumerators if possible
+
+			/* Summary:
+				- Array: do not refactor code, not worth it
+				- List<> and ArrayList<>: refactor foreach to for to gain considerable improvement
+				- ArrayList<>: consider using List<> if possible
+				- For value type collections, use IEnumerable<T> instead of IEnumerable to avoid boxing and unboxing
+					IEnumerable returns each value as an object
+			*/
+	    }
+    }
 }
