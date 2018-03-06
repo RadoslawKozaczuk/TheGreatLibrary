@@ -31,21 +31,24 @@ namespace PerformanceOptimization
 			// this method do almost nothing
 		}
 
-	    /* Gen-0 optimizations
+		static byte GetByte(int i) => (byte) (i / 1000);
+
+		/* Gen-0 optimizations
 			The more objects in generation 0, the more work GC has to do. So:
 			- Limit the number of objects you create - be sure there is no redundant object
 			- Allocate, use, and discard objects as quickly as possible so they are all ready to be deallocated in the next GC cycle
 	    */
-	    public static void ImmutableStringExample()
+		public static void FastGarbageCollection()
 	    {
-			// this is example of a shit code
+			// Example 1:
+		    // this is example of a shit code
 			var s = new StringBuilder();
 		    for (int i = 0; i < 10000; i++)
 		    { 
 			    s.Append(i + "KB");
 		    }
-
-			// it can be rewritten to this beauty
+			
+		    // it can be rewritten to this beauty
 		    for (int i = 0; i < 10000; i++)
 		    {
 			    s.Append(i);
@@ -54,39 +57,36 @@ namespace PerformanceOptimization
 			// strings are immutable so every concatenation creates a new object on the heap
 			// in this case it means 40000 less objects on the heap!
 
-
+			
+			// Example 2:
 			// this is another garbage code
 		    var list = new ArrayList();
 		    for (int i = 0; i < 10000; i++)
-		    {
 			    list.Add(i);
-		    }
-
-			// it can be rewritten to this beauty
+			
+		    // it can be rewritten to this beauty
 		    var betterList = new List<int>(10000);
 		    for (int i = 0; i < 10000; i++)
-		    {
 			    betterList.Add(i);
-		    }
 			// by using generic list we avoid using internal object array and use int array instead
 			// this allows use to avoid boxing and unboxing
 			// it results in 20000 less boxed integer objects on the heap
 			// additionally it is allocated with a precise size which allows use to avoid reallocation
 
-
-			// and the last one
+			
+			// Example 3:
 			var candy = new Dictionary<int, int>();
 			// [...] // tons of code that will certainly be executed long enough to run GC cycle effectively making our candy to stuck in gen-2 forever
 			DoSomething(candy); // usage of candy
-
-			// here is how it suppose to look like
+			
+		    // here is how it suppose to look like
 		    var betterCandy = new Dictionary<int, int>();
 		    DoSomething(betterCandy); // usage of candy
 		    betterCandy = null;
 			// [...] // tons of code that no one cares about anymore
 
 		
-
+			// Example 4:
 			// object pooling is an idea to use the same object over and over again
 			var list2 = new ArrayList(85190);
 
@@ -104,7 +104,62 @@ namespace PerformanceOptimization
 			// this change increase the performance and reduce the change the LOH will become fragmented
 
 
+			// Example 5:
+			var list3 = new ArrayList(85190);
+		    for (int i = 0; i < 10000; i++)
+		    {
+			    list3.Add(new KeyValuePair<int,int>(i, i + 1));
+		    }
 
+			// the problem with the above is that ArrayList is a large object
+			// but it is filled with tiny objects that goes on Small Object Heap
+			// and because the list keeps reference to each of them none will ever dereference
+			// so all objects will eventually go to gen-2
+			var list_1 = new int[85190];
+			var list_2 = new int[85190];
+		    for (int i = 0; i < 10000; i++)
+		    {
+			    list_1[i] = i;
+			    list_2[i] = i + 1;
+		    }
+			// thanks to this we now have two list and nothing on the heap
+
+
+		    // Example 6 - Converting a large short-lived object into a small short-lived object.
+		    // Splitting objects. Reducing object foot print.
+
+			// generally the Garbage Collector assumes 90% of all small objects are short-lived, and all large objects are long-lived. 
+			// So we should avoid large short-lived objects and small long-lived objects.
+			// int has 32 bits so 4 bytes regardless the CPU architecture
+
+			// evil code
+			var buffer = new int[32768]; // this adds up to 128 thousand bytes. This is above the LO's threshold.
+		    // and therefore it goes directly to LOH and gets collected during generation 2.
+		    for (int i = 0; i < buffer.Length; i++)
+		    {
+			    buffer[i] = GetByte(i);
+		    }
+
+		    // good code
+		    var betterBuffer = new byte[32768]; // this is stored on the SOH and therefore is managed more efficiently.
+		    for (int i = 0; i < buffer.Length; i++)
+		    {
+			    betterBuffer[i] = GetByte(i);
+		    }
+
+			
+			// Example 7 - Converting a small long-lived object to a large long-lived object.
+			// Merge objects. Resize lists.
+
+			// bad code
+			// public static ArrayList staticList = new ArrayList();
+			// [...] // lots of other code
+			//DoSomething(staticList);
+
+			// good code - it is clear that the object was intended to be long-lived if it was made static
+			// public static ArrayList staticList = new ArrayList(85190); - presizing it makes sure it will go to generation 2. So we avoid merging compacting etc.
+		    // [...] // lots of other code
+		    //DoSomething(staticList);
 
 			Console.WriteLine();
 	    }
