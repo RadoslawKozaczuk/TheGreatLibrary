@@ -18,9 +18,10 @@ namespace PerformanceOptimization
 			//BasicPerformanceOptimizations.ExceptionsExample();
 			//BasicPerformanceOptimizations.ParseVsTryParse();
 	        //BasicPerformanceOptimizations.ContainsKeyVsKeyNotFoundException();
-	        BasicPerformanceOptimizations.ForVersusForeach();
+	        //BasicPerformanceOptimizations.ForVersusForeach();
 
-	        //Exercises.RunExercises();
+			//Exercises.RunExercises();
+	        ItermediatePerformanceOptimizations.FastDelegatesExample();
 
 			Console.ReadLine();
         }

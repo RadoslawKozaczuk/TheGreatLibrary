@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace PerformanceOptimization
@@ -24,7 +25,7 @@ namespace PerformanceOptimization
 		- 90% of all small objects are short-lived
 		- all large objects are long-lived
 	 */
-	class ItermediatePerformanceOptimizations
+	public class ItermediatePerformanceOptimizations
 	{
 		static void DoSomething(object obj = null)
 		{
@@ -163,5 +164,108 @@ namespace PerformanceOptimization
 
 			Console.WriteLine();
 	    }
+		
+		// benchmarking constants
+		const int Repetitions = 100000;
+		const int Experiments = 100;
+
+		// declare delegate
+		delegate void AddDelegate(int a, int b, out int result);
+
+		// set up first addition method
+		static void Add1(int a, int b, out int result) => result = a + b;
+
+		// set up second addition method
+		static void Add2(int a, int b, out int result) => result = a + b;
+
+		// Measure1: call Add1 and Add2 manually
+		static long Measure1()
+		{
+			int result = 0;
+			var sw = new Stopwatch();
+			sw.Start();
+			for (int i = 0; i < Repetitions; i++)
+			{
+				Add1(1234, 2345, out result);
+				Add2(1234, 2345, out result);
+			}
+			sw.Stop();
+			return sw.ElapsedTicks;
+		}
+
+		// Measure2: call Add1 and Add2 using 2 unicast delegates
+		static long Measure2()
+		{
+			int result = 0;
+			AddDelegate add1 = Add1;
+			AddDelegate add2 = Add2;
+			var sw = new Stopwatch();
+			sw.Start();
+			for (int i = 0; i < Repetitions; i++)
+			{
+				add1(1234, 2345, out result);
+				add2(1234, 2345, out result);
+			}
+			sw.Stop();
+			return sw.ElapsedTicks;
+		}
+
+		// Measure3: call Add1 and Add2 using 1 multicast delegate
+		static long Measure3()
+		{
+			// multicast delegate is just a delegate that has many methods assign
+			// usage is exactly the same and methods are called in the sequence in order in which they have been added
+			int result = 0;
+			AddDelegate multiAdd = Add1;
+			multiAdd += Add2;
+			var sw = new Stopwatch();
+			sw.Start();
+			for (int i = 0; i < Repetitions; i++)
+			{
+				multiAdd(1234, 2345, out result);
+			}
+			sw.Stop();
+			return sw.ElapsedTicks;
+		}
+
+		// if the code is performance critical we should avoid using this trick
+		delegate void TrickDelegate();
+		static void TrickMethod() { }
+		static TrickDelegate GetDelegateOrMaybeNull() => null;
+		static void NeatTrickButSlow()
+		{
+			TrickDelegate trick = () => { }; // preinitialize with a dummy lambda to avoid null checking
+			trick += GetDelegateOrMaybeNull();
+			trick(); // we don't need to check for null
+
+			// but it is slower - better use this
+			TrickDelegate trick2 = GetDelegateOrMaybeNull();
+			if (trick2 != null)
+				trick();
+		}
+		
+		public static void FastDelegatesExample()
+		{
+			long manual = 0;
+			long unicast = 0;
+			long multicast = 0;
+			for (int i = 0; i < Experiments; i++)
+			{
+				manual += Measure1();
+				unicast += Measure2();
+				multicast += Measure3();
+			}
+			Console.WriteLine($"Manual calls: {manual} ticks");
+			Console.WriteLine($"Unicast delegates: {unicast} ticks");
+			Console.WriteLine($"Multicast delegate: {multicast} ticks");
+
+			/* Results:
+				- direct call is the fastest method
+				- unicast delegates are slightly slower
+				- multicast delegates are up more than two times slower
+
+				Basically if you want performance don't use delegates
+			*/
+		}
 	}
 }
