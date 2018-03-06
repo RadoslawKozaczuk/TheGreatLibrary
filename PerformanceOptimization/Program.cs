@@ -21,9 +21,12 @@ namespace PerformanceOptimization
 	        //BasicPerformanceOptimizations.ForVersusForeach();
 
 			//Exercises.RunExercises();
-	        ItermediatePerformanceOptimizations.FastDelegatesExample();
+			//ItermediatePerformanceOptimizations.FastGarbageCollection();
+	        //ItermediatePerformanceOptimizations.FastDelegates();
+			ItermediatePerformanceOptimizations.ClassFactories();
 
-			Console.ReadLine();
-        }
+	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
+	        Console.ReadKey();
+		}
     }
 }

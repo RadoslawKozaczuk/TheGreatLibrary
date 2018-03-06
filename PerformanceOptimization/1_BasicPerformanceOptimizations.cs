@@ -49,8 +49,7 @@ namespace PerformanceOptimization
 	    const int TenMillion = 10_000_000;
 		const int Million = 1_000_000;
 	    const int TenThousand = 10_000;
-	    const int Thousand = 1_000;
-	    const int Hundert = 100;
+	    const int Hundred = 100;
 
 		/* Immutable string
 			- Strings is a reference types, and immutable
@@ -489,7 +488,7 @@ namespace PerformanceOptimization
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
 		    int count = 0;
-		    for (int i = 0; i < Hundert; i++)
+		    for (int i = 0; i < Hundred; i++)
 		    {
 			    count = count + 1;
 		    }
@@ -502,7 +501,7 @@ namespace PerformanceOptimization
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
 		    int count = 0;
-		    for (int i = 0; i < Hundert; i++)
+		    for (int i = 0; i < Hundred; i++)
 		    {
 			    try
 			    {
@@ -544,7 +543,7 @@ namespace PerformanceOptimization
 	    {
 		    // this method prepares million element long list of random signs taken from the _digitArray
 		    var random = new Random();
-		    for (int i = 0; i < Hundert; i++)
+		    for (int i = 0; i < Hundred; i++)
 		    {
 			    var sb = new StringBuilder();
 			    for (int d = 0; d < Digits; d++)
@@ -560,7 +559,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
-		    for (int i = 0; i < Hundert; i++)
+		    for (int i = 0; i < Hundred; i++)
 		    {
 			    try
 			    {
@@ -579,7 +578,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
-		    for (int i = 0; i < Hundert; i++)
+		    for (int i = 0; i < Hundred; i++)
 		    {
 				// try parse attempts to parse the number and simply do nothing if the parsing was unsuccessful - no exception thrown
 				int.TryParse(_numbers[i], out int _); // name "_" is used to hide the unused variable as much as possible - it will not be usable
@@ -621,7 +620,7 @@ namespace PerformanceOptimization
 	    static void PrepareListV2()
 	    {
 		    var random = new Random();
-		    for (int i = 0; i < Hundert; i++)
+		    for (int i = 0; i < Hundred; i++)
 			    _numbersV2.Add(random.Next(_lookup.Count + 1)); // 1 per 11 will be invalid
 	    }
 
@@ -629,7 +628,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
-		    for (int i = 0; i < Hundert; i++)
+		    for (int i = 0; i < Hundred; i++)
 		    {
 			    string s = null;
 			    try
@@ -646,7 +645,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
-		    for (int i = 0; i < Hundert; i++)
+		    for (int i = 0; i < Hundred; i++)
 		    {
 			    string s = null;
 			    int key = _numbersV2[i];

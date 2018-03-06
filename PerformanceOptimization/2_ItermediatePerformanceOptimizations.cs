@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 
 namespace PerformanceOptimization
@@ -27,10 +29,12 @@ namespace PerformanceOptimization
 	 */
 	public class ItermediatePerformanceOptimizations
 	{
-		static void DoSomething(object obj = null)
-		{
-			// this method do almost nothing
-		}
+		// benchmarking constants
+		const int Million = 1_000_000;
+		const int HundredThousand = 100_000;
+		const int Hundred = 100;
+
+		static void DoSomething(object obj = null) { /* image this method doing something small */ }
 
 		static byte GetByte(int i) => (byte) (i / 1000);
 
@@ -41,8 +45,10 @@ namespace PerformanceOptimization
 	    */
 		public static void FastGarbageCollection()
 	    {
+		    Console.WriteLine("This example does not provide any output, please check the code.");
+
 			// Example 1:
-		    // this is example of a shit code
+			// this is example of a shit code
 			var s = new StringBuilder();
 		    for (int i = 0; i < 10000; i++)
 		    { 
@@ -161,30 +167,20 @@ namespace PerformanceOptimization
 			// public static ArrayList staticList = new ArrayList(85190); - presizing it makes sure it will go to generation 2. So we avoid merging compacting etc.
 		    // [...] // lots of other code
 		    //DoSomething(staticList);
-
-			Console.WriteLine();
 	    }
+
 		
-		// benchmarking constants
-		const int Repetitions = 100000;
-		const int Experiments = 100;
-
-		// declare delegate
 		delegate void AddDelegate(int a, int b, out int result);
-
-		// set up first addition method
 		static void Add1(int a, int b, out int result) => result = a + b;
-
-		// set up second addition method
 		static void Add2(int a, int b, out int result) => result = a + b;
 
 		// Measure1: call Add1 and Add2 manually
-		static long Measure1()
+		static long DelegateMeasure1()
 		{
 			int result = 0;
 			var sw = new Stopwatch();
 			sw.Start();
-			for (int i = 0; i < Repetitions; i++)
+			for (int i = 0; i < HundredThousand; i++)
 			{
 				Add1(1234, 2345, out result);
 				Add2(1234, 2345, out result);
@@ -194,14 +190,14 @@ namespace PerformanceOptimization
 		}
 
 		// Measure2: call Add1 and Add2 using 2 unicast delegates
-		static long Measure2()
+		static long DelegateMeasure2()
 		{
 			int result = 0;
 			AddDelegate add1 = Add1;
 			AddDelegate add2 = Add2;
 			var sw = new Stopwatch();
 			sw.Start();
-			for (int i = 0; i < Repetitions; i++)
+			for (int i = 0; i < HundredThousand; i++)
 			{
 				add1(1234, 2345, out result);
 				add2(1234, 2345, out result);
@@ -211,7 +207,7 @@ namespace PerformanceOptimization
 		}
 
 		// Measure3: call Add1 and Add2 using 1 multicast delegate
-		static long Measure3()
+		static long DelegateMeasure3()
 		{
 			// multicast delegate is just a delegate that has many methods assign
 			// usage is exactly the same and methods are called in the sequence in order in which they have been added
@@ -220,7 +216,7 @@ namespace PerformanceOptimization
 			multiAdd += Add2;
 			var sw = new Stopwatch();
 			sw.Start();
-			for (int i = 0; i < Repetitions; i++)
+			for (int i = 0; i < HundredThousand; i++)
 			{
 				multiAdd(1234, 2345, out result);
 			}
@@ -244,16 +240,16 @@ namespace PerformanceOptimization
 				trick();
 		}
 		
-		public static void FastDelegatesExample()
+		public static void FastDelegates()
 		{
 			long manual = 0;
 			long unicast = 0;
 			long multicast = 0;
-			for (int i = 0; i < Experiments; i++)
+			for (int i = 0; i < Hundred; i++)
 			{
-				manual += Measure1();
-				unicast += Measure2();
-				multicast += Measure3();
+				manual += DelegateMeasure1();
+				unicast += DelegateMeasure2();
+				multicast += DelegateMeasure3();
 			}
 			Console.WriteLine($"Manual calls: {manual} ticks");
 			Console.WriteLine($"Unicast delegates: {unicast} ticks");
@@ -266,6 +262,112 @@ namespace PerformanceOptimization
 
 				Basically if you want performance don't use delegates
 			*/
+		}
+
+
+		// a delegate to create the object
+		delegate object ClassCreator();
+
+		// dictionary to cache class creators
+		static readonly Dictionary<string, ClassCreator> _classCreators = new Dictionary<string, ClassCreator>();
+
+		static long FactoryHardcodedMeasure(string typeName)
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			for (int i = 0; i < Million; i++)
+			{
+				switch (typeName)
+				{
+					case "System.Text.StringBuilder":
+						new StringBuilder();
+						break;
+					default:
+						throw new NotImplementedException();
+				}
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		// this is flexible but really slow
+		static long FactoryReflectionMeasure(string typeName)
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			for (int i = 0; i < Million; i++)
+				Activator.CreateInstance(Type.GetType(typeName));
+
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		/// <summary>
+		/// Creates a class by using Intermediate Language 
+		/// 1. Check dictionary if the delegate has been created already
+		/// 2. If so -> retrieve and call delegate
+		/// 3. If not ->
+		///		4. Create dynamic method and write newObj and ret instructions into it
+		///		5. Wrap method in a delegate and store in dictionary
+		///		6. Call delegate to instantiate class
+		/// </summary>
+		static ClassCreator GetClassCreator(string typeName)
+		{
+			// get delegate from dictionary
+			if (_classCreators.ContainsKey(typeName))
+				return _classCreators[typeName];
+			
+			// get the default constructor of the type
+			var type = Type.GetType(typeName);
+			ConstructorInfo ctorInfo = type.GetConstructor(new Type[0]);
+
+			// create a new dynamic method that constructs and returns the type
+			string methodName = type.Name + "Ctor";
+			var dynamicMethod = new DynamicMethod(methodName, type, new Type[0], typeof(object).Module);
+			var ilGenerator = dynamicMethod.GetILGenerator();
+			ilGenerator.Emit(OpCodes.Newobj, ctorInfo);
+			ilGenerator.Emit(OpCodes.Ret);
+
+			// add delegate to dictionary and return
+			var creator = (ClassCreator)dynamicMethod.CreateDelegate(typeof(ClassCreator));
+			_classCreators.Add(typeName, creator);
+
+			// return a delegate to the method
+			return creator;
+		}
+		
+		static long FactoryDelegateMeasure(string typeName)
+		{
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			for (int i = 0; i < Million; i++)
+			{
+				var classCreator = GetClassCreator(typeName);
+				classCreator();
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		public static void ClassFactories()
+		{
+			// A class factory is a special class that constructs other classes on demand, based on external configuration data.
+			// for example:
+			// var conn = ConnectionFactory.GetConnection("Some DB");
+			
+			// measurement run
+			long duration1 = FactoryHardcodedMeasure("System.Text.StringBuilder");
+			long duration2 = FactoryReflectionMeasure("System.Text.StringBuilder");
+			long duration3 = FactoryDelegateMeasure("System.Text.StringBuilder");
+
+			Console.WriteLine($"Compile-time construction: {duration1}");
+			Console.WriteLine($"Dynamic construction: {duration2}");
+			Console.WriteLine($"CIL method construction: {duration3}");
+			
+			/* Results
+				- Activator is around one hundred times slower 
+				- Dynamic method delegates are 5 times slower than compiled code
+			 */
 		}
 	}
 }
