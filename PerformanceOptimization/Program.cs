@@ -21,9 +21,12 @@ namespace PerformanceOptimization
 	        //BasicPerformanceOptimizations.ForVersusForeach();
 
 			//Exercises.RunExercises();
+
 			//ItermediatePerformanceOptimizations.FastGarbageCollection();
 	        //ItermediatePerformanceOptimizations.FastDelegates();
-			ItermediatePerformanceOptimizations.ClassFactories();
+			//ItermediatePerformanceOptimizations.ClassFactories();
+
+			AdvancedPerformanceOptimization.ArrayOnTheStack();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
