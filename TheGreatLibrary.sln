@@ -20,8 +20,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaScript", "JavaScript", "{A933D7F1-F486-400F-9BF8-8E9762B811D3}"
 	ProjectSection(SolutionItems) = preProject
 		JavaScript\Basic Concepts.txt = JavaScript\Basic Concepts.txt
-		JavaScript\codeB3.js = JavaScript\codeB3.js
 		JavaScript\index.html = JavaScript\index.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_ExecutionContextsAndLexicalEnviornments", "1_ExecutionContextsAndLexicalEnviornments", "{7616B8DD-2A28-46F3-AD61-B2CAE37E8DFD}"
+	ProjectSection(SolutionItems) = preProject
+		JavaScript\1_ExecutionContextsAndLexicalEnviornments\1_GlobalEnviornment.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\1_GlobalEnviornment.js
+		JavaScript\1_ExecutionContextsAndLexicalEnviornments\2_Hoisting.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\2_Hoisting.js
 	EndProjectSection
 EndProject
 Global
@@ -61,6 +66,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7616B8DD-2A28-46F3-AD61-B2CAE37E8DFD} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B75B40F-E28E-4282-8EFC-795BD77FB88A}
