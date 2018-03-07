@@ -26,7 +26,8 @@ namespace PerformanceOptimization
 	        //ItermediatePerformanceOptimizations.FastDelegates();
 			//ItermediatePerformanceOptimizations.ClassFactories();
 
-			AdvancedPerformanceOptimization.ArrayOnTheStack();
+			//AdvancedPerformanceOptimization.ArrayOnTheStack();
+			AdvancedPerformanceOptimization.ImageProcessing();
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();
