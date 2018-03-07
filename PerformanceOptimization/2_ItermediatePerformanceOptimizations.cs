@@ -177,13 +177,12 @@ namespace PerformanceOptimization
 		// Measure1: call Add1 and Add2 manually
 		static long DelegateMeasure1()
 		{
-			int result = 0;
 			var sw = new Stopwatch();
 			sw.Start();
 			for (int i = 0; i < HundredThousand; i++)
 			{
-				Add1(1234, 2345, out result);
-				Add2(1234, 2345, out result);
+				Add1(1234, 2345, out _);
+				Add2(1234, 2345, out _);
 			}
 			sw.Stop();
 			return sw.ElapsedTicks;
@@ -192,15 +191,14 @@ namespace PerformanceOptimization
 		// Measure2: call Add1 and Add2 using 2 unicast delegates
 		static long DelegateMeasure2()
 		{
-			int result = 0;
 			AddDelegate add1 = Add1;
 			AddDelegate add2 = Add2;
 			var sw = new Stopwatch();
 			sw.Start();
 			for (int i = 0; i < HundredThousand; i++)
 			{
-				add1(1234, 2345, out result);
-				add2(1234, 2345, out result);
+				add1(1234, 2345, out _);
+				add2(1234, 2345, out _);
 			}
 			sw.Stop();
 			return sw.ElapsedTicks;
@@ -211,14 +209,13 @@ namespace PerformanceOptimization
 		{
 			// multicast delegate is just a delegate that has many methods assign
 			// usage is exactly the same and methods are called in the sequence in order in which they have been added
-			int result = 0;
 			AddDelegate multiAdd = Add1;
 			multiAdd += Add2;
 			var sw = new Stopwatch();
 			sw.Start();
 			for (int i = 0; i < HundredThousand; i++)
 			{
-				multiAdd(1234, 2345, out result);
+				multiAdd(1234, 2345, out _);
 			}
 			sw.Stop();
 			return sw.ElapsedTicks;

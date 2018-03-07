@@ -136,5 +136,101 @@ namespace PerformanceOptimization
 			//Console.WriteLine("Grayscale conversion using GetPixel/SetPixel: " + elapsedA);
 			//Console.WriteLine("Grayscale conversion using pointers: " + elapsedB);
 		}
+
+		
+		private static long MeasureA(int size)
+		{
+
+			byte[] image = new byte[size * size * 3];
+
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			for (int i = 0; i < image.Length;)
+			{
+				byte grey = (byte)(.299 * image[i + 2] + .587 * image[i + 1] + .114 * image[i]);
+				image[i] = grey;
+				image[i + 1] = grey;
+				image[i + 2] = grey;
+				i += 3;
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		private static unsafe long MeasureB(int size)
+		{
+			byte[] image = new byte[size * size * 3];
+
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			unsafe
+			{
+				// fixed means the GC cannot move it while control is in the scope
+				fixed (byte* p = &image[0])
+				{
+					for (int i = 0; i < image.Length;)
+					{
+						byte grey = (byte)(.299 * image[i + 2] + .587 * image[i + 1] + .114 * image[i]);
+						p[i] = grey;
+						p[i + 1] = grey;
+						p[i + 2] = grey;
+						i += 3;
+					}
+				}
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		private static unsafe long MeasureC(int size)
+		{
+			byte[] image = new byte[size * size * 3];
+
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			unsafe
+			{
+				fixed (byte* imgPtr = &image[0])
+				{
+					byte* p = imgPtr;
+					int stopAddress = (int)p + size * size * 3;
+					while ((int)p != stopAddress)
+					{
+						byte grey = (byte)(.299 * p[2] + .587 * p[1] + .114 * p[0]);
+						*p = grey;
+						// this is faster because CPU has specialized instruction for incrementing by one
+						*(p + 1) = grey;
+						*(p + 2) = grey;
+						p += 3;
+					}
+				}
+			}
+			stopwatch.Stop();
+			return stopwatch.ElapsedMilliseconds;
+		}
+
+		public static void ImageProcessingV2()
+		{
+			// we measure the performance for simulated images of different sizes
+			for (int size = 512; size < 4096; size += 128)
+			{
+				// image processing using byte[]
+				long duration1 = MeasureA(size);
+
+				// image processing using byte* and reading by indexer[] 
+				long duration2 = MeasureB(size);
+
+				// image processing using byte* and advancing the pointer
+				long duration3 = MeasureC(size);
+
+				// write results
+				Console.WriteLine($"{size}\t{duration1}\t{duration2}\t{duration3}");
+
+				/* Results
+					MeasureC is around 25% faster
+					Basically we should avoid pointers only in specific scenarios it makes sense to use them
+				 */
+			}
+		}
 	}
 }
