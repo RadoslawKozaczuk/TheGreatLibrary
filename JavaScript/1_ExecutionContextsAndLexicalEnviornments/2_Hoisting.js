@@ -7,7 +7,7 @@
 
 b(); // gives correct value
 console.log(a); // valid but gives undefined
-console.log(c); // gives and error
+//console.log(c); // gives and error
 
 var a = 'Hello World!';
 function b() {
