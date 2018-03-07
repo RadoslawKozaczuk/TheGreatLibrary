@@ -15,7 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactiveExtensions", "React
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore", "EntityFrameworkCore\EntityFrameworkCore.csproj", "{5592B6FF-275D-4495-9D15-8B1A576ACA55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceOptimization", "PerformanceOptimization\PerformanceOptimization.csproj", "{E52DF1E0-E51B-4A8F-8148-7F8E8DA431CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceOptimization", "PerformanceOptimization\PerformanceOptimization.csproj", "{E52DF1E0-E51B-4A8F-8148-7F8E8DA431CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaScript", "JavaScript", "{A933D7F1-F486-400F-9BF8-8E9762B811D3}"
+	ProjectSection(SolutionItems) = preProject
+		JavaScript\Basic Concepts.txt = JavaScript\Basic Concepts.txt
+		JavaScript\codeB3.js = JavaScript\codeB3.js
+		JavaScript\index.html = JavaScript\index.html
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
