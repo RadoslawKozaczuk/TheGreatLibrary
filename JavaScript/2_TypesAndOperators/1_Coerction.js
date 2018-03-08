@@ -21,16 +21,16 @@ var b = "1" + 2;
 console.log("a: type: " + typeof a + " value: " + a);
 console.log("b: type: " + typeof b + " value: " + b);
 
-// result is string in both cases meaing string is being proritetized
+// result is string in both cases meaning string is being prioritized
 
 
 console.log(1 < 2 < 3); // true
 console.log(3 < 2 < 1); // also true!
 
-/* there is assiosiativity and '<' operator goes from left to right so:
+/* there is associativity and '<' operator goes from left to right so:
 	3 < 2 < 1
 	false < 1
-	Number(false) < 1 // coerction we convert boolean value to number, Number(true) would be 1
+	Number(false) < 1 // coercion we convert boolean value to number, Number(true) would be 1
 	0 < 1
 	true
 */
@@ -40,12 +40,12 @@ console.log("Number(undefined) = " + Number(undefined));
 console.log("Number(null) = " + Number(null)); // this is weird one - it is good to remember
 
 console.log(false == 0); // true
-console.log(null == 0); // false, this does not coerce to zero when in comparision
+console.log(null == 0); // false, this does not coerce to zero when in comparison
 
 console.log("" == 0); // true
 console.log("" == false); // false
 
 // so save our butt we use triple equals
 console.log("3" === 3); // false 
-// it basicaly says false whenever types are different
-// in general 99% of times use triple equals to avoid unpredictible errors
+// it basically says false whenever types are different
+// in general 99% of times use triple equals to avoid unpredictable errors
