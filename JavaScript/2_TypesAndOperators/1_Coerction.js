@@ -1,28 +1,25 @@
-/* Dynamic Typing 
-	- you don't tell the engine what type of data a variable holds, it figures it out while your code is running.
-	- variables can hold  different types of values because it's all figured out during execution.
-*/
+/* === Dynamic Typing ===
+	You don't tell the engine what type of data a variable holds, it figures it out while your code is running.
+	Variables can hold  different types of values because it's all figured out during execution. */
 
-/* there is 6 primitive types in JS
+/* === Primitve types in JS ===
 	- undefined // variable was never set in code
 	- null // represents lack of value
 	- boolean
 	- number // always floating point number
 	- string
 	- NaN // not a number, when coercion to a number failed for example Number("abc")
-	- symbol // only in ES6 - ???
-*/
+	- symbol // only in ES6 - ??? */
 
-// Coercion - converting a value from one type to another. This happens quite a bit it JS.
+/* === Coercion === 
+	converting a value from one type to another. This happens quite a bit it JS. */
 
 var a = 1 + "2";
 var b = "1" + 2;
 
 console.log("a: type: " + typeof a + " value: " + a);
 console.log("b: type: " + typeof b + " value: " + b);
-
 // result is string in both cases meaning string is being prioritized
-
 
 console.log(1 < 2 < 3); // true
 console.log(3 < 2 < 1); // also true!

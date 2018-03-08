@@ -1,4 +1,5 @@
-// Asynchronous - More than one at a time, 
+/* === Asynchronous === 
+	More than one at a time. */
 
 /*
 	there is a list inside JavaScript Engine named EventQueue

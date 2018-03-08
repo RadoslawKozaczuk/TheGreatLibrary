@@ -5,7 +5,9 @@ Synchronous - one at a time, and in order.
 
 */
 
-// Invocation - running a function. In JavaScript by using parenthesis
+/* === Invocation === 
+	Running a function. 
+	In JavaScript by using parenthesis. */
 
 // even though a is above b it is present in the memory
 function a() {

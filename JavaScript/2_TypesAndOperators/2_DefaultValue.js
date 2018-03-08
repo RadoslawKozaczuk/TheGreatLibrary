@@ -8,11 +8,10 @@ function greet(name) {
 greet("Tony");
 greet();
 
-
-// in case we had more than one script imported what happens is quite literraly merging them all into one big file
+// in case we had more than one script imported what happens is quite literally merging them all into one big file
 // by stacking the code on the top of another
 
-// lets say we have a variable libraryName and we dont want to touch it if other library already did
+// lets say we have a variable libraryName and we don't want to touch it if other library already did
 // we can do such thing in our .js file
 
 var check = window.libraryName || "lib";

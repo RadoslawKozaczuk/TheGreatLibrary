@@ -34,6 +34,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_ExecutionContextsAndLexic
 		JavaScript\1_ExecutionContextsAndLexicalEnviornments\7_AsynchronousCallbacks.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\7_AsynchronousCallbacks.js
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2_TypesAndOperators", "2_TypesAndOperators", "{AAFC5B01-00C6-4732-B595-7612D9DD982D}"
+	ProjectSection(SolutionItems) = preProject
+		JavaScript\2_TypesAndOperators\1_Coerction.js = JavaScript\2_TypesAndOperators\1_Coerction.js
+		JavaScript\2_TypesAndOperators\2_DefaultValue.js = JavaScript\2_TypesAndOperators\2_DefaultValue.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3_ObjectsAndFunctions", "3_ObjectsAndFunctions", "{670E23D6-A712-4100-8E12-D13A5879354F}"
+	ProjectSection(SolutionItems) = preProject
+		JavaScript\3_ObjectsAndFunctions\1_Objects.js = JavaScript\3_ObjectsAndFunctions\1_Objects.js
+		JavaScript\3_ObjectsAndFunctions\2_FakeNamespaces.js = JavaScript\3_ObjectsAndFunctions\2_FakeNamespaces.js
+		JavaScript\3_ObjectsAndFunctions\3_Objects.js = JavaScript\3_ObjectsAndFunctions\3_Objects.js
+		JavaScript\3_ObjectsAndFunctions\4_FunctionExpressions.js = JavaScript\3_ObjectsAndFunctions\4_FunctionExpressions.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +88,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7616B8DD-2A28-46F3-AD61-B2CAE37E8DFD} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
+		{AAFC5B01-00C6-4732-B595-7612D9DD982D} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
+		{670E23D6-A712-4100-8E12-D13A5879354F} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B75B40F-E28E-4282-8EFC-795BD77FB88A}

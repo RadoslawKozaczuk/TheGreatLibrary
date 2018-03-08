@@ -1,5 +1,5 @@
-// Scope
-//	Where a variable is available in your code. And it maybe the same variable or a new copy.
+/* === Scope ===
+	Where a variable is available in your code. And it maybe the same variable or a new copy. */
 
 // lexical environment make the difference
 // b sits in the file so it will have reference to the global object

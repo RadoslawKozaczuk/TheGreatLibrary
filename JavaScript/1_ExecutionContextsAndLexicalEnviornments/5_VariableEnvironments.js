@@ -1,4 +1,5 @@
-// Variable Environment - where the variables live and how they relate to each other.
+/* === Variable Environment ===
+	Where the variables live and how they relate to each other. */
 
 function b() {
 	var myVar;
