@@ -62,6 +62,6 @@ console.log(getPerson());
 function getPersonBetter() {
 	return {
 		firstName: "Tony"
-	}
+	};
 }
 console.log(getPersonBetter());
