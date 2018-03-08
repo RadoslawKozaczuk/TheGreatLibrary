@@ -27,6 +27,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_ExecutionContextsAndLexic
 	ProjectSection(SolutionItems) = preProject
 		JavaScript\1_ExecutionContextsAndLexicalEnviornments\1_GlobalEnviornment.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\1_GlobalEnviornment.js
 		JavaScript\1_ExecutionContextsAndLexicalEnviornments\2_Hoisting.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\2_Hoisting.js
+		JavaScript\1_ExecutionContextsAndLexicalEnviornments\3_Undefined.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\3_Undefined.js
+		JavaScript\1_ExecutionContextsAndLexicalEnviornments\4_Execution.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\4_Execution.js
+		JavaScript\1_ExecutionContextsAndLexicalEnviornments\5_VariableEnvironments.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\5_VariableEnvironments.js
 	EndProjectSection
 EndProject
 Global

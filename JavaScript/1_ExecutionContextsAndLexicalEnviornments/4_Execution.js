@@ -5,7 +5,7 @@ Synchronous - one at a time, and in order.
 
 */
 
-// Invocaction - running a function. In JavaScript by using parenthesis
+// Invocation - running a function. In JavaScript by using parenthesis
 
 // even though a is above b it is present in the memory
 function a() {
@@ -14,15 +14,15 @@ function a() {
 }
 
 function b() {
-	var d; // like in c# this does not collide with the one below becase of the different context
+	var d; // like in c# this does not collide with the one below because of the different context
 }
 
 a();
 var d;
 
 /*
-	when it comes to executing a() line 18 another execution context is being created and put on the top of the exection stack
+	when it comes to executing a() line 18 another execution context is being created and put on the top of the execution stack
 	and the one that is on top is the one that is currently running
 	and then it creates another execution context of b() and put it on the top of the stack
-	so basically every function creates an eecution context that goes through he creation phase and executes code line by line
+	so basically every function creates an execution context that goes through he creation phase and executes code line by line
 */
