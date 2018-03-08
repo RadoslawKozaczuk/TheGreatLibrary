@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_ExecutionContextsAndLexic
 		JavaScript\1_ExecutionContextsAndLexicalEnviornments\3_Undefined.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\3_Undefined.js
 		JavaScript\1_ExecutionContextsAndLexicalEnviornments\4_Execution.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\4_Execution.js
 		JavaScript\1_ExecutionContextsAndLexicalEnviornments\5_VariableEnvironments.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\5_VariableEnvironments.js
+		JavaScript\1_ExecutionContextsAndLexicalEnviornments\6_ScopeChain.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\6_ScopeChain.js
+		JavaScript\1_ExecutionContextsAndLexicalEnviornments\7_AsynchronousCallbacks.js = JavaScript\1_ExecutionContextsAndLexicalEnviornments\7_AsynchronousCallbacks.js
 	EndProjectSection
 EndProject
 Global
