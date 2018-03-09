@@ -50,6 +50,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3_ObjectsAndFunctions", "3_
 		JavaScript\3_ObjectsAndFunctions\6_Arguments.js = JavaScript\3_ObjectsAndFunctions\6_Arguments.js
 		JavaScript\3_ObjectsAndFunctions\7_IIFE.js = JavaScript\3_ObjectsAndFunctions\7_IIFE.js
 		JavaScript\3_ObjectsAndFunctions\8_Closures.js = JavaScript\3_ObjectsAndFunctions\8_Closures.js
+		JavaScript\3_ObjectsAndFunctions\9_FunctionFactories.js = JavaScript\3_ObjectsAndFunctions\9_FunctionFactories.js
 	EndProjectSection
 EndProject
 Global
