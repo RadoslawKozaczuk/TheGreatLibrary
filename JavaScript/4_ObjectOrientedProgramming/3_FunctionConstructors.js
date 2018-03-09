@@ -41,9 +41,9 @@ console.log(jim); // we get undefined
 
 
 // Build-in function constructors
-var a = new Number(3); 
-console.log(a); // wow look it is not a primitive type it is an object with a primitive type in it
-console.log(a.__proto__); // Number object
+var num = new Number(3); 
+console.log(num); // wow look it is not a primitive type it is an object with a primitive type in it
+console.log(num.__proto__); // Number object
 
 // function constructors create objects
 
@@ -63,6 +63,11 @@ Number.prototype.isPositive = function() {
 //console.log(3.isPositive()); // won't work because while string was automatically converted to an object a number is not
 
 // but this will work
-console.log(Number(3).isPositive());
+console.log("Number(3).isPositive(): " + Number(3).isPositive());
 
 // NOTE: Extending prototypes of a basic object may cause unexpected events and is not recommended unless it is really necessary 
+var a = 3;
+var b = new Number(3);
+
+// true because b is converted and false because different types
+console.log("a == b is " + (a == b).toString() + " but a === b is " + (a === b).toString());
