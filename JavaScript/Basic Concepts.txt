@@ -1,41 +1,33 @@
-=== Readme ===
-Basic vocabulary
+=== Syntax Parser ===
+	A program that reads your code and determines what it does and if its grammar is valid.
 
 
-
-Syntax Parser 
-    - a program that reads your code and determines what it does and if its grammar is valid.
-
-===
-
-Lexical Enviornment 
-    - where something sits physically in the code you write.
-    - 'Lexical' means 'having to do with words or grammar'. A lexical enviornment exists in programming languages in which WHERE you write something is important. Not every languahe works that way.
+=== Lexical Environment ===
+	Where something sits physically in the code you write.
+	'Lexical' means 'having to do with words or grammar'. A lexical environment exists in programming languages in which WHERE you write something is important. 
+	Not every language works that way.
 
 function hello() {
     var a = 'hello world';
 }
 
-The variable 'a' sits lexically in the function hello/
-So when we talk about hte lixical enviornment we talk about where something is written and what surrounds it
+The variable 'a' sits lexically in the function hello.
+So when we talk about the lexical environment we talk about where something is written and what surrounds it.
 
-===
 
-Execution Context 
-    - a wrapper to help manage the code that is running.
-    - there are lots of lexical enviornment. Which one is currently running is managed via execution execution contexts. It contain things beyond what you've written in your code.
-    - the base execution context is the global execution context.
-    - it creates the Global Gbject and the variable 'this'
+=== Execution Context ===
+	A wrapper to help manage the code that is running.
+	There are lots of lexical environment. Which one is currently running is managed via execution contexts. It contain things beyond what you've written in your code.
+	The base execution context is the global execution context.
+	It creates the Global Object and the variable 'this'
 
-===
 
-A Name/Value pair 
-    - a name which maps to a unique value.
-    - the name may be defined more than once, but only can have one value in any given context.
-    - that value may be more name/value pairs.
+=== A Name/Value pair ===
+	A name which maps to a unique value.
+	The name may be defined more than once, but only can have one value in any given context.
+	That value may be more name/value pairs.
 
 Address = '100 Street' // address is name and '100 Street' is value
-
 
 In JavaScript an object is just simply a collection of name/value pairs. 
 
@@ -43,7 +35,7 @@ Address:
 {
     Street: 'Main', // Street is a name and 'Main its a value 
     Number: '100,
-    Apartmet: // apartment is a name and its value is a collection
+    Apartment: // apartment is a name and its value is a collection
     {
         Floor: 3,
         Number: 303
