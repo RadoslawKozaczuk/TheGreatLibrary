@@ -42,6 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2_TypesAndOperators", "2_Ty
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3_ObjectsAndFunctions", "3_ObjectsAndFunctions", "{670E23D6-A712-4100-8E12-D13A5879354F}"
 	ProjectSection(SolutionItems) = preProject
+		JavaScript\3_ObjectsAndFunctions\10_ CallApplyBind.js = JavaScript\3_ObjectsAndFunctions\10_ CallApplyBind.js
 		JavaScript\3_ObjectsAndFunctions\1_Objects.js = JavaScript\3_ObjectsAndFunctions\1_Objects.js
 		JavaScript\3_ObjectsAndFunctions\2_FakeNamespaces.js = JavaScript\3_ObjectsAndFunctions\2_FakeNamespaces.js
 		JavaScript\3_ObjectsAndFunctions\3_Objects.js = JavaScript\3_ObjectsAndFunctions\3_Objects.js
