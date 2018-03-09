@@ -58,6 +58,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4_ObjectOrientedProgramming", "4_ObjectOrientedProgramming", "{1CC7AF4D-8BCE-4B55-893C-B99FA900F0A2}"
 	ProjectSection(SolutionItems) = preProject
 		JavaScript\4_ObjectOrientedProgramming\1_Prototype.js = JavaScript\4_ObjectOrientedProgramming\1_Prototype.js
+		JavaScript\4_ObjectOrientedProgramming\2_Reflection.js = JavaScript\4_ObjectOrientedProgramming\2_Reflection.js
 	EndProjectSection
 EndProject
 Global
