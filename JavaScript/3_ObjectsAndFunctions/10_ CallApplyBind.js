@@ -22,7 +22,7 @@ var logName = function(lang1, lang2) {
 
 // wouldn't it be nice to have an access to the person object?
 // yes! so lets bind it to it
-// now it will not fail becasue this will point at the person object
+// now it will not fail because this will point at the person object
 // bind creates a copy of the function
 var logPersonName = logName.bind(person);
 
