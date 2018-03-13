@@ -75,6 +75,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_BasicStuff", "1_BasicStuf
 		AngularJS\1_BasicStuff\1_ServicesAndDepInject.js = AngularJS\1_BasicStuff\1_ServicesAndDepInject.js
 		AngularJS\1_BasicStuff\2_ScopeAndInterpolation.html = AngularJS\1_BasicStuff\2_ScopeAndInterpolation.html
 		AngularJS\1_BasicStuff\2_ScopeAndInterpolation.js = AngularJS\1_BasicStuff\2_ScopeAndInterpolation.js
+		AngularJS\1_BasicStuff\3_Watchers.html = AngularJS\1_BasicStuff\3_Watchers.html
+		AngularJS\1_BasicStuff\3_Watchers.js = AngularJS\1_BasicStuff\3_Watchers.js
 	EndProjectSection
 EndProject
 Global
