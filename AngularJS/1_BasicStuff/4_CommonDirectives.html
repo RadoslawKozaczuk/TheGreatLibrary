@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" ng-app="myApp">
+    <head>
+        <title>Learn and Understand AngularJS</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta charset="UTF-8">
+
+        <!-- load bootstrap and fontawesome via CDN -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+        
+        <!-- load angular via CDN -->
+        <script src="//code.angularjs.org/1.6.9/angular.min.js"></script>
+        <script src="4_CommonDirectives.js"></script>
+    </head>
+    <body>
+
+        <header>
+			<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">AngularJS</a>
+				</div>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+				</ul>
+			</div>
+			</nav>
+		</header>
+
+        <div class="container">
+
+            <div ng-controller="mainController">
+            
+                <div>
+                    <label>What is your twitter handle?</label>
+                    <input type="text" ng-model="handle" />
+                </div>
+				
+				<!-- ng-if take a JavaScript expression. It removes or allows to exists entire pieces of the DOM -->
+				<!-- ng-show take a JavaScript expression. It hides the piece it is still exist in the DOM. The opposite of it is ng-hide -->
+				<!-- ng-class takes a JavaScript object so a set of key value pairs where key is a class and value is a condition. 
+						If the particular condition is met the corresponding class is applied. -->
+				<div class="alert" 
+					 ng-class="{ 'alert-warning': handle.length < characters, 'alert-danger': handle.length > characters }" 
+					 ng-show="handle.length !== characters">
+					
+					<div ng-show="handle.length < characters">
+						You have less than 5 characters
+					</div>
+					
+					<div ng-show="handle.length > characters">
+						You have more than 5 characters
+					</div>
+					
+				</div>
+                
+                <hr />
+                
+                <h1>twitter.com/{{ lowercasehandle() }}</h1>
+				
+				<h3>Rules: </h3>
+				<ul>
+					<li ng-repeat="rule in rules">
+						{{ rule.rulename }}
+					</li>
+				</ul>
+				
+				<input type="button" value="Click me" ng-click="alertClick()" />
+				
+				<bt/>
+				
+				<!-- if you have a slow computer JS may not kick-in in time. In such case we use ng-cloak -->
+				<div ng-cloak>{{characters}}</div>
+                
+            </div>
+            
+		</div>
+
+    </body>
+</html>
