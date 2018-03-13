@@ -61,6 +61,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4_ObjectOrientedProgramming
 		JavaScript\4_ObjectOrientedProgramming\2_Reflection.js = JavaScript\4_ObjectOrientedProgramming\2_Reflection.js
 		JavaScript\4_ObjectOrientedProgramming\3_FunctionConstructors.js = JavaScript\4_ObjectOrientedProgramming\3_FunctionConstructors.js
 		JavaScript\4_ObjectOrientedProgramming\4_ObjectCreate.js = JavaScript\4_ObjectOrientedProgramming\4_ObjectCreate.js
+		JavaScript\4_ObjectOrientedProgramming\5_Typeof.js = JavaScript\4_ObjectOrientedProgramming\5_Typeof.js
 	EndProjectSection
 EndProject
 Global

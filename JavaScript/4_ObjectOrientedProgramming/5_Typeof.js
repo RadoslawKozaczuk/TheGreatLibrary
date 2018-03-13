@@ -29,3 +29,19 @@ console.log("typeof null is: " + typeof null + " // this is BUG"); // a bug sinc
 
 var z = function() { };
 console.log("typeof function() { } is: " + typeof z);
+
+// strict mode
+// we use as a literally string
+var person;
+persom = {}; // object is added to the global object because of the typo
+console.log(persom)
+
+// it can be use in a function
+function logNewPerson() {
+	"use strict" // this is an extra thing and not every browser implement it the same way
+	
+	var person2;
+	persom2 = {};
+	console.log(persom2); // throws an exception because in the strict mode
+};
+logNewPerson();
