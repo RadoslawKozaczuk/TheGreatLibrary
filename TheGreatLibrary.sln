@@ -71,7 +71,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AngularJS", "AngularJS", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_BasicStuff", "1_BasicStuff", "{F33A5579-D6F5-44A9-A364-647EE6C7F61E}"
 	ProjectSection(SolutionItems) = preProject
-		AngularJS\1_BasicStuff\app.js = AngularJS\1_BasicStuff\app.js
+		AngularJS\1_BasicStuff\1_ServicesAndDepInject.js = AngularJS\1_BasicStuff\1_ServicesAndDepInject.js
 		AngularJS\1_BasicStuff\index.html = AngularJS\1_BasicStuff\index.html
 	EndProjectSection
 EndProject
