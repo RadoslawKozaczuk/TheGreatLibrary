@@ -64,6 +64,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4_ObjectOrientedProgramming
 		JavaScript\4_ObjectOrientedProgramming\5_Typeof.js = JavaScript\4_ObjectOrientedProgramming\5_Typeof.js
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AngularJS", "AngularJS", "{53E096AB-1806-4B36-BFC1-59A9EF5CC46E}"
+	ProjectSection(SolutionItems) = preProject
+		AngularJS\angular.js = AngularJS\angular.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_BasicStuff", "1_BasicStuff", "{F33A5579-D6F5-44A9-A364-647EE6C7F61E}"
+	ProjectSection(SolutionItems) = preProject
+		AngularJS\1_BasicStuff\app.js = AngularJS\1_BasicStuff\app.js
+		AngularJS\1_BasicStuff\index.html = AngularJS\1_BasicStuff\index.html
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +118,7 @@ Global
 		{AAFC5B01-00C6-4732-B595-7612D9DD982D} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
 		{670E23D6-A712-4100-8E12-D13A5879354F} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
 		{1CC7AF4D-8BCE-4B55-893C-B99FA900F0A2} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
+		{F33A5579-D6F5-44A9-A364-647EE6C7F61E} = {53E096AB-1806-4B36-BFC1-59A9EF5CC46E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B75B40F-E28E-4282-8EFC-795BD77FB88A}
