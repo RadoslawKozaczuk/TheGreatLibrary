@@ -1,12 +1,12 @@
-var myApp = angular.module('myApp', []);
+var myApp = angular.module("myApp", []);
 
-myApp.controller('mainController', ['$scope', function($scope) {
+myApp.controller("mainController", ["$scope", function($scope) {
     
     $scope.name = "Main";
     
 }]);
 
-myApp.controller('secondController', ['$scope', function($scope) {
+myApp.controller("secondController", ["$scope", function($scope) {
     
 	// scope object is unique to each controller
     $scope.name = "Second";

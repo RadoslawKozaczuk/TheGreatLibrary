@@ -3,11 +3,11 @@
 // AngularJS add on the Angular Context
 
 // when you add something on the $scope Angular know it needs to keep track on them
-// everytime something that might have changed the value Angular check the old and new value
+// every time something that might have changed the value Angular check the old and new value
 
 // there is something knows an the Digest Loop which checks if anything changes
 // and if so it checks if something else might have changed after that change
-// and it loop over until all old and new values match and then at the end it updates the dom
+// and it loop over until all old and new values match and then at the end it updates the DOM
 
 
 var myApp = angular.module("myApp", []);

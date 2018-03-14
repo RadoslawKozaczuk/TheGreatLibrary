@@ -14,7 +14,7 @@ myApp.controller("mainController", ["$scope", "$timeout", "$filter", function($s
 	
 	// two-way data binding means view change the model and model change the view
 	$scope.lowercasehandle = function() {
-		return $filter('lowercase')($scope.handle);
+		return $filter("lowercase")($scope.handle);
 	}
 	
 	$scope.handle = "";

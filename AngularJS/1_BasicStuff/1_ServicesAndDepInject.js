@@ -11,18 +11,18 @@
 
 
 // MODULE
-var angularApp = angular.module('angularApp', ["ngResource"]); // the second parameter are dependencies
+var angularApp = angular.module("angularApp", ["ngResource"]); // the second parameter are dependencies
 
 // CONTROLLERS
 // the last parameter is the function of the controller
 // rest of the parameters are the parameter of the function
 // it is done this way to make the controller resistant to minification - of course the order matters
-angularApp.controller('mainController', ['$scope', "$log", function ($scope, $log) {
+angularApp.controller("mainController", ["$scope", "$log", function ($scope, $log) {
 	// AngularJS defines something called $scope. $ in $scope is just part of the name
 	// it was injected by Angular
 	
 	// we can add variables and function to it
-	$scope.name = 'Jane Doe';
+	$scope.name = "Jane Doe";
 	$scope.getname = function() {
 		return $scope.name;
 	}

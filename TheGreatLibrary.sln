@@ -81,6 +81,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_BasicStuff", "1_BasicStuf
 		AngularJS\1_BasicStuff\4_CommonDirectives.js = AngularJS\1_BasicStuff\4_CommonDirectives.js
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2_SinglePageApplications", "2_SinglePageApplications", "{30F9BA2F-D99E-43BA-86F3-D64EA562741A}"
+	ProjectSection(SolutionItems) = preProject
+		AngularJS\2_SinglePageApplications\1_MultipleControllers.html = AngularJS\2_SinglePageApplications\1_MultipleControllers.html
+		AngularJS\2_SinglePageApplications\1_MultipleControllers.js = AngularJS\2_SinglePageApplications\1_MultipleControllers.js
+		AngularJS\2_SinglePageApplications\2_SinglepageAndHash.html = AngularJS\2_SinglePageApplications\2_SinglepageAndHash.html
+		AngularJS\2_SinglePageApplications\2_SinglepageAndHash.js = AngularJS\2_SinglePageApplications\2_SinglepageAndHash.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +133,7 @@ Global
 		{670E23D6-A712-4100-8E12-D13A5879354F} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
 		{1CC7AF4D-8BCE-4B55-893C-B99FA900F0A2} = {A933D7F1-F486-400F-9BF8-8E9762B811D3}
 		{F33A5579-D6F5-44A9-A364-647EE6C7F61E} = {53E096AB-1806-4B36-BFC1-59A9EF5CC46E}
+		{30F9BA2F-D99E-43BA-86F3-D64EA562741A} = {53E096AB-1806-4B36-BFC1-59A9EF5CC46E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B75B40F-E28E-4282-8EFC-795BD77FB88A}
