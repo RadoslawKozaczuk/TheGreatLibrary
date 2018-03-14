@@ -88,8 +88,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2_SinglePageApplications", 
 		AngularJS\2_SinglePageApplications\2_SinglepageAndHash.html = AngularJS\2_SinglePageApplications\2_SinglepageAndHash.html
 		AngularJS\2_SinglePageApplications\2_SinglepageAndHash.js = AngularJS\2_SinglePageApplications\2_SinglepageAndHash.js
 		AngularJS\2_SinglePageApplications\3_MainPage.html = AngularJS\2_SinglePageApplications\3_MainPage.html
-		AngularJS\2_SinglePageApplications\3_Routing.html = AngularJS\2_SinglePageApplications\3_Routing.html
-		AngularJS\2_SinglePageApplications\3_Routing.js = AngularJS\2_SinglePageApplications\3_Routing.js
+		AngularJS\2_SinglePageApplications\3_RoutingServices.html = AngularJS\2_SinglePageApplications\3_RoutingServices.html
+		AngularJS\2_SinglePageApplications\3_RoutingServices.js = AngularJS\2_SinglePageApplications\3_RoutingServices.js
 		AngularJS\2_SinglePageApplications\3_SecondPage.html = AngularJS\2_SinglePageApplications\3_SecondPage.html
 	EndProjectSection
 EndProject
