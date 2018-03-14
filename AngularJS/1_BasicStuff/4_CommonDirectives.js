@@ -16,6 +16,7 @@ myApp.controller('mainController', ['$scope', '$filter', function ($scope, $filt
 		{ rulename: "Must be cool" }
 	];
 	
+	// we can respond to many different events
 	$scope.alertClick = function() {
 		alert("Clicked!")
 	};
