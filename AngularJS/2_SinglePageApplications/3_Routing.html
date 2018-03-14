@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app="myApp">
+    <head>
+        <title>Learn and Understand AngularJS</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta charset="UTF-8">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+        <script src="//code.angularjs.org/1.6.9/angular.min.js"></script>
+		<script src="//code.angularjs.org/1.6.9/angular-route.js"></script>
+		
+        <script src="3_Routing.js"></script>
+    </head>
+    <body>
+
+        <header>
+			<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">AngularJS</a>
+				</div>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Home</a></li>
+					<li><a href="#!/second">Second</a></li>
+					<li><a href="#!/second/12">2nd with a param</a></li>
+				</ul>
+			</div>
+			</nav>
+		</header>
+
+        <div class="container">
+			
+			<!-- ng-view says that if we use routing this is where different content will be dropped. It replaces what was already here. -->
+            <div ng-view></div>
+            
+		</div>
+
+    </body>
+</html>
