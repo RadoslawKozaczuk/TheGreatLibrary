@@ -35,8 +35,8 @@ namespace CSharpSeven
 		{
 			public Derived()
 			{
-				c = 123;
-				b = 234; // I can access this because it is in the same assembly
+                b = 234; // I can access this because it is in the same assembly
+                c = 123;
 			}
 		}
 		
@@ -52,15 +52,14 @@ namespace CSharpSeven
 
 		static void NonTrailingNamedArguments()
 		{
-			// previously we could do something 
-			// there was restricted that named parameters has to be after positional ones
-			DoSomething(foo: 33, bar: 44);
+			// there was restriction that named parameters has to be after positional ones
+			DoSomething(33, bar: 44);
 
 			// now this restriction is gone
 			DoSomething(foo: 33, 44);
 
 			// still illegal - arguments have to be in order
-			//doSomething(33, foo:44)
+			//DoSomething(33, foo:44)
 
 			// the only way to break the order is to name every parameter
 			DoSomething(bar: 33, foo: 44);
@@ -90,22 +89,18 @@ namespace CSharpSeven
 			public override string ToString() => $"({X},{Y})";
 		}
 		
-		void ChangeMe(ref Point p)
-		{
-			p.X++;
-		}
+		void ChangeMe(ref Point p) => p.X++;
 
-		// structs are passed by reference (64 bits n 64 bit systems)
+		// structs are passed by reference (64 bits in 64 bit systems)
 		// 'in' is effectively by-ref and read-only
-		// 'in' says that this struct will be past as a reference
+		// 'in' says that this struct will be passed as a reference
 		static double MeasureDistance(in Point p1, in Point p2)
 		{
 			// cannot assign to in parameter
 			// p1 = new Point();
 
 			// cannot pass as ref or out method
-			// obvious
-			// changeMe(ref p2);
+			// ChangeMe(ref p2);
 
 			p2.Reset(); // instance operations happen on a copy! It is a protection from walking around the readonly constraint
 

@@ -87,13 +87,8 @@ namespace CSharpSeven
 			WriteLine(v.Minute);
 		}
 
-		class Animal
-		{
-		}
-
-		class Pig : Animal
-		{
-		}
+		class Animal { }
+		class Pig : Animal { }
 
 		// previously these two things were not possible
 		class PatternMatchingWithGenerics
@@ -102,12 +97,12 @@ namespace CSharpSeven
 				where T : Animal
 			{
 				if (animal is Pig pig)
-					Write("We cooked and ate the pig...");
+					Write("pig local variable - " + pig.ToString());
 
 				switch (animal)
 				{
 					case Pig pork:
-						WriteLine(" and it tastes delicious!");
+						WriteLine("pork local variable - " + pork.ToString());
 						break;
 				}
 			}	

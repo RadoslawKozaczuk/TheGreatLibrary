@@ -26,9 +26,7 @@ namespace CSharpSeven
 			WriteLine($"i = {i}"); // default value
 		}
 
-		class Shape
-		{
-		}
+		class Shape { }
 
 		class Rectangle : Shape
 		{
@@ -42,30 +40,29 @@ namespace CSharpSeven
 
 		public static void PatternMaching()
 		{
-			// difference between is and as 
-			// IS - Is Operator is used to Check the Compatibility of an Object with a given Type and it returns the result as a Boolean(True Or False).
-			// internally IS is an equivalent to:
-			// Student s = obj is Student ? (Student)obj : (Student)null;
-			// AS - As Operator is used for Casting of Object to a given Type or a Class. 
+			// 'is' operator is used to check the compatibility of an object with a given type and it returns bool.
+			// 'as' operator is used for casting of object to a given type or a class. 
 			var someShape = new Shape();
             
-			// usage of is operator
+			// usage of 'is' operator
 			if (someShape is Rectangle)
 			{
 				var rc = (Rectangle)someShape;
 			}
-			else if (someShape is Circle)
-			{
-			}
 
-			// usage of as operator
-			var rect = someShape as Rectangle;
-			if (rect != null) // nonnull
-			{
-			}
+            // or with combination with 'as'
+            if (someShape is Rectangle)
+            {
+                var rc = someShape as Rectangle;
+            }
+            
+            // if the conversion isn't possible, 'as' returns null instead of raising an exception.
+            var rect = someShape as Rectangle;
+            // as internally is an equivalent to:
+            // var rect = someShape is Rectangle ? rect : null;
 
-			// new combined operator is with a variable declaration and assignment
-			if (someShape is Rectangle r)
+            // new combined operator 'is' with a variable declaration and assignment
+            if (someShape is Rectangle r)
 			{
 				var imUsingIt = r.Height;
 			}
@@ -91,10 +88,7 @@ namespace CSharpSeven
 		{
 			public int X, Y;
 
-			public void Deconstruct(out string s)
-			{
-				s = $"{X}-{Y}";
-			}
+			public void Deconstruct(out string s) => s = $"{X}-{Y}";
 
 			public void Deconstruct(out int x, out int y)
 			{
@@ -294,7 +288,7 @@ namespace CSharpSeven
 			// in c#7 we can put throw in a null check expression
 			public ExceptionThrower(string name) => Name = name ?? throw new ArgumentNullException(nameof(name));
 
-			// in c#7 we can put throw in a ternary operator
+			// as well as in a ternary operator
 			public int GetValue(int n) => n > 0 ? n + 1 : throw new Exception();
 		}
 
@@ -303,8 +297,8 @@ namespace CSharpSeven
 			int v = -1;
 			try
 			{
-				var te = new ExceptionThrower("");
-				v = te.GetValue(-1); // does not get defaulted!
+				var et = new ExceptionThrower("");
+				v = et.GetValue(-1); // does not get defaulted!
 			}
 			catch (Exception e)
 			{
@@ -318,11 +312,9 @@ namespace CSharpSeven
 
 		static async Task<long> GetDirSize(string dir)
 		{
-			if (!Directory.EnumerateFileSystemEntries(dir).Any())
-				return 0;
+			if (!Directory.EnumerateFileSystemEntries(dir).Any()) return 0;
 
 			// Task<long> is return type so it still needs to be instantiated
-
 			return await Task.Run(() => Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories)
 			  .Sum(f => new FileInfo(f).Length));
 		}
@@ -335,11 +327,9 @@ namespace CSharpSeven
 		// need NuGet package
 		static async ValueTask<long> NewGetDirSize(string dir)
 		{
-			if (!Directory.EnumerateFileSystemEntries(dir).Any())
-				return 0;
+			if (!Directory.EnumerateFileSystemEntries(dir).Any()) return 0;
 
 			// Task<long> is return type so it still needs to be instantiated
-
 			return await Task.Run(() => Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories)
 			  .Sum(f => new FileInfo(f).Length));
 		}
