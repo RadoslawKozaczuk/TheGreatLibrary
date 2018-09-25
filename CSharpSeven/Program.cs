@@ -28,7 +28,11 @@ namespace CSharpSeven
 			//CSharpSevenDotTwo.LeadingDigitSeparators();
 			//CSharpSevenDotTwo.PrivateProtected();
 			//CSharpSevenDotTwo.NonTrailingNamedArguments();
-			CSharpSevenDotTwo.InParametersAndRefReadonly();
+			//CSharpSevenDotTwo.InParametersAndRefReadonly();
+
+            // Chapter 4 - random C# related programming concepts
+            //CSharpConcepts.OverrideAndNewExample();
+            CSharpConcepts.FunctionalProgramming();
 
 			Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 			Console.ReadKey();

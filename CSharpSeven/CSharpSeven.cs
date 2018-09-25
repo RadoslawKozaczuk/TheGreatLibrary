@@ -11,17 +11,12 @@ namespace CSharpSeven
 	{
 		public static void OutVariables()
 		{
-			DateTime dt;
-			if (DateTime.TryParse("01/01/2017", out dt))
-			{
-				WriteLine($"Old-fashioned parse: {dt}");
-			}
+            if (DateTime.TryParse("01/01/2017", out DateTime dt))
+                WriteLine($"Old-fashioned parse: {dt}");
 
-			// variable declaration is an expression, not a statement
-			if (DateTime.TryParse("02/02/2016", out var dt2))
-			{
+            // variable declaration is an expression, not a statement
+            if (DateTime.TryParse("02/02/2016", out var dt2))
 				WriteLine($"New parse: {dt2}");
-			}
 
 			// the scope of dt2 extends outside the if block
 			WriteLine($"I can use dt2 here: {dt2}");
@@ -53,8 +48,7 @@ namespace CSharpSeven
 			// Student s = obj is Student ? (Student)obj : (Student)null;
 			// AS - As Operator is used for Casting of Object to a given Type or a Class. 
 			var someShape = new Shape();
-
-
+            
 			// usage of is operator
 			if (someShape is Rectangle)
 			{
@@ -62,14 +56,12 @@ namespace CSharpSeven
 			}
 			else if (someShape is Circle)
 			{
-				// ...
 			}
 
 			// usage of as operator
 			var rect = someShape as Rectangle;
 			if (rect != null) // nonnull
 			{
-				//...
 			}
 
 			// new combined operator is with a variable declaration and assignment
@@ -81,7 +73,7 @@ namespace CSharpSeven
 			// can also do the inverse
 			if (!(someShape is Circle cc))
 			{
-				// not a circle!
+				// cc is not a circle!
 			}
 
 			// same can be used in switch
@@ -90,10 +82,9 @@ namespace CSharpSeven
 				case Circle c:
 					break;
 				// additionally very convenient when keyword
-				case Rectangle sq when (sq.Width == sq.Height):
+				case Rectangle sq when sq.Width == sq.Height:
 					break;
 			}
-
 		}
 
 		class Point
@@ -212,10 +203,8 @@ namespace CSharpSeven
 		static ref int Find(int[] numbers, int value)
 		{
 			for (int i = 0; i < numbers.Length; i++)
-			{
 				if (numbers[i] == value)
 					return ref numbers[i];
-			}
 
 			// cannot do by value return
 			//return -1;
@@ -259,8 +248,7 @@ namespace CSharpSeven
 			// won't work with lists
 			var numberList = new List<int> { 1, 2, 3 };
 			//ref int second = ref numberList[1]; // property or indexer cannot be out
-
-
+            
 			int[] moreNumbers = { 10, 20, 30 };
 			//ref int refToThirty = ref Find(moreNumbers, 30);
 			//refToThirty = 1000;
@@ -281,19 +269,19 @@ namespace CSharpSeven
 
 		public class Person
 		{
-			private int id;
+            readonly int _id;
 
-			private static readonly Dictionary<int, string> names = new Dictionary<int, string>();
+			static readonly Dictionary<int, string> _names = new Dictionary<int, string>();
 
 			// constructor and destructor as an expression body
-			public Person(int id, string name) => names.Add(id, name);
-			~Person() => names.Remove(id);
+			public Person(int id, string name) => _names.Add(id, name);
+			~Person() => _names.Remove(_id);
 
 			public string Name
 			{
 				// getters and setters and be changes into an expression body
-				get => names[id];
-				set => names[id] = value;
+				get => _names[_id];
+				set => _names[_id] = value;
 			}
 		}
 
