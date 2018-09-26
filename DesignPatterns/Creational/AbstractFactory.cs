@@ -6,47 +6,47 @@ namespace DesignPatterns.Creational
 {
 	/*
 		Motivation:
-		AbstractFactory gives away abstract objects in contrary to Factory which gives away concrete objects
-		it simply returns interfaces or abstract classes.
+		AbstractFactory gives away abstract objects in contrary to Factory which gives away concrete objects.
+		It simply returns interfaces or abstract classes.
 	*/
 	class AbstractFactory
 	{
-		interface IHotDrink
+		interface IDrink
 		{
 			void Consume();
 		}
 
 		// this class is not going to be given away to anyone
-		class Tea : IHotDrink
+		class Tea : IDrink
 		{
 			public void Consume() => WriteLine("This tea is nice but I'd prefer it with milk.");
 		}
 
 		// same as above
-		class Coffee : IHotDrink
+		class Coffee : IDrink
 		{
 			public void Consume() => WriteLine("This coffee is delicious!");
 		}
 
 		// factory has to be able to prepare a drink and return it
-		interface IHotDrinkFactory
+		interface IDrinkFactory
 		{
-			IHotDrink Prepare(int amount);
+			IDrink Prepare(int amount);
 		}
 
 		// factories also will not be given away to anyone
-		class TeaFactory : IHotDrinkFactory
+		class TeaFactory : IDrinkFactory
 		{
-			public IHotDrink Prepare(int amount)
+			public IDrink Prepare(int amount)
 			{
 				WriteLine($"Put in tea bag, boil water, pour {amount} ml, add lemon, enjoy!");
 				return new Tea();
 			}
 		}
 
-		class CoffeeFactory : IHotDrinkFactory
+		class CoffeeFactory : IDrinkFactory
 		{
-			public IHotDrink Prepare(int amount)
+			public IDrink Prepare(int amount)
 			{
 				WriteLine($"Grind some beans, boil water, pour {amount} ml, add cream and sugar, enjoy!");
 				return new Coffee();
@@ -55,82 +55,78 @@ namespace DesignPatterns.Creational
 
 		class HotDrinkMachine
 		{
-			public enum AvailableDrink // violates open-closed
-			{
-				Coffee,
-				Tea
-			}
+            // violates open-closed anytime new drink is added this enum has to be extended
+            public enum AvailableDrink { Coffee, Tea }
 
-			readonly Dictionary<AvailableDrink, IHotDrinkFactory> _factories =
-				new Dictionary<AvailableDrink, IHotDrinkFactory>();
+			readonly Dictionary<AvailableDrink, IDrinkFactory> _factories = 
+                new Dictionary<AvailableDrink, IDrinkFactory>();
 			
-			readonly List<(string name, IHotDrinkFactory factory)> _namedFactories =
-				new List<(string name, IHotDrinkFactory factory)>();
+			readonly List<(string name, IDrinkFactory factory)> _namedFactories = 
+                new List<(string name, IDrinkFactory factory)>();
 
 			public HotDrinkMachine()
 			{
-				// something does not work here I give up for now
-				// first approach - iteration over the enum
-				//foreach (AvailableDrink drink in Enum.GetValues(typeof(AvailableDrink)))
-				//{
-				//	var factory = (IHotDrinkFactory) Activator.CreateInstance(
-				//		Type.GetType(
-				//			"DesignPatterns.Creational.AbstractFactory." + 
-				//			Enum.GetName(typeof(AvailableDrink), drink) + "Factory"));
-				//	_factories.Add(drink, factory);
-				//}
+                // first approach - iteration over the enum
+                foreach (AvailableDrink drink in Enum.GetValues(typeof(AvailableDrink)))
+                {
+                    var name = Enum.GetName(typeof(AvailableDrink), drink);
+                    var factory = (IDrinkFactory)Activator.CreateInstance(
+                        Type.GetType($"DesignPatterns.Creational.AbstractFactory+{name}Factory"));
 
-				// more sophisticated approach that does not violate open-closed principle
-				// we remove enum and use reflection
-				foreach (var t in typeof(HotDrinkMachine).Assembly.GetTypes())
-					if (typeof(IHotDrinkFactory).IsAssignableFrom(t) && !t.IsInterface)
-						_namedFactories.Add((
-							t.Name.Replace("Factory", string.Empty), 
-							(IHotDrinkFactory)Activator.CreateInstance(t)));
-			}
+                    // just for the record AsemblyQualifiedName contains weird '+' sign in the middle
+                    // we can retrieve it and see on our own eyes by writing the following
+                    //var aqn = typeof(CoffeeFactory).AssemblyQualifiedName.ToString();
 
-			public IHotDrink MakeDrink()
+                    _factories.Add(drink, factory);
+                }
+
+                // more sophisticated approach that does not violate open-closed principle
+                // we remove enum and use reflection
+                foreach (var t in typeof(HotDrinkMachine).Assembly.GetTypes())
+                    if (typeof(IDrinkFactory).IsAssignableFrom(t) && !t.IsInterface)
+                        _namedFactories.Add((
+                            t.Name.Replace("Factory", string.Empty),
+                            (IDrinkFactory)Activator.CreateInstance(t)));
+            }
+
+			public IDrink MakeDrink()
 			{
-				WriteLine("Available drinks");
+				WriteLine("Available drinks:");
 				for (var index = 0; index < _namedFactories.Count; index++)
 				{
-					var tuple = _namedFactories[index];
-					WriteLine($"{index}: {tuple.name}");
+                    // deconstructed tuple with the second parameter ignored (syntactic sugar internally this is still there)
+					var (name, _) = _namedFactories[index];
+					WriteLine($"{index}: {name}");
 				}
 
 				while (true)
 				{
 					var s = ReadLine();
-					if (s != null
-					    && int.TryParse(s, out var i)
-					    && i >= 0
-					    && i < _namedFactories.Count)
+					if (s != null && int.TryParse(s, out var i) && i >= 0 && i < _namedFactories.Count)
 					{
 						Write("Specify amount: ");
 						s = ReadLine();
-						if (s != null
-						    && int.TryParse(s, out var amount)
-						    && amount > 0)
-						{
+						if (s != null && int.TryParse(s, out var amount) && amount > 0)
 							return _namedFactories[i].factory.Prepare(amount);
-						}
 					}
 					WriteLine("Incorrect input, try again.");
 				}
 			}
 
-			public IHotDrink MakeDrink(AvailableDrink drink, int amount) => _factories[drink].Prepare(amount);
+			public IDrink MakeDrink(AvailableDrink drink, int amount) => _factories[drink].Prepare(amount);
 		}
 
 		public static void Demo()
 		{
 			var machine = new HotDrinkMachine();
-			//var drink = machine.MakeDrink(HotDrinkMachine.AvailableDrink.Tea, 300);
-			//drink.Consume();
+            var drink = machine.MakeDrink(HotDrinkMachine.AvailableDrink.Tea, 300);
+            drink.Consume();
 
-			WriteLine("<You asked for another one.");
+            WriteLine("");
+            WriteLine(">You asked for another one sir?");
+            WriteLine("");
 
-			var drink2 = machine.MakeDrink();
+            var drink2 = machine.MakeDrink();
 			drink2.Consume();
 		}
 	}

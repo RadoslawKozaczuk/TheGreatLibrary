@@ -25,7 +25,7 @@ namespace DesignPatterns
 			//Creational.Builder.BuilderDemo();
 			//Creational.Builder.FacadedBuilderDemo();
 			//Creational.Factory.Demo();
-			//Creational.AbstractFactory.Demo();
+			Creational.AbstractFactory.Demo();
 			//Creational.Prototype.Demo();
 			//Creational.Singleton.Demo();
 
@@ -68,7 +68,7 @@ namespace DesignPatterns
 
 			// Dimitri's Tips & Tricks
 			//LocalInversionOfControl.Demo();
-			MaybeMonadDemo.Demo(new Person());
+			//MaybeMonadDemo.Demo(new Person());
 
 	        Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 	        Console.ReadKey();

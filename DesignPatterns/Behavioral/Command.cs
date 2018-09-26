@@ -51,10 +51,7 @@ namespace DesignPatterns.Behavioral
 
 		class BankAccountCommand : ICommand
 		{
-			public enum Action
-			{
-				Deposit, Withdraw
-			}
+			public enum Action { Deposit, Withdraw }
 
 			readonly Action _action;
 			readonly BankAccount _account;

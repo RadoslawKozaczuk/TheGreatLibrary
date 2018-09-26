@@ -18,23 +18,8 @@ namespace DesignPatterns.Behavioral
 	*/
 	class State
     {
-	    enum PhoneState
-	    {
-		    OffHook,
-		    Connecting,
-		    Connected,
-		    OnHold
-	    }
-
-	    enum Trigger
-	    {
-		    CallDialed,
-		    HungUp,
-		    CallConnected,
-		    PlacedOnHold,
-		    TakenOffHold,
-		    LeftMessage
-	    }
+	    enum PhoneState { OffHook, Connecting, Connected, OnHold }
+	    enum Trigger { CallDialed, HungUp, CallConnected, PlacedOnHold, TakenOffHold, LeftMessage }
 
 		// all possible transitions
 	    static readonly Dictionary<PhoneState, List<(Trigger, PhoneState)>> _rules = new Dictionary<PhoneState, List<(Trigger, PhoneState)>>
@@ -71,12 +56,14 @@ namespace DesignPatterns.Behavioral
 		//  default action when no transitions are found for an event
 	    public static void Demo()
 		{
-			var state = PhoneState.OffHook;
+            WriteLine("Type numbers to input commands - typing anything not allowed ends the program");
+
+            var state = PhoneState.OffHook;
 			while (true)
 			{
-				WriteLine("Type numbers to input commands - typing anything not allowed ends the program");
-				WriteLine($"The phone is currently {state}");
-				WriteLine("Select a trigger:");
+                WriteLine("");
+                WriteLine($"The phone is currently {state}");
+				WriteLine("Select command:");
 
 				// foreach to for
 				for (var i = 0; i < _rules[state].Count; i++)
@@ -84,21 +71,21 @@ namespace DesignPatterns.Behavioral
 					var (t, _) = _rules[state][i];
 					WriteLine($"{i}. {t}");
 				}
-
-				PhoneState s;
+                
+                PhoneState s;
 				try
 				{
 					var input = int.Parse(ReadLine());
-					s = _rules[state][input].Item2;
+                    s = _rules[state][input].Item2;
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					WriteLine($"The phone is currently {state}");
 					return;
 				}
 
 				state = s;
-			}
+            }
 		}
     }
 }

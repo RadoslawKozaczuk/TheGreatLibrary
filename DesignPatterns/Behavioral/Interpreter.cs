@@ -39,11 +39,7 @@ namespace DesignPatterns.Behavioral
 
 		class BinaryOperation : IElement
 		{
-			public enum Type
-			{
-				Addition,
-				Subtraction
-			}
+			public enum Type { Addition, Subtraction }
 
 			public Type OperationType;
 			public IElement Left, Right;
