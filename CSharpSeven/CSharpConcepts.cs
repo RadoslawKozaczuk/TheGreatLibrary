@@ -16,7 +16,7 @@ namespace CSharpSeven
         class DerivedClass : BaseClass
         {
             public override string Method1() => "DerivedMethod1";
-            // new keyword is only to suppress the warning and idicate to the editor that hiding was intended
+            // new keyword is only to suppress the warning and indicate to the editor that hiding was intended
             public new string Method2() => "DerivedMethod2";
             public new string Method3() => "DerivedMethod3";
 
@@ -50,7 +50,7 @@ namespace CSharpSeven
             WriteLine("baseDerived.Method3(): " + baseDerived.Method3());
             WriteLine();
 
-            // In other words when the method is hidden it is still accesible through casting.
+            // In other words when the method is hidden it is still accessible through casting.
             WriteLine("((BaseClass)derived).Method2(): " + ((BaseClass)derived).Method2());
             WriteLine("derived.Method2(): " + derived.Method2());
 
@@ -76,14 +76,14 @@ namespace CSharpSeven
                 switch(operation)
                 {
                     case MathOperations.Addition:
-                        // we can use annonymous delegate
+                        // we can use anonymous delegate
                         function = delegate (int a, int b)
                         {
                             return a + b;
                         };
                         break;
                     case MathOperations.Subtraction:
-                        // we can also use labda expression syntax
+                        // we can also use lambda expression syntax
                         function = (int a, int b) =>
                         {
                             return a - b;
@@ -96,7 +96,7 @@ namespace CSharpSeven
                         break;
                     case MathOperations.Division:
                         // unfortunately we cannot convert Func into our custom delegate even if the signature matches
-                        // Func<int, int, int> myFunc = (a, b) => a * b;
+                        // Func<int, int, int> myFunc = (a, b) => a / b;
                         // function = (MathFunction)myFunc; // error
                         function = (a, b) => a / b;
                         break;
@@ -116,12 +116,12 @@ namespace CSharpSeven
             WriteLine();
 
             // Func, Action and Predicate are all built-in custom delegate types
-            Func<int> getRandomNumber = () => new Random().Next(2, 2); // Func return something
+            Func<int> getRandomNumber = () => new Random().Next(2, 2); // Func must return something
             Predicate<int> isEven = delegate (int n) { return n % 2 == 0; }; // Predicate returns bool
             Action<bool> writeResult = n => WriteLine(n); // Action returns void
 
             writeResult.Invoke(isEven.Invoke(getRandomNumber.Invoke()));
-            // Invoke can be ommited for simplicity if it does not make confusion
+            // Invoke can be omitted for simplicity if it does not make confusion
             writeResult(isEven(getRandomNumber()));
         }
     }
