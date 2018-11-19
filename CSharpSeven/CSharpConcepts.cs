@@ -32,13 +32,13 @@ namespace CSharpSeven
             //DerivedClass derivedBase = new BaseClass(); // impossible - cannot implicitly convert
             //DerivedClass derivedBase = (DerivedClass)new BaseClass(); // also impossible - runtime error
 
-            // The following two calls do what you would expect. They call the methods that are defined in BaseClass.  
+            // The following three calls do what you would expect. They call the methods that are defined in BaseClass.  
             WriteLine("base.Method1(): " + @base.Method1());
             WriteLine("base.Method2(): " + @base.Method2());
             WriteLine("base.Method3(): " + @base.Method3());
             WriteLine();
 
-            // The following two calls do what you would expect. They call the methods that are defined in DerivedClass.  
+            // The following three calls do what you would expect. They call the methods that are defined in DerivedClass.  
             WriteLine("derived.Method1(): " + derived.Method1());
             WriteLine("derived.Method2(): " + derived.Method2());
             WriteLine("derived.Method3(): " + derived.Method3());
