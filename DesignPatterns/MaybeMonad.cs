@@ -67,10 +67,9 @@ namespace DesignPatterns
 				if (HasMedicalRecord(p) && p.Address != null)
 				{
 					CheckAddress(p.Address);
-					if (p.Address.PostCode != null)
-						postcode = p.Address.PostCode.ToString();
-					else
-						postcode = "UNKNOWN";
+					postcode = p.Address.PostCode != null
+						? p.Address.PostCode.ToString()
+						: "UNKNOWN";
 				}
 			}
 

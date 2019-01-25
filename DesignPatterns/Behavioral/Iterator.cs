@@ -147,8 +147,7 @@ namespace DesignPatterns.Behavioral
 		    // preorder:  123
 		    // postorder: 231
 
-		    var root = new Node<int>(1,
-			    new Node<int>(2), new Node<int>(3));
+		    var root = new Node<int>(1, new Node<int>(2), new Node<int>(3));
 
 		    // C++ style
 		    var it = new InOrderIterator<int>(root);

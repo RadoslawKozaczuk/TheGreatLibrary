@@ -9,19 +9,19 @@ namespace DesignPatterns.Behavioral
 	/*
 		Motivation:
 		Textual input needs to be processed
-		Examples: 
+		Examples:
 			programming language compilers, interpreters and IDEs
 			HTML, XML and similar
 			Numeric expressions (3+4/5)
 			Regular expressions (language in a language)
 		Turning strings into Object Oriented Programming based structures in a complicated process
-		
+
 		Definition:
 		A component that processes structured text data. Does so by turning it into separate lexical tokens (lexing)
 		and then interpreting sequences of said tokens (parsing)
 	*/
 	class Interpreter
-    {
+	{
 		interface IElement
 		{
 			int Value { get; }
@@ -167,7 +167,7 @@ namespace DesignPatterns.Behavioral
 							haveLHS = true;
 						}
 						else result.Right = element;
-						i = j; // advance 
+						i = j; // advance
 						break;
 					// right parenthesis was omitted because in the left parenthesis we find the right parenthesis and we handle it
 					default:

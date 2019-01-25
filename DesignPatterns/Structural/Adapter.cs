@@ -45,10 +45,7 @@ namespace DesignPatterns.Structural
 		}
 
 		// graphic object made out of collection of lines
-		class VectorObject : Collection<Line>
-		{
-
-		}
+		class VectorObject : Collection<Line> { }
 
 		class VectorRectangle : VectorObject
 		{
@@ -96,13 +93,10 @@ namespace DesignPatterns.Structural
 			new VectorRectangle(3, 3, 6, 6)
 		};
 
-		// the interface we have
-		static void DrawPoint(Point p)
-		{
-			Write(".");
-		}
+        // the interface we have
+        static void DrawPoint(Point p) => Write(".");
 
-		public static void Demo()
+        public static void Demo()
 		{
 			foreach (var vo in _vectorObjects)
 				foreach (var line in vo)

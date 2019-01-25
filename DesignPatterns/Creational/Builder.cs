@@ -24,10 +24,7 @@ namespace DesignPatterns.Creational
 			public List<HtmlElement> Elements = new List<HtmlElement>();
 			private const int IndentSize = 2;
 
-			public HtmlElement()
-			{
-
-			}
+			public HtmlElement() { }
 
 			public HtmlElement(string name, string text)
 			{
@@ -35,7 +32,7 @@ namespace DesignPatterns.Creational
 				Text = text;
 			}
 
-			private string ToStringImpl(int indent)
+			string ToStringImpl(int indent)
 			{
 				var sb = new StringBuilder();
 				var i = new string(' ', IndentSize * indent);
@@ -104,8 +101,7 @@ namespace DesignPatterns.Creational
 			builder.AddChildFluent("li", hello).AddChildFluent("li", world);
 			WriteLine(builder);
 		}
-
-
+        
 		// we want several builder to take care of the process
 		// facade for address and facade for employment
 		class Person

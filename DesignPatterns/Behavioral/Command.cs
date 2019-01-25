@@ -7,7 +7,7 @@ namespace DesignPatterns.Behavioral
 {
 	/*
 		Motivation:
-		Ordinary c# statements are perishable
+		Ordinary C# statements are perishable
 			Cannot undo a field/property assignment
 			Cannot directly serialize a sequence of actions (calls)
 		Want an object that represents an operation

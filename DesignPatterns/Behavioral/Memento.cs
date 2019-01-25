@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using static System.Console;
 
 namespace DesignPatterns.Behavioral
 {
-	/*
+    /*
 		Motivation:
 		An object or system goes through changes
 			a bank account gets deposits and withdrawals
@@ -17,7 +15,7 @@ namespace DesignPatterns.Behavioral
 		A token/handle representing the system state. Lets us roll back to the state when the token was generated.
 		May or may not directly expose state information.
 	*/
-	class Memento
+    class Memento
 	{
 		#region Simple Memento
 		class SimpleMemento

@@ -27,8 +27,7 @@ namespace DesignPatterns.Behavioral
 		    Markdown,
 		    Html // list in HTML is <ul><li>boo</li></ul>
 	    }
-
-		// 
+        
 	    interface IListStrategy
 	    {
 		    void Start(StringBuilder sb); // opening tag
@@ -47,9 +46,7 @@ namespace DesignPatterns.Behavioral
 	    class HtmlListStrategy : IListStrategy
 	    {
 		    public void Start(StringBuilder sb) => sb.AppendLine("<ul>");
-
 		    public void End(StringBuilder sb) => sb.AppendLine("</ul>");
-
 		    public void AddListItem(StringBuilder sb, string item) => sb.AppendLine($"  <li>{item}</li>");
 	    }
 		#endregion
@@ -77,8 +74,10 @@ namespace DesignPatterns.Behavioral
 			public void AppendList(IEnumerable<string> items)
 			{
 				_listStrategy.Start(_sb);
+
 				foreach (var item in items)
 					_listStrategy.AddListItem(_sb, item);
+
 				_listStrategy.End(_sb);
 			}
 

@@ -8,7 +8,7 @@ namespace DesignPatterns.Creational
 	static class ExtensionMethods
 	{
 		// unfortunately, this approach requires all objects to be marked with the Serializable argument
-		public static T DeepCopy<T>(this T self)
+		public static T DeepCopySerialization<T>(this T self)
 		{
 			using (var stream = new MemoryStream())
 			{
@@ -36,7 +36,7 @@ namespace DesignPatterns.Creational
 				{
 					property.SetValue(target, property.GetValue(objSource, null), null);
 				}
-				else if(property.PropertyType == typeof(string[]))
+				else if (property.PropertyType == typeof(string[]))
 				{
 					property.SetValue(target, ((string[])property.GetValue(objSource, null)).Clone(), null);
 				}
@@ -65,34 +65,32 @@ namespace DesignPatterns.Creational
 		Then clone the prototype (and the question is how to make a deep copy) and customize the resulting instance.
 	*/
 	class Prototype
-    {
-	    interface IPrototype<out T>
-	    {
-		    T DeepCopy();
+	{
+		interface IPrototype<out T>
+		{
+			T DeepCopy();
 		}
 
-	    [Serializable] // necessary for binary formatter approach
+		[Serializable] // necessary for binary formatter approach
 		public class Address : ICloneable, IPrototype<Address>
-	    {
-		    public string StreetName { get; set; }
-		    public int HouseNumber { get; set; }
-			
+		{
+			public string StreetName { get; set; }
+			public int HouseNumber { get; set; }
+
 			// necessary for reflection approach
-		    public Address()
-		    {
-		    }
+			public Address() { }
 
 			public Address(string streetName, int houseNumber)
-		    {
-			    StreetName = streetName;
-			    HouseNumber = houseNumber;
-		    }
+			{
+				StreetName = streetName;
+				HouseNumber = houseNumber;
+			}
 
-		    public Address(Address other)
-		    {
-			    StreetName = other.StreetName;
-			    HouseNumber = other.HouseNumber;
-		    }
+			public Address(Address other)
+			{
+				StreetName = other.StreetName;
+				HouseNumber = other.HouseNumber;
+			}
 
 			public override string ToString() => $"{StreetName} {HouseNumber}";
 
@@ -101,32 +99,30 @@ namespace DesignPatterns.Creational
 			public Address DeepCopy() => new Address(StreetName, HouseNumber);
 		}
 
-	    [Serializable] // necessary for binary formatter approach
+		[Serializable] // necessary for binary formatter approach
 		public class Person : ICloneable, IPrototype<Person>
-	    {
-		    public string[] Names { get; set; }
-		    public Address Address { get; set; }
+		{
+			public string[] Names { get; set; }
+			public Address Address { get; set; }
 
 			// necessary for reflection approach
-			public Person()
-		    {
-		    }
+			public Person() { }
 
 			public Person(string[] names, Address address)
-		    {
-			    Names = names;
-			    Address = address;
-		    }
+			{
+				Names = names;
+				Address = address;
+			}
 
-		    public Person(Person other)
-		    {
-			    Names = (string[])other.Names.Clone();
-			    Address = new Address(other.Address);
-		    }
+			public Person(Person other)
+			{
+				Names = (string[])other.Names.Clone();
+				Address = new Address(other.Address);
+			}
 
 			public override string ToString() => $"{nameof(Names)}: {string.Join(" ", Names)}, {nameof(Address)}: {Address}";
 
-		    public object Clone() => new Person((string[])Names.Clone(), (Address)Address.Clone());
+			public object Clone() => new Person((string[])Names.Clone(), (Address)Address.Clone());
 
 			public Person DeepCopy() => new Person((string[])Names.Clone(), Address.DeepCopy());
 		}
@@ -140,19 +136,19 @@ namespace DesignPatterns.Creational
 			// First approach is to use ICloneable, but the problem with ICloneable interface is that it does not specify whether its implementation
 			// should return a shallow copy (object is copied but its object members are just references) or a deep copy (everything is copied)
 			// ICloneable interface came out probably before generics so it returns object type which makes its use not very convenient
-			// Additionally, if the Array object clone method (new[] {1, 2}.Clone();) returns shallow copy 
+			// Additionally, if the Array object clone method (new[] {1, 2}.Clone();) returns shallow copy
 			// then it kind of suggest to not use ICloneable interface for deep copy
 			var jane = (Person)prototype.Clone();
 			jane.Address.HouseNumber = 200;
 			jane.Names[0] = "Jane";
 			WriteLine(Environment.NewLine + "=== ICloneable ===");
 			WriteLine(jane);
-			
+
 			// second approach is to use copy constructors which has a small advantage that allows us to use the object initializer syntax
 			var joi = new Person(prototype)
 			{
-				Address = {HouseNumber = 300},
-				Names = {[0] = "Joi"}
+				Address = { HouseNumber = 300 },
+				Names = { [0] = "Joi" }
 			};
 			WriteLine(Environment.NewLine + "=== Copy constructor ===");
 			WriteLine(joi);
@@ -168,7 +164,7 @@ namespace DesignPatterns.Creational
 
 			// approach number 4 is to have a binary serializer
 			// which unfortunately requires us to add Serializable attribute to all objects
-			var jade = prototype.DeepCopy();
+			var jade = prototype.DeepCopySerialization();
 			jade.Address.HouseNumber = 404;
 			jade.Names[0] = "Jade";
 			WriteLine(Environment.NewLine + "=== Binary serializer ===");

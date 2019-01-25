@@ -6,7 +6,7 @@ namespace DesignPatterns.Behavioral
 		Motivation:
 		Algorithm can be decomposed into common parts + specifics.
 		Strategy pattern does this through composition
-			Hugh-level algorithm uses an interface
+			High-level algorithm uses an interface
 			Concrete implementations implement the interface
 		Template Method does the same thing through inheritance
 			Overall algorithm makes use of abstract member
@@ -54,9 +54,7 @@ namespace DesignPatterns.Behavioral
 			int _maxTurns = 10;
 			int _turn = 1;
 
-			public Chess() : base(2)
-			{
-			}
+			public Chess() : base(2) { }
 
 			protected override void Start() => WriteLine($"Starting a game of chess with {numberOfPlayers} players.");
 

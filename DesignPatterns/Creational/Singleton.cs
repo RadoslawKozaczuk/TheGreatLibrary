@@ -15,8 +15,8 @@ namespace DesignPatterns.Creational
 		Definition:
 		A component which is instantiated only once.
 	*/
-    class Singleton
-    {
+	class Singleton
+	{
 		interface IDatabase
 		{
 			int GetPopulation(string name);
@@ -41,72 +41,68 @@ namespace DesignPatterns.Creational
 			// Lazy/Thread Safe approach
 			public static IDatabase LazyInstance => _lazyInstance.Value;
 			static readonly Lazy<SingletonDatabase> _lazyInstance = new Lazy<SingletonDatabase>(() => new SingletonDatabase());
-			
+
 			// Regular approach (although normally in both cases we would simply call it Instance)
 			public static IDatabase StdInstance => _stdInstance;
 			static readonly SingletonDatabase _stdInstance = new SingletonDatabase();
 		}
 
-		// the problem with approach like this is that when we put Singleton everywhere 
+		// the problem with approach like this is that when we put Singleton everywhere
 		// we start to depend on it.
-	    class SingletonRecordFinder
-	    {
-		    public int GetTotalPopulation(IEnumerable<string> names) => names.Sum(name => SingletonDatabase.StdInstance.GetPopulation(name));
-	    }
+		class SingletonRecordFinder
+		{
+			public int GetTotalPopulation(IEnumerable<string> names) => names.Sum(name => SingletonDatabase.StdInstance.GetPopulation(name));
+		}
 
 		// possible solution to that is for example using an interface and simply injecting a database
-	    class ConfigurableRecordFinder
-	    {
-		    readonly IDatabase _database;
+		class ConfigurableRecordFinder
+		{
+			readonly IDatabase _database;
 
-		    public ConfigurableRecordFinder(IDatabase database)
-		    {
-			    _database = database;
-		    }
+			public ConfigurableRecordFinder(IDatabase database)
+			{
+				_database = database;
+			}
 
 			public int GetTotalPopulation(IEnumerable<string> names) => names.Sum(name => _database.GetPopulation(name));
-	    }
+		}
 
-	    public class DummyDatabase : IDatabase
-	    {
-		    public int GetPopulation(string name)
-		    {
-			    return new Dictionary<string, int>
-			    {
-					["Warsaw"] = 1_735_000,
-				    ["Berlin"] = 3_460_000,
-				    ["Paris"] = 10_067_000
-				}[name];
-		    }
-	    }
+		public class DummyDatabase : IDatabase
+		{
+			public int GetPopulation(string name) => new Dictionary<string, int>
+			{
+				["Warsaw"] = 1_735_000,
+				["Berlin"] = 3_460_000,
+				["Paris"] = 10_067_000
+			}[name];
+		}
 
-	    // pretty much reverse approach to the same problem
-	    // typically Singleton approach was to prevent people from calling constructors
-	    // this case we are doing the opposite you can call as many constructors as you want
-	    // but whenever you call a property of the object you access the same data
-	    class Monostate
-	    {
-		    static string _name;
+		// pretty much reverse approach to the same problem
+		// typically Singleton approach was to prevent people from calling constructors
+		// this case we are doing the opposite you can call as many constructors as you want
+		// but whenever you call a property of the object you access the same data
+		class Monostate
+		{
+			static string _name;
 
-		    public string Name
-		    {
-			    get => _name;
-			    set => _name = value;
-		    }
-	    }
+			public string Name
+			{
+				get => _name;
+				set => _name = value;
+			}
+		}
 
 		public static void Demo()
 		{
+			const string warsaw = "Warsaw", berlin = "Berlin", paris = "Paris";
+
 			var db = SingletonDatabase.StdInstance;
-			const string warsaw = "Warsaw";
 			WriteLine($"{warsaw} has population {db.GetPopulation(warsaw)}");
 
 			var srf = new SingletonRecordFinder();
-			const string berlin = "Berlin";
 			WriteLine($"{berlin} has population {srf.GetTotalPopulation(new List<string> { berlin })}");
 
 			var crf = new ConfigurableRecordFinder(new DummyDatabase());
-			const string paris = "Paris";
 			WriteLine($"{paris} has population {crf.GetTotalPopulation(new List<string> { paris })}");
 
 			// we cannot use Static because static does not have any constructors
