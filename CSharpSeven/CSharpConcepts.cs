@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using static System.Console;
 
 namespace CSharpSeven
@@ -32,13 +33,13 @@ namespace CSharpSeven
             //DerivedClass derivedBase = new BaseClass(); // impossible - cannot implicitly convert
             //DerivedClass derivedBase = (DerivedClass)new BaseClass(); // also impossible - runtime error
 
-            // The following three calls do what you would expect. They call the methods that are defined in BaseClass.  
+            // The following three calls do what you would expect. They call the methods that are defined in BaseClass.
             WriteLine("base.Method1(): " + @base.Method1());
             WriteLine("base.Method2(): " + @base.Method2());
             WriteLine("base.Method3(): " + @base.Method3());
             WriteLine();
 
-            // The following three calls do what you would expect. They call the methods that are defined in DerivedClass.  
+            // The following three calls do what you would expect. They call the methods that are defined in DerivedClass.
             WriteLine("derived.Method1(): " + derived.Method1());
             WriteLine("derived.Method2(): " + derived.Method2());
             WriteLine("derived.Method3(): " + derived.Method3());
@@ -103,13 +104,13 @@ namespace CSharpSeven
                 }
             }
         }
-        
+
         public static void FunctionalProgramming()
         {
             var calc = new Calculator();
             WriteLine(calc.Calculate(2, 2, MathOperations.Addition));
             WriteLine(calc.Calculate(10, 0, (a, b) => a * a));
-            
+
             // there is also something called local functions and we can use them as well
             int LocalAdd(int a, int b) => a + b;
             WriteLine(calc.Calculate(1, 1, LocalAdd));
@@ -124,5 +125,51 @@ namespace CSharpSeven
             // Invoke can be omitted for simplicity if it does not make confusion
             writeResult(isEven(getRandomNumber()));
         }
+
+		static void FunctionWithCallback(Action workToDo, Action callback)
+		{
+			workToDo();
+			callback();
+		}
+
+		static int flags = 0;
+		static void CallbackFunctionWithFlags()
+		{
+			if (++flags == 2)
+				WriteLine("Sucessfully invoked after waiting for two callbacks");
+		}
+
+		static Task FunctionAsync(Action workToDo) => new Task(workToDo);
+
+		static void OldWay()
+		{
+			FunctionWithCallback(
+				() => { WriteLine("Job-1 completed"); },
+				() => { CallbackFunctionWithFlags(); });
+
+			FunctionWithCallback(
+				() => { WriteLine("Job-2 completed"); },
+				() => { CallbackFunctionWithFlags(); });
+		}
+
+		async static void NewWay()
+		{
+			Task task1 = FunctionAsync(() => { WriteLine("Job-1 completed"); });
+			Task task2 = FunctionAsync(() => { WriteLine("Job-2 completed"); });
+
+			task1.Start();
+			task2.Start();
+
+			await Task.WhenAll(task1, task2);
+
+			WriteLine("Sucessfully invoked after waiting for two callbacks");
+		}
+
+		public static void AsyncAndAwait()
+		{
+			OldWay();
+
+			NewWay();
+		}
     }
 }

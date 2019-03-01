@@ -32,7 +32,8 @@ namespace CSharpSeven
 
             // Chapter 4 - random C# related programming concepts
             //CSharpConcepts.OverrideAndNewExample();
-            CSharpConcepts.FunctionalProgramming();
+            //CSharpConcepts.FunctionalProgramming();
+			CSharpConcepts.AsyncAndAwait();
 
 			Console.WriteLine(Environment.NewLine + "All done here. Press any key to exit.");
 			Console.ReadKey();
