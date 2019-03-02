@@ -297,9 +297,9 @@ namespace Solid
 
 	// its split into two ideas
 	// A. High-level modules should not depend on low-level modules.
-//    Both should depend on abstractions.
-// B. Abstractions should not depend on details.
-//    Details should depend on abstractions.
+	//    Both should depend on abstractions.
+	// B. Abstractions should not depend on details.
+	//    Details should depend on abstractions.
 
 	// when we talk about abstractions we generally mean interfaces or base classes
 
