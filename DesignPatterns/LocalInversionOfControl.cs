@@ -29,9 +29,7 @@ namespace DesignPatterns
 				PendingOp = pendingOp;
 			}
 
-			public BoolMarker(bool result, T self) : this(result, self, Operation.None)
-			{
-			}
+			public BoolMarker(bool result, T self) : this(result, self, Operation.None) { }
 
 			// it returns a copy of the BoolMarker
 			public BoolMarker<T> And => new BoolMarker<T>(Result, Self, Operation.And);
@@ -78,9 +76,9 @@ namespace DesignPatterns
 			// it improves readability
 
 			// ENG: "hey list could you please add to yourself the number 24?"
-			//list.Add(24);
+			list.Add(24);
 
-			// ENG: "24 was added to the list and list2"
+			// ENG: "please add 24 to the list and list2"
 			24.AddTo(list, list2);
 
 
@@ -88,14 +86,14 @@ namespace DesignPatterns
 			var opcode = "AND";
 
 			// look how unreadable is this - goooshh
-			//if (opcode == "AND" || opcode == "OR" || opcode == "XOR") {}
+			if (opcode == "AND" || opcode == "OR" || opcode == "XOR") { }
 
 			// a bit better - if this array contains the opcode then do this
 			// but still this is not super readable
-			//if (new[]{"AND", "OR", "XOR"}.Contains(opcode)) {}
+			if (new[] { "AND", "OR", "XOR" }.Contains(opcode)) { }
 
 			// another trick that people do. A bit better to read.
-			//if ("AND OR XOR".Split(' ').Contains(opcode)) {}
+			if ("AND OR XOR".Split(' ').Contains(opcode)) { }
 
 			// But here comes the master race!
 			if (opcode.IsOneOf("AND", "OR", "XOR")) { }

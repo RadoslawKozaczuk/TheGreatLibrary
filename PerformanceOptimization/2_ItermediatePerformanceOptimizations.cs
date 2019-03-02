@@ -18,11 +18,11 @@ namespace PerformanceOptimization
 			3) compact heaps and move them to the next heap
 		- Gen-1 is collected frequently, gen-1 and gen-2 (SOH and LOH) much less so. The GC assumes that whatever reach gen-1 and 2
 			must be long living objects.
-	
+
 		Why two heaps?
 		Two successive garbage collection cycles will move and compact a long-living twice meaning 4 memcopy operations for a single object.
 		For very large object that would impact the performance. That's why large object are not moved or compacted.
-	
+
 		The algorithm is based on two assumptions:
 		- 90% of all small objects are short-lived
 		- all large objects are long-lived
@@ -51,10 +51,10 @@ namespace PerformanceOptimization
 			// this is example of a shit code
 			var s = new StringBuilder();
 		    for (int i = 0; i < 10000; i++)
-		    { 
+		    {
 			    s.Append(i + "KB");
 		    }
-			
+
 		    // it can be rewritten to this beauty
 		    for (int i = 0; i < 10000; i++)
 		    {
@@ -64,13 +64,13 @@ namespace PerformanceOptimization
 			// strings are immutable so every concatenation creates a new object on the heap
 			// in this case it means 40000 less objects on the heap!
 
-			
+
 			// Example 2:
 			// this is another garbage code
 		    var list = new ArrayList();
 		    for (int i = 0; i < 10000; i++)
 			    list.Add(i);
-			
+
 		    // it can be rewritten to this beauty
 		    var betterList = new List<int>(10000);
 		    for (int i = 0; i < 10000; i++)
@@ -80,19 +80,20 @@ namespace PerformanceOptimization
 			// it results in 20000 less boxed integer objects on the heap
 			// additionally it is allocated with a precise size which allows use to avoid reallocation
 
-			
+
 			// Example 3:
 			var candy = new Dictionary<int, int>();
-			// [...] // tons of code that will certainly be executed long enough to run GC cycle effectively making our candy to stuck in gen-2 forever
+			// [...] // tons of code that will certainly be executed long enough to run GC cycle
+			// effectively making our candy to stuck in gen-2 forever
 			DoSomething(candy); // usage of candy
-			
+
 		    // here is how it suppose to look like
 		    var betterCandy = new Dictionary<int, int>();
 		    DoSomething(betterCandy); // usage of candy
 		    betterCandy = null;
 			// [...] // tons of code that no one cares about anymore
 
-		
+
 			// Example 4:
 			// object pooling is an idea to use the same object over and over again
 			var list2 = new ArrayList(85190);
@@ -102,7 +103,7 @@ namespace PerformanceOptimization
 			// [...] // tons of code that will certainly be executed long enough to run GC cycle
 			list2 = new ArrayList(85190);
 		    DoSomething(list2);
-			
+
 			// here is how it suppose to look like
 		    DoSomething(list2);
 			// [...] // tons of code that will certainly be executed long enough to run GC cycle
@@ -114,14 +115,14 @@ namespace PerformanceOptimization
 			// Example 5:
 			var list3 = new ArrayList(85190);
 		    for (int i = 0; i < 10000; i++)
-		    {
 			    list3.Add(new KeyValuePair<int,int>(i, i + 1));
-		    }
 
 			// the problem with the above is that ArrayList is a large object
 			// but it is filled with tiny objects that goes on Small Object Heap
 			// and because the list keeps reference to each of them none will ever dereference
 			// so all objects will eventually go to gen-2
+
+			// thanks to this we now have two list and nothing on the heap
 			var list_1 = new int[85190];
 			var list_2 = new int[85190];
 		    for (int i = 0; i < 10000; i++)
@@ -129,13 +130,12 @@ namespace PerformanceOptimization
 			    list_1[i] = i;
 			    list_2[i] = i + 1;
 		    }
-			// thanks to this we now have two list and nothing on the heap
 
 
 		    // Example 6 - Converting a large short-lived object into a small short-lived object.
 		    // Splitting objects. Reducing object foot print.
 
-			// generally the Garbage Collector assumes 90% of all small objects are short-lived, and all large objects are long-lived. 
+			// generally the Garbage Collector assumes 90% of all small objects are short-lived, and all large objects are long-lived.
 			// So we should avoid large short-lived objects and small long-lived objects.
 			// int has 32 bits so 4 bytes regardless the CPU architecture
 
@@ -143,18 +143,14 @@ namespace PerformanceOptimization
 			var buffer = new int[32768]; // this adds up to 128 thousand bytes. This is above the LO's threshold.
 		    // and therefore it goes directly to LOH and gets collected during generation 2.
 		    for (int i = 0; i < buffer.Length; i++)
-		    {
 			    buffer[i] = GetByte(i);
-		    }
 
 		    // good code
 		    var betterBuffer = new byte[32768]; // this is stored on the SOH and therefore is managed more efficiently.
 		    for (int i = 0; i < buffer.Length; i++)
-		    {
 			    betterBuffer[i] = GetByte(i);
-		    }
 
-			
+
 			// Example 7 - Converting a small long-lived object to a large long-lived object.
 			// Merge objects. Resize lists.
 
@@ -169,7 +165,7 @@ namespace PerformanceOptimization
 		    //DoSomething(staticList);
 	    }
 
-		
+
 		delegate void AddDelegate(int a, int b, out int result);
 		static void Add1(int a, int b, out int result) => result = a + b;
 		static void Add2(int a, int b, out int result) => result = a + b;
@@ -236,7 +232,7 @@ namespace PerformanceOptimization
 			if (trick2 != null)
 				trick();
 		}
-		
+
 		public static void FastDelegates()
 		{
 			long manual = 0;
@@ -300,7 +296,7 @@ namespace PerformanceOptimization
 		}
 
 		/// <summary>
-		/// Creates a class by using Intermediate Language 
+		/// Creates a class by using Intermediate Language
 		/// 1. Check dictionary if the delegate has been created already
 		/// 2. If so -> retrieve and call delegate
 		/// 3. If not ->
@@ -313,7 +309,7 @@ namespace PerformanceOptimization
 			// get delegate from dictionary
 			if (_classCreators.ContainsKey(typeName))
 				return _classCreators[typeName];
-			
+
 			// get the default constructor of the type
 			var type = Type.GetType(typeName);
 			ConstructorInfo ctorInfo = type.GetConstructor(new Type[0]);
@@ -332,7 +328,7 @@ namespace PerformanceOptimization
 			// return a delegate to the method
 			return creator;
 		}
-		
+
 		static long FactoryDelegateMeasure(string typeName)
 		{
 			var stopwatch = new Stopwatch();
@@ -351,7 +347,7 @@ namespace PerformanceOptimization
 			// A class factory is a special class that constructs other classes on demand, based on external configuration data.
 			// for example:
 			// var conn = ConnectionFactory.GetConnection("Some DB");
-			
+
 			// measurement run
 			long duration1 = FactoryHardcodedMeasure("System.Text.StringBuilder");
 			long duration2 = FactoryReflectionMeasure("System.Text.StringBuilder");
@@ -360,9 +356,9 @@ namespace PerformanceOptimization
 			Console.WriteLine($"Compile-time construction: {duration1}");
 			Console.WriteLine($"Dynamic construction: {duration2}");
 			Console.WriteLine($"CIL method construction: {duration3}");
-			
+
 			/* Results
-				- Activator is around one hundred times slower 
+				- Activator is around one hundred times slower
 				- Dynamic method delegates are 5 times slower than compiled code
 			 */
 		}

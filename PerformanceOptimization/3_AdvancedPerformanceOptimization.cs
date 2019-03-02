@@ -137,10 +137,9 @@ namespace PerformanceOptimization
 			//Console.WriteLine("Grayscale conversion using pointers: " + elapsedB);
 		}
 
-		
-		private static long MeasureA(int size)
-		{
 
+		static long MeasureA(int size)
+		{
 			byte[] image = new byte[size * size * 3];
 
 			Stopwatch stopwatch = new Stopwatch();
@@ -157,7 +156,7 @@ namespace PerformanceOptimization
 			return stopwatch.ElapsedMilliseconds;
 		}
 
-		private static unsafe long MeasureB(int size)
+		static unsafe long MeasureB(int size)
 		{
 			byte[] image = new byte[size * size * 3];
 
@@ -182,7 +181,7 @@ namespace PerformanceOptimization
 			return stopwatch.ElapsedMilliseconds;
 		}
 
-		private static unsafe long MeasureC(int size)
+		static unsafe long MeasureC(int size)
 		{
 			byte[] image = new byte[size * size * 3];
 
@@ -217,7 +216,7 @@ namespace PerformanceOptimization
 				// image processing using byte[]
 				long duration1 = MeasureA(size);
 
-				// image processing using byte* and reading by indexer[] 
+				// image processing using byte* and reading by indexer[]
 				long duration2 = MeasureB(size);
 
 				// image processing using byte* and advancing the pointer

@@ -9,9 +9,9 @@ using System.Text;
 	- Tracks method calls
 	- Contains frames which hold parameters, return address and local variables for each method call
 	- A stack frame is removed when returning from a method. All local variables go out of scope at this point
-	- If you call too many methods, the stack will fill up completely and .Net Framework throws 
+	- If you call too many methods, the stack will fill up completely and .Net Framework throws
 		a StackOverflow Exception. This usually happens when a method call itself somewhere in the code
-		
+
 	Heap:
 	- The new keyword creates objects on the heap
 	- Code that uses objects on the heap is slightly slower than code using integers on the stack
@@ -86,13 +86,13 @@ namespace PerformanceOptimization
 			- Code can be annotated with attributes
 
 			Disadvantages:
-			- Slightly slower code - at this moment compilators are so advanced 
+			- Slightly slower code - at this moment compilators are so advanced
 				that it is almost impossible to hand made better code than what compilers produces
 
 			Intermediate Language concepts:
 			1) IL instructions - sequence of instructions, executed one by one.
 			2) Local variable locations - slots for variables
-			3) Evaluation stack - have only two operations push and pop which add or removes the 
+			3) Evaluation stack - have only two operations push and pop which add or removes the
 
 			We have only 3 types of instructions - pushing on the stack, removing from the stack, and modifying value on the stack.
 
@@ -114,24 +114,24 @@ namespace PerformanceOptimization
 
 			/* translated
 				IL_0000: nop // Do nothing (No operation); I have no idea what it is for...
-		    
-				IL_0001: ldc.i4       456	
+
+				IL_0001: ldc.i4       456
 				IL_0006: stloc.0      // i
-		    
+
 				IL_0007: ldloc.0      // i
 				IL_0008: ldc.i4.1
 				IL_0009: add
 				IL_000a: stloc.0      // i
-		    
+
 				IL_000b: ldloc.0      // i
 				IL_000c: stloc.1      // V_1
 				IL_000d: br.s         IL_000f	// Branch to target, short form.
 
 				IL_000f: ldloc.1      // V_1
-				IL_0010: ret   
+				IL_0010: ret
 		    */
 		}
-		
+
 		static long BoxMeasureA()
 		{
 			var stopwatch = new Stopwatch();
@@ -184,27 +184,27 @@ namespace PerformanceOptimization
 			Console.WriteLine();
 			Console.WriteLine("Method B is {0} times slower", 1.0 * objDuration / intDuration);
 
-			/* Summary 
+			/* Summary
 				- Casting object variables to value types introduces an UNBOX instruction in intermediate code
 				- Storing value types in object variables introduces a BOX instruction in intermediate code
 				- We should avoid casting to and from objects in critical-performance code.
-				- Additionally System.Collections and System.Collections.Specialized should also be avoided 
+				- Additionally System.Collections and System.Collections.Specialized should also be avoided
 					because internally they use object arrays and therefore force boxing-unboxing operations.
 				- Same goes to System.Data classes - DataRow uses object arrays internally for storing data
 				- Even typed data sets are not ok because what they do internally is object casting
 				- But, on the other hand System.Collections.Generic of type T are ok
 			*/
 		}
-		
+
 		static long StringConcatMeasureA()
 		{
 			var s = string.Empty;
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenThousand; i++)
-			{
 				s = s + "a";
-			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedTicks;
 		}
@@ -214,10 +214,10 @@ namespace PerformanceOptimization
 			var sb = new StringBuilder();
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenThousand; i++)
-			{
 				sb.Append("a");
-			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedTicks;
 		}
@@ -226,14 +226,14 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
+
 		    for (int i = 0; i < Million; i++)
 		    {
 			    var s = string.Empty;
 			    for (int j = 0; j < additions; j++)
-			    {
 				    s = s + "a";
-			    }
 		    }
+
 		    stopwatch.Stop();
 		    return stopwatch.ElapsedMilliseconds;
 	    }
@@ -242,14 +242,14 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
+
 		    for (int i = 0; i < Million; i++)
 		    {
 			    var sb = new StringBuilder();
 			    for (int j = 0; j < additions; j++)
-			    {
 				    sb.Append("a");
-			    }
 		    }
+
 		    stopwatch.Stop();
 		    return stopwatch.ElapsedMilliseconds;
 	    }
@@ -283,10 +283,10 @@ namespace PerformanceOptimization
 			var list = new ArrayList();
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenMillion; i++)
-			{
 				list.Add(i);
-			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -296,10 +296,10 @@ namespace PerformanceOptimization
 			var list = new ArrayList(TenMillion);
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenMillion; i++)
-			{
 				list.Add(i);
-			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -309,10 +309,10 @@ namespace PerformanceOptimization
 			var list = new List<int>();
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenMillion; i++)
-			{
 				list.Add(i);
-			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -322,10 +322,10 @@ namespace PerformanceOptimization
 			var list = new List<int>(TenMillion);
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenMillion; i++)
-			{
 				list.Add(i);
-			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -335,10 +335,10 @@ namespace PerformanceOptimization
 			var list = new int[TenMillion];
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenMillion; i++)
-			{
 				list[i] = i;
-			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -365,11 +365,12 @@ namespace PerformanceOptimization
 				- there is not much difference between List<int> and int[] but all in all int[] is faster
 			*/
 		}
-		
+
 	    static long OneDimArray()
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
+
 		    int[] list = new int[TenThousand * TenThousand];
 		    for (int i = 0; i < TenThousand * TenThousand; i++)
 		    {
@@ -378,9 +379,10 @@ namespace PerformanceOptimization
 					ldloc.1      // list
 					ldloc.2      // i
 					ldloc.2      // i
-					stelem.i4 
+					stelem.i4
 				 */
 			}
+
 			stopwatch.Stop();
 		    return stopwatch.ElapsedMilliseconds;
 	    }
@@ -389,6 +391,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
+
 		    int[,] list = new int[TenThousand, TenThousand];
 		    for (int i = 0; i < TenThousand; i++)
 		    {
@@ -399,11 +402,12 @@ namespace PerformanceOptimization
 						ldloc.1      // list
 						ldloc.2      // i
 						ldloc.3      // j
-						ldc.i4.1     
+						ldc.i4.1
 						call         instance void int32[0...,0...]::Set(int32, int32, int32)
 					*/
 				}
 			}
+
 		    stopwatch.Stop();
 		    return stopwatch.ElapsedMilliseconds;
 	    }
@@ -416,9 +420,8 @@ namespace PerformanceOptimization
 		    stopwatch.Start();
 		    int[][] list = new int[TenThousand][];
 		    for (int i = 0; i < TenThousand; i++)
-		    {
 			    list[i] = new int[TenThousand];
-		    }
+
 		    for (int i = 0; i < TenThousand; i++)
 		    {
 			    for (int j = 0; j < TenThousand; j++)
@@ -427,13 +430,14 @@ namespace PerformanceOptimization
 					/* compiles to
 						ldloc.1      // list
 						ldloc.s      i_V_4
-						ldelem.ref   
+						ldelem.ref
 						ldloc.s      j
-						ldc.i4.1     
-						stelem.i4  
+						ldc.i4.1
+						stelem.i4
 					*/
 				}
 			}
+
 		    stopwatch.Stop();
 		    return stopwatch.ElapsedMilliseconds;
 	    }
@@ -442,6 +446,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
+
 		    int[] list = new int[TenThousand * TenThousand];
 		    for (int i = 0; i < TenThousand; i++)
 		    {
@@ -451,6 +456,7 @@ namespace PerformanceOptimization
 				    list[index] = 1;
 			    }
 		    }
+
 		    stopwatch.Stop();
 		    return stopwatch.ElapsedMilliseconds;
 	    }
@@ -473,7 +479,7 @@ namespace PerformanceOptimization
 			// that's why 1-dim comes first and jagged second
 			// 2-dim array is just a class
 			// although on my computer difference between the last two is marginal
-			// their internal code also similar
+			// their internal code is also similar
 
 			/* Summary
 				- If you only have 1 dimension of data, use 1-dimensional arrays for the best performance
@@ -487,11 +493,11 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
+
 		    int count = 0;
 		    for (int i = 0; i < Hundred; i++)
-		    {
 			    count = count + 1;
-		    }
+
 		    stopwatch.Stop();
 		    return stopwatch.ElapsedTicks;
 	    }
@@ -500,6 +506,7 @@ namespace PerformanceOptimization
 	    {
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
+
 		    int count = 0;
 		    for (int i = 0; i < Hundred; i++)
 		    {
@@ -515,6 +522,7 @@ namespace PerformanceOptimization
 					// so this code will measure only the throwing overhead
 				}
 			}
+
 		    stopwatch.Stop();
 		    return stopwatch.ElapsedTicks;
 	    }
@@ -533,11 +541,11 @@ namespace PerformanceOptimization
 	    }
 
 	    // constants
-	    private const int Digits = 5;
+	    const int Digits = 5;
 
 	    // fields
-	    private static readonly char[] _digitArray = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'X' };
-	    private static readonly List<string> _numbers = new List<string>();
+	    static readonly char[] _digitArray = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'X' };
+	    static readonly List<string> _numbers = new List<string>();
 
 	    static void PrepareList()
 	    {
@@ -586,7 +594,7 @@ namespace PerformanceOptimization
 		    stopwatch.Stop();
 		    return stopwatch.ElapsedTicks;
 	    }
-		
+
 	    public static void ParseVsTryParse()
 	    {
 		    // initialization
@@ -601,7 +609,7 @@ namespace PerformanceOptimization
 
 			// the difference is massive - order of magnitude is 5
 		}
-		
+
 	    // fields
 	    private static readonly List<int> _numbersV2 = new List<int>();
 	    private static readonly Dictionary<int, string> _lookup = new Dictionary<int, string> {
@@ -678,12 +686,12 @@ namespace PerformanceOptimization
 				- Never use exceptions to control the flow of your program
 			 */
 	    }
-		
+
 		// fields
-		private static readonly ArrayList _arrayList = new ArrayList(TenMillion);
-		private static readonly List<int> _genericList = new List<int>(TenMillion);
-		private static readonly int[] _array = new int[TenMillion];
-		
+		static readonly ArrayList _arrayList = new ArrayList(TenMillion);
+		static readonly List<int> _genericList = new List<int>(TenMillion);
+		static readonly int[] _array = new int[TenMillion];
+
 		static void PrepareListV3()
 		{
 			var random = new Random();
@@ -700,10 +708,12 @@ namespace PerformanceOptimization
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenMillion; i++)
 			{
 				int result = (int)_arrayList[i];
 			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -712,11 +722,13 @@ namespace PerformanceOptimization
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			foreach (int i in _arrayList)
 			{
 				int result = i;
 				// there is a lot of unboxing involved which additionally slows down the loop
 			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -725,10 +737,12 @@ namespace PerformanceOptimization
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenMillion; i++)
 			{
 				int result = _genericList[i];
 			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -737,10 +751,12 @@ namespace PerformanceOptimization
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			foreach (int i in _genericList)
 			{
 				int result = i;
 			}
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -749,25 +765,26 @@ namespace PerformanceOptimization
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			for (int i = 0; i < TenMillion; i++)
 			{
 				int result = _array[i];
 			}
 			/* the loop compiles to:
 				IL_0012: nop
-				
+
 				IL_0013: ldsfld int32[] PerformanceOptimization.BasicPerformanceOptimizations::_array
 				IL_0018: ldloc.1      // i
 				IL_0019: ldelem.i4
 				IL_001a: stloc.2      // result
-				
+
 				IL_001b: nop
-				
+
 				IL_001c: ldloc.1      // i
 				IL_001d: ldc.i4.1
 				IL_001e: add
 				IL_001f: stloc.1      // i
-				
+
 				IL_0020: ldloc.1      // i
 				IL_0021: ldc.i4       10000000 // 0x00989680
 				IL_0026: clt
@@ -776,6 +793,7 @@ namespace PerformanceOptimization
 				IL_0029: ldloc.3      // V_3
 				IL_002a: brtrue.s IL_0012
 			*/
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -784,6 +802,7 @@ namespace PerformanceOptimization
 		{
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
+
 			foreach (int i in _array)
 			{
 				int result = i;
@@ -793,25 +812,26 @@ namespace PerformanceOptimization
 				IL_001a: ldloc.2      // V_2
 				IL_001b: ldelem.i4
 				IL_001c: stloc.3      // i
-				
+
 				IL_001d: nop
-				
+
 				IL_001e: ldloc.3      // i
 				IL_001f: stloc.s result
-				
+
 				IL_0021: nop
 
 				IL_0022: ldloc.2      // V_2
 				IL_0023: ldc.i4.1
 				IL_0024: add
 				IL_0025: stloc.2      // V_2
-				
+
 				IL_0026: ldloc.2      // V_2
 				IL_0027: ldloc.1      // V_1
 				IL_0028: ldlen
 				IL_0029: conv.i4
 				IL_002a: blt.s IL_0019
 			*/
+
 			stopwatch.Stop();
 			return stopwatch.ElapsedMilliseconds;
 		}
@@ -852,7 +872,7 @@ namespace PerformanceOptimization
 
 			// the reason is that foreach for arrays compiles to something very similar to for
 			// so the compilers avoid all the enumeration's burden
-			
+
 			// Non-generic enumerators return the current value as an object. Do not use them for value types to avoid boxing and unboxing
 			// Always use generic enumerators if possible
 
