@@ -26,7 +26,7 @@ namespace DesignPatterns.Creational
 		{
 			readonly Dictionary<string, int> _capitals;
 
-			private SingletonDatabase()
+			SingletonDatabase()
 			{
 				_capitals = new Dictionary<string, int>
 				{

@@ -25,7 +25,7 @@ namespace DesignPatterns
 			//Creational.Builder.BuilderDemo();
 			//Creational.Builder.FacadedBuilderDemo();
 			//Creational.Factory.Demo();
-			Creational.AbstractFactory.Demo();
+			//Creational.AbstractFactory.Demo();
 			//Creational.Prototype.Demo();
 			//Creational.Singleton.Demo();
 
@@ -38,7 +38,7 @@ namespace DesignPatterns
 			//Structural.Decorator.Demo();
 			//Structural.Decorator.MultipleInheritanceDemo();
 			//Structural.Decorator.DynamicDecoratorsDemo();
-			//Structural.Facade.Demo();
+			Structural.Facade.Demo();
 			//Structural.Flyweight.Demo();
 			//Structural.Proxy.ProtectionProxyDemo();
 			//Structural.Proxy.PropertyProxyDemo();

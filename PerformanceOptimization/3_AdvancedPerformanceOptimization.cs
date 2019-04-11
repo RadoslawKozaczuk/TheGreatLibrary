@@ -142,7 +142,7 @@ namespace PerformanceOptimization
 		{
 			byte[] image = new byte[size * size * 3];
 
-			Stopwatch stopwatch = new Stopwatch();
+			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 			for (int i = 0; i < image.Length;)
 			{
@@ -160,7 +160,7 @@ namespace PerformanceOptimization
 		{
 			byte[] image = new byte[size * size * 3];
 
-			Stopwatch stopwatch = new Stopwatch();
+			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 			unsafe
 			{

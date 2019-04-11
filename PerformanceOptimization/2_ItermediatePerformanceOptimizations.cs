@@ -122,7 +122,7 @@ namespace PerformanceOptimization
 			// and because the list keeps reference to each of them none will ever dereference
 			// so all objects will eventually go to gen-2
 
-			// thanks to this we now have two list and nothing on the heap
+			// thanks to this we have two lists now, and nothing on the heap
 			var list_1 = new int[85190];
 			var list_2 = new int[85190];
 		    for (int i = 0; i < 10000; i++)
