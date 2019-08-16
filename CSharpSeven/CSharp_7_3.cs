@@ -10,7 +10,7 @@ namespace CSharpSeven
 		private fixed char _filename[255];
 		public fixed int MyField[3];
 
-		// operates on any type that impements a method named DangerousGetPinnableReference()
+		// operates on any type that implements a method named DangerousGetPinnableReference()
 	}
 
 	struct MyStruct
@@ -42,7 +42,7 @@ namespace CSharpSeven
 		[field: NonSerialized]
 		public string AutoImplementedProperty { get; set; }
 
-		// previously it was possible but only with event underliieng field
+		// previously it was possible but only with event underlying field
 
 		[field: NonSerialized]
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -73,13 +73,11 @@ namespace CSharpSeven
 			unsafe
 			{
 				var myStruct = new FixedStruct();
-				int qq = myStruct.MyField[2];
-
-				var qqweqe = DoTheList(myStruct);
+				int value = myStruct.MyField[2];
+				List<byte> list = DoTheList(myStruct);
 			}
 		}
 
-		//
 		public void Demo2()
 		{
 			var myStruct = new MyStruct();
@@ -88,12 +86,12 @@ namespace CSharpSeven
 			ref MyStruct refLocal = ref myStruct;
 			refLocal = ref otherStruct;
 
-			// stackalloc supports now array inizializers
+			// stackalloc supports now array initializers
 			unsafe
 			{
 				int* pArr1 = stackalloc int[3] { 1, 2, 3 };
 
-				// or we can ommit it
+				// or we can omit it
 				int* pArr2 = stackalloc int[3] { 1, 2, 3 };
 			}
 

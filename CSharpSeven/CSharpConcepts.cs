@@ -136,7 +136,7 @@ namespace CSharpSeven
 		static void CallbackFunctionWithFlags()
 		{
 			if (++flags == 2)
-				WriteLine("Sucessfully invoked after waiting for two callbacks");
+				WriteLine("Successfully invoked after waiting for two callbacks");
 		}
 
 		static Task FunctionAsync(Action workToDo) => new Task(workToDo);
@@ -162,13 +162,12 @@ namespace CSharpSeven
 
 			await Task.WhenAll(task1, task2);
 
-			WriteLine("Sucessfully invoked after waiting for two callbacks");
+			WriteLine("Successfully invoked after waiting for two callbacks");
 		}
 
 		public static void AsyncAndAwait()
 		{
 			OldWay();
-
 			NewWay();
 		}
     }

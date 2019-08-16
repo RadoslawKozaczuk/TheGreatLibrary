@@ -24,15 +24,12 @@ namespace DesignPatterns.Behavioral
 
 	    class Person
 	    {
-		    public void CatchACold()
-		    {
-				// we call the event - if there is no subscribers we will get a null exception error
-				// therefore we use a safe call (null check)
-			    FallsIll?.Invoke(this, new FallsIllEventArgs { Address = "123 London Road" });
-		    }
+            // we call the event - if there is no subscribers we will get a null exception error
+            // therefore we use a safe call (null check)
+            public void CatchACold() => FallsIll?.Invoke(this, new FallsIllEventArgs { Address = "123 London Road" });
 
-			// this is how we specify an event
-		    public event EventHandler<FallsIllEventArgs> FallsIll;
+            // this is how we specify an event
+            public event EventHandler<FallsIllEventArgs> FallsIll;
 	    }
 
 		// whenever person gets ill we call a doctor
@@ -57,11 +54,8 @@ namespace DesignPatterns.Behavioral
 	    {
 		    public event EventHandler Clicked;
 
-		    public void Fire()
-		    {
-			    Clicked?.Invoke(this, EventArgs.Empty);
-		    }
-	    }
+            public void Fire() => Clicked?.Invoke(this, EventArgs.Empty);
+        }
 
 	    class Window
 	    {
@@ -71,13 +65,10 @@ namespace DesignPatterns.Behavioral
 			    button.Clicked += ButtonOnClicked;
 		    }
 
-			// handling events
-		    private void ButtonOnClicked(object sender, EventArgs eventArgs)
-		    {
-			    WriteLine("Button clicked (Window handler)");
-		    }
-			
-		    ~Window()
+            // handling events
+            void ButtonOnClicked(object sender, EventArgs eventArgs) => WriteLine("Button clicked (Window handler)");
+
+            ~Window()
 		    {
 			    WriteLine("Window finalized");
 		    }
